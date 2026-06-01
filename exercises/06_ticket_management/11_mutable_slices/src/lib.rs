@@ -1,5 +1,5 @@
-// TODO: Define a function named `squared` that raises all `i32`s within a slice to the power of 2.
-//  The slice should be modified in place.
+// TODO: Определите функцию `squared`, которая возводит все значения `i32` в срезе в квадрат.
+//  Срез нужно изменять на месте.
 
 #[cfg(test)]
 mod tests {

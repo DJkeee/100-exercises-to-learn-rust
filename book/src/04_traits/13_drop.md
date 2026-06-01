@@ -29,14 +29,14 @@ If your type has an explicit `Drop` implementation, the compiler will assume
 that your type has additional resources attached to it and won't allow you to implement `Copy`.
 
 ```rust
-// This is a unit struct, i.e. a struct with no fields.
+// Это единичная структура, то есть структура без полей.
 #[derive(Clone, Copy)]
 struct MyType;
 
 impl Drop for MyType {
     fn drop(&mut self) {
-       // We don't need to do anything here,
-       // it's enough to have an "empty" Drop implementation
+       // Здесь ничего делать не нужно,
+       // достаточно «пустой» реализации Drop
     }
 }
 ```

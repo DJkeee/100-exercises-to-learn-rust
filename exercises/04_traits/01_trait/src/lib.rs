@@ -1,7 +1,7 @@
-// Define a trait named `IsEven` that has a method `is_even` that returns a `true` if `self` is
-// even, otherwise `false`.
+// Определите трейт `IsEven` с методом `is_even`, который возвращает `true`, если `self`
+// является четным числом, и `false` в противном случае.
 //
-// Then implement the trait for `u32` and `i32`.
+// Затем реализуйте трейт для `u32` и `i32`.
 
 #[cfg(test)]
 mod tests {

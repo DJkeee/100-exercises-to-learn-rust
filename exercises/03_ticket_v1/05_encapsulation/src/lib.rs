@@ -30,10 +30,10 @@ pub mod ticket {
             }
         }
 
-        // TODO: Add three public methods to the `Ticket` struct:
-        //  - `title` that returns the `title` field.
-        //  - `description` that returns the `description` field.
-        //  - `status` that returns the `status` field.
+        // TODO: Добавьте в структуру `Ticket` три публичных метода:
+        //  - `title`, возвращающий поле `title`.
+        //  - `description`, возвращающий поле `description`.
+        //  - `status`, возвращающий поле `status`.
     }
 }
 

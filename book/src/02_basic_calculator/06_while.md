@@ -13,7 +13,7 @@ Here's the general syntax:
 
 ```rust
 while <condition> {
-    // code to execute
+    // выполняемый код
 }
 ```
 
@@ -22,9 +22,9 @@ For example, we might want to sum the numbers from 1 to 5:
 ```rust
 let sum = 0;
 let i = 1;
-// "while i is less than or equal to 5"
+// «пока i меньше или равно 5»
 while i <= 5 {
-    // `+=` is a shorthand for `sum = sum + i`
+    // `+=` — сокращенная запись для `sum = sum + i`
     sum += i;
     i += 1;
 }
@@ -68,7 +68,7 @@ You can't change their value once it has been assigned.
 If you want to allow modifications, you have to declare the variable as **mutable** using the `mut` keyword:
 
 ```rust
-// `sum` and `i` are mutable now!
+// Теперь `sum` и `i` изменяемы!
 let mut sum = 0;
 let mut i = 1;
 

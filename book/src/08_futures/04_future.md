@@ -28,15 +28,15 @@ fn spawner() {
 }
 
 async fn example() {
-    // A value that's not `Send`,
-    // created _inside_ the async function
+    // Значение без `Send`,
+    // созданное _внутри_ асинхронной функции
     let non_send = Rc::new(1);
     
-    // A `.await` point that does nothing
+    // Точка `.await`, которая ничего не делает
     yield_now().await;
 
-    // The local non-`Send` value is still needed
-    // after the `.await`
+    // Локальное значение без `Send` все еще требуется
+    // после `.await`
     println!("{}", non_send);
 }
 ```
@@ -85,7 +85,7 @@ This is encoded in the trait definition:
 trait Future {
     type Output;
     
-    // Ignore `Pin` and `Context` for now
+    // Пока не обращайте внимания на `Pin` и `Context`
     fn poll(
       self: Pin<&mut Self>, 
       cx: &mut Context<'_>

@@ -37,9 +37,9 @@ use tokio::net::TcpListener;
 pub async fn echo(listener: TcpListener) -> Result<(), anyhow::Error> {
     loop {
         let (mut socket, _) = listener.accept().await?;
-        // Spawn a background task to handle the connection
-        // thus allowing the main task to immediately start 
-        // accepting new connections
+        // Создаем фоновую задачу для обработки соединения,
+        // позволяя основной задаче сразу начать
+        // принимать новые соединения
         tokio::spawn(async move {
             let (mut reader, mut writer) = socket.split();
             tokio::io::copy(&mut reader, &mut writer).await?;
@@ -62,13 +62,13 @@ we used `join` for spawned threads.
 
 ```rust
 pub async fn run() {
-    // Spawn a background task to ship telemetry data
-    // to a remote server
+    // Создаем фоновую задачу для отправки телеметрии
+    // на удаленный сервер
     let handle = tokio::spawn(emit_telemetry());
-    // In the meantime, do some other useful work
+    // Тем временем выполняем другую полезную работу
     do_work().await;
-    // But don't return to the caller until 
-    // the telemetry data has been successfully delivered
+    // Но не возвращаемся в вызывающий код, пока
+    // телеметрия не будет успешно доставлена
     handle.await;
 }
 
@@ -97,9 +97,9 @@ pub async fn run() {
     let handle = tokio::spawn(work());
     if let Err(e) = handle.await {
         if let Ok(reason) = e.try_into_panic() {
-            // The task has panicked
-            // We resume unwinding the panic,
-            // thus propagating it to the current task
+            // В задаче возникла паника
+            // Возобновляем раскрутку паники,
+            // распространяя ее на текущую задачу
             panic::resume_unwind(reason);
         }
     }

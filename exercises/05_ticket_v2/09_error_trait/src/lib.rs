@@ -1,6 +1,6 @@
-// TODO: Implement `Debug`, `Display` and `Error` for the `TicketNewError` enum.
-//  When implementing `Display`, you may want to use the `write!` macro from Rust's standard library.
-//  The docs for the `std::fmt` module are a good place to start and look for examples:
+// TODO: Реализуйте `Debug`, `Display` и `Error` для перечисления `TicketNewError`.
+//  При реализации `Display` может пригодиться макрос `write!` из стандартной библиотеки Rust.
+//  Начать поиск примеров стоит с документации модуля `std::fmt`:
 //  https://doc.rust-lang.org/std/fmt/index.html#write
 
 enum TicketNewError {
@@ -8,9 +8,9 @@ enum TicketNewError {
     DescriptionError(String),
 }
 
-// TODO: `easy_ticket` should panic when the title is invalid, using the error message
-//   stored inside the relevant variant of the `TicketNewError` enum.
-//   When the description is invalid, instead, it should use a default description:
+// TODO: `easy_ticket` должен вызывать панику при недопустимом заголовке, используя сообщение об ошибке,
+//   хранящееся в соответствующем варианте перечисления `TicketNewError`.
+//   Если недопустимо описание, вместо него нужно использовать описание по умолчанию:
 //   "Description not provided".
 fn easy_ticket(title: String, description: String, status: Status) -> Ticket {
     todo!()

@@ -42,8 +42,8 @@ The `Deref` trait is the mechanism behind the language feature known as [**deref
 The trait is defined in the standard library, in the `std::ops` module:
 
 ```rust
-// I've slightly simplified the definition for now.
-// We'll see the full definition later on.
+// Пока я слегка упростил определение.
+// Полное определение мы увидим позже.
 pub trait Deref {
     type Target;
     

@@ -14,12 +14,12 @@ For example:
 ```rust
 let a: u32 = 10;
 
-// Cast `a` into the `u64` type
+// Преобразуем `a` в тип `u64`
 let b = a as u64;
 
-// You can use `_` as the target type
-// if it can be correctly inferred 
-// by the compiler. For example:
+// В качестве целевого типа можно использовать `_`,
+// если компилятор может правильно вывести тип.
+// Например:
 let c: u64 = a as _;
 ```
 
@@ -31,8 +31,8 @@ values.
 Things get more interesting if we go in the opposite direction:
 
 ```rust
-// A number that's too big 
-// to fit into a `u8`
+// Число, слишком большое,
+// чтобы поместиться в `u8`
 let a: u16 = 255 + 1;
 let b = a as u8;
 ```

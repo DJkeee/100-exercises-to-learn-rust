@@ -27,7 +27,7 @@ If at least one field is private it is no longer possible to create a `Ticket` i
 instantiation syntax:
 
 ```rust
-// This won't work!
+// Это не сработает!
 let ticket = Ticket {
     title: "Build a ticket system".into(),
     description: "A Kanban board".into(),

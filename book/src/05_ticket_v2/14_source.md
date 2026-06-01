@@ -3,7 +3,7 @@
 There's one more thing we need to talk about to complete our coverage of the `Error` trait: the `source` method.
 
 ```rust
-// Full definition this time!
+// На этот раз полное определение!
 pub trait Error: Debug + Display {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         None

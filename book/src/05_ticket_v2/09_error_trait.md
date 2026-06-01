@@ -18,7 +18,7 @@ that implements the `Error` trait.
 `Error` is the cornerstone of Rust's error handling story:
 
 ```rust
-// Slightly simplified definition of the `Error` trait
+// Слегка упрощенное определение трейта `Error`
 pub trait Error: Debug + Display {}
 ```
 

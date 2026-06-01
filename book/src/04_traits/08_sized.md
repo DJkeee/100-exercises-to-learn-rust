@@ -11,8 +11,8 @@ to the pointer: the length of the slice it points to. Going back to the example 
 ```rust
 let mut s = String::with_capacity(5);
 s.push_str("Hello");
-// Create a string slice reference from the `String`, 
-// skipping the first byte.
+// Создаем ссылку на строковый срез из `String`,
+// пропуская первый байт.
 let slice: &str = &s[1..];
 ```
 
@@ -52,7 +52,7 @@ Rust's `std` library defines a trait called `Sized`.
 
 ```rust
 pub trait Sized {
-    // This is an empty trait, no methods to implement.
+    // Это пустой трейт, реализовывать методы не требуется.
 }
 ```
 

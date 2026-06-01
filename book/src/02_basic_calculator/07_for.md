@@ -11,7 +11,7 @@ Here's the general syntax:
 
 ```rust
 for <element> in <iterator> {
-    // code to execute
+    // выполняемый код
 }
 ```
 

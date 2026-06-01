@@ -48,9 +48,9 @@ You can find the exercises in the
 Before starting the course, make sure to clone the repository to your local machine:
 
 ```bash
-# If you have an SSH key set up with GitHub
+# Если у вас настроен SSH-ключ для GitHub
 git clone git@github.com:mainmatter/100-exercises-to-learn-rust.git
-# Otherwise, use the HTTPS URL:
+# В противном случае используйте HTTPS URL:
 #   https://github.com/mainmatter/100-exercises-to-learn-rust.git
 ```
 

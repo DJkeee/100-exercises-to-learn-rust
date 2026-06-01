@@ -64,7 +64,7 @@ fn expensive_computation() -> u64 {
 
 async fn run() {
     let handle = task::spawn_blocking(expensive_computation);
-    // Do other stuff in the meantime
+    // Тем временем выполняем другие действия
     let result = handle.await.unwrap();
 }
 ```

@@ -69,8 +69,8 @@ struct Ticket {
     // [...]
 }
 
-// No need to qualify `Ticket` in any way here
-// because we're in the same module
+// Здесь не нужно уточнять `Ticket`,
+// поскольку мы находимся в том же модуле
 fn mark_ticket_as_done(ticket: Ticket) {
     // [...]
 }
@@ -92,10 +92,10 @@ Having to write the full path every time you want to refer to a type can be cumb
 To make your life easier, you can introduce a `use` statement to bring the entity into scope.
 
 ```rust
-// Bring `MyStruct` into scope
+// Вводим `MyStruct` в область видимости
 use crate::module_1::module_2::MyStruct;
 
-// Now you can refer to `MyStruct` directly
+// Теперь можно обращаться к `MyStruct` напрямую
 fn a_function(s: MyStruct) {
      // [...]
 }

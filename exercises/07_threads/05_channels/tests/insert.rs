@@ -1,5 +1,5 @@
-// TODO: Set `move_forward` to `true` in `ready` when you think you're done with this exercise.
-//  Feel free to call an instructor to verify your solution!
+// TODO: Установите `move_forward` в `true` внутри `ready`, когда решите, что закончили упражнение.
+//  Можете позвать преподавателя, чтобы проверить решение!
 use channels::data::TicketDraft;
 use channels::{launch, Command};
 use std::time::Duration;
@@ -15,17 +15,17 @@ fn a_thread_is_spawned() {
             title: ticket_title(),
             description: ticket_description(),
         }))
-        // If the thread is no longer running, this will panic
-        // because the channel will be closed.
+        // Если поток больше не выполняется, здесь возникнет паника,
+        // поскольку канал будет закрыт.
         .expect("Did you actually spawn a thread? The channel is closed!");
 }
 
 #[test]
 fn ready() {
-    // There's very little that we can check automatically in this exercise,
-    // since our server doesn't expose any **read** actions.
-    // We have no way to know if the inserts are actually happening and if they
-    // are happening correctly.
+    // В этом упражнении автоматически можно проверить совсем немногое,
+    // поскольку наш сервер не предоставляет действий **чтения**.
+    // У нас нет способа узнать, действительно ли выполняются вставки
+    // и выполняются ли они правильно.
     let move_forward = false;
 
     assert!(move_forward);

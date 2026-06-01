@@ -4,13 +4,13 @@ During the very first exercises, you learned that Rust lets you iterate over col
 We were looking at ranges at that point (e.g. `0..5`), but the same holds true for collections like arrays and vectors.
 
 ```rust
-// It works for `Vec`s
+// Работает для `Vec`
 let v = vec![1, 2, 3];
 for n in v {
     println!("{}", n);
 }
 
-// It also works for arrays
+// Также работает для массивов
 let a: [u32; 3] = [1, 2, 3];
 for n in a {
     println!("{}", n);

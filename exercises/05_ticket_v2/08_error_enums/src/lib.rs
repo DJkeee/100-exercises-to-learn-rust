@@ -1,11 +1,11 @@
-// TODO: Use two variants, one for a title error and one for a description error.
-//   Each variant should contain a string with the explanation of what went wrong exactly.
-//   You'll have to update the implementation of `Ticket::new` as well.
+// TODO: Используйте два варианта: один для ошибки заголовка и один для ошибки описания.
+//   Каждый вариант должен содержать строку с точным объяснением ошибки.
+//   Также потребуется обновить реализацию `Ticket::new`.
 enum TicketNewError {}
 
-// TODO: `easy_ticket` should panic when the title is invalid, using the error message
-//   stored inside the relevant variant of the `TicketNewError` enum.
-//   When the description is invalid, instead, it should use a default description:
+// TODO: `easy_ticket` должен вызывать панику при недопустимом заголовке, используя сообщение об ошибке,
+//   хранящееся в соответствующем варианте перечисления `TicketNewError`.
+//   Если недопустимо описание, вместо него нужно использовать описание по умолчанию:
 //   "Description not provided".
 fn easy_ticket(title: String, description: String, status: Status) -> Ticket {
     todo!()

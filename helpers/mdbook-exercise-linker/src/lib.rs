@@ -45,7 +45,7 @@ fn process_book_item(item: &mut BookItem, renderer: &str, root_url: &str) {
             };
             let source_path = source_path.display().to_string();
 
-            // Ignore non-exercise chapters
+            // Игнорируем главы без упражнений
             if !source_path.chars().take(2).all(|c| c.is_digit(10)) {
                 return;
             }

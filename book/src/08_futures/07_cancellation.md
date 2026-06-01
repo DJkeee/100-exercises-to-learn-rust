@@ -17,7 +17,7 @@ async fn http_call() {
 }
 
 async fn run() {
-    // Wrap the future with a `Timeout` set to expire in 10 milliseconds.
+    // Оборачиваем future в `Timeout`, истекающий через 10 миллисекунд.
     let duration = Duration::from_millis(10);
     if let Err(_) = timeout(duration, http_call()).await {
         println!("Didn't receive a value within 10 ms");
@@ -93,7 +93,7 @@ Nonetheless, you can use its `JoinHandle` to cancel it if needed:
 ```rust
 async fn run() {
     let handle = tokio::spawn(/* some async task */);
-    // Cancel the spawned task
+    // Отменяем созданную задачу
     handle.abort();
 }
 ```

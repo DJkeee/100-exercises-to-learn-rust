@@ -1,6 +1,6 @@
-// We need some more machinery to write a proper exercise for destructors.
-// We'll pick the concept up again in a later chapter after covering traits and
-// interior mutability.
+// Чтобы написать полноценное упражнение о деструкторах, нам понадобится дополнительный инструментарий.
+// Мы вернемся к этой концепции в одной из следующих глав после изучения трейтов и
+// внутренней изменяемости.
 fn outro() -> &'static str {
     "I have a basic understanding of __!"
 }

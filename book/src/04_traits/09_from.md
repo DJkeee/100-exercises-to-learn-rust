@@ -95,7 +95,7 @@ You can opt out of the implicit `Sized` bound with a **negative trait bound**:
 ```rust
 pub struct Foo<T: ?Sized> {
     //            ^^^^^^^
-    //            This is a negative trait bound
+    //            Это отрицательное ограничение трейта
     inner: T,
 }
 ```

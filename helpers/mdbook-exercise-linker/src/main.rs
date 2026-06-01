@@ -18,7 +18,7 @@ pub fn make_app() -> Command {
 fn main() {
     let matches = make_app().get_matches();
 
-    // Users will want to construct their own preprocessor here
+    // Здесь пользователи смогут создать собственный препроцессор
     let preprocessor = ExerciseLinker::new();
 
     if let Some(sub_args) = matches.subcommand_matches("supports") {
@@ -59,7 +59,7 @@ fn handle_supports(pre: &dyn Preprocessor, sub_args: &ArgMatches) -> ! {
         .supports_renderer(renderer)
         .expect("Failed to check renderer support");
 
-    // Signal whether the renderer is supported by exiting with 1 or 0.
+    // Сообщаем, поддерживается ли renderer, завершая работу с кодом 1 или 0.
     if supported {
         process::exit(0);
     } else {

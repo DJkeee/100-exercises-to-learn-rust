@@ -33,7 +33,7 @@ You can intentionally trigger a panic by calling the `panic!` macro[^macro]:
 ```rust
 fn main() {
     panic!("This is a panic!");
-    // The line below will never be executed
+    // Приведенная ниже строка никогда не будет выполнена
     let x = 1 + 2;
 }
 ```

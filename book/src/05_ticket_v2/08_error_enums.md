@@ -12,8 +12,8 @@ When you want to allow the caller to behave differently based on the specific er
 use an enum to represent the different error cases:
 
 ```rust
-// An error enum to represent the different error cases
-// that may occur when parsing a `u32` from a string.
+// Перечисление ошибок для представления различных ошибок,
+// которые могут возникнуть при парсинге `u32` из строки.
 enum U32ParseError {
     NotANumber,
     TooLarge,

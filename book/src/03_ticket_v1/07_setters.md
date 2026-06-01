@@ -39,7 +39,7 @@ The first approach looks like this:
 ```rust
 impl Ticket {
     pub fn set_title(mut self, new_title: String) -> Self {
-        // Validate the new title [...]
+        // Проверяем новый заголовок [...]
         self.title = new_title;
         self
     }
@@ -79,7 +79,7 @@ The second approach to setters, using `&mut self`, looks like this instead:
 ```rust
 impl Ticket {
     pub fn set_title(&mut self, new_title: String) {
-        // Validate the new title [...]
+        // Проверяем новый заголовок [...]
         
         self.title = new_title;
     }
@@ -99,7 +99,7 @@ let mut ticket = Ticket::new(
 );
 ticket.set_title("New title".into());
 
-// Use the modified ticket
+// Используем измененную заявку
 ```
 
 Ownership stays with the caller, so the original `ticket` variable is still valid. We don't need to reassign the result.

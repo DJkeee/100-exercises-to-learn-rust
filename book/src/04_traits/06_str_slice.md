@@ -72,8 +72,8 @@ You can, for example, create a `&str` from a `String` like this:
 ```rust
 let mut s = String::with_capacity(5);
 s.push_str("Hello");
-// Create a string slice reference from the `String`, 
-// skipping the first byte.
+// Создаем ссылку на строковый срез из `String`,
+// пропуская первый байт.
 let slice: &str = &s[1..];
 ```
 

@@ -21,10 +21,10 @@ async fn run(m: Arc<Mutex<Vec<u64>>>) {
     let guard = m.lock().unwrap();
     http_call(&guard).await;
     println!("Sent {:?} to the server", &guard);
-    // `guard` is dropped here
+    // Здесь удаляется `guard`
 }
 
-/// Use `v` as the body of an HTTP call.
+/// Использует `v` в качестве тела HTTP-вызова.
 async fn http_call(v: &[u64]) {
   // [...]
 }
@@ -68,7 +68,7 @@ async fn run(m: Arc<Mutex<Vec<u64>>>) {
     let guard = m.lock().await;
     http_call(&guard).await;
     println!("Sent {:?} to the server", &guard);
-    // `guard` is dropped here
+    // Здесь удаляется `guard`
 }
 ```
 

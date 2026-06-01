@@ -16,7 +16,7 @@ fn consumer(s: String) { /* */ }
 fn example() {
      let mut s = String::from("hello");
      consumer(s);
-     s.push_str(", world!"); // error: value borrowed here after move
+     s.push_str(", world!"); // ошибка: значение заимствовано здесь после перемещения
 }
 ```
 
@@ -45,7 +45,7 @@ fn example() {
      let mut s = String::from("hello");
      let t = s.clone();
      consumer(t);
-     s.push_str(", world!"); // no error
+     s.push_str(", world!"); // ошибки нет
 }
 ```
 
@@ -98,7 +98,7 @@ You almost always implement `Clone` by deriving it:
 ```rust
 #[derive(Clone)]
 struct MyType {
-    // fields
+    // поля
 }
 ```
 

@@ -33,11 +33,11 @@ There are various ways to create a slice reference from a `Vec`:
 
 ```rust
 let numbers = vec![1, 2, 3];
-// Via index syntax
+// С помощью синтаксиса индекса
 let slice: &[i32] = &numbers[..];
-// Via a method
+// С помощью метода
 let slice: &[i32] = numbers.as_slice();
-// Or for a subset of the elements
+// Или для подмножества элементов
 let slice: &[i32] = &numbers[1..];
 ```
 
@@ -46,9 +46,9 @@ thanks to deref coercion:
 
 ```rust
 let numbers = vec![1, 2, 3];
-// Surprise, surprise: `iter` is not a method on `Vec`!
-// It's a method on `&[T]`, but you can call it on a `Vec` 
-// thanks to deref coercion.
+// Сюрприз: `iter` не является методом `Vec`!
+// Это метод `&[T]`, но его можно вызвать для `Vec`
+// благодаря deref coercion.
 let sum: i32 = numbers.iter().sum();
 ```
 

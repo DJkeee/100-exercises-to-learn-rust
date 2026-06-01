@@ -1,20 +1,20 @@
-// Given a number `n`, return the `n+1`th number in the Fibonacci sequence.
+// Для заданного числа `n` верните `(n+1)`-е число последовательности Фибоначчи.
 //
-// The Fibonacci sequence is defined as follows:
+// Последовательность Фибоначчи определяется следующим образом:
 //
-// - The first number of the sequence is 0.
-// - The second number of the sequence is 1.
-// - Every subsequent number is the sum of the two preceding numbers.
+// - Первое число последовательности — 0.
+// - Второе число последовательности — 1.
+// - Каждое последующее число равно сумме двух предыдущих.
 //
-// So the sequence goes: 0, 1, 1, 2, 3, 5, 8, 13, 21, and so on.
+// Итак, последовательность выглядит так: 0, 1, 1, 2, 3, 5, 8, 13, 21 и так далее.
 //
-// We expect `fibonacci(0)` to return `0`, `fibonacci(1)` to return `1`,
-// `fibonacci(2)` to return `1`, and so on.
+// Ожидается, что `fibonacci(0)` вернет `0`, `fibonacci(1)` вернет `1`,
+// `fibonacci(2)` вернет `1` и так далее.
 pub fn fibonacci(n: u32) -> u32 {
-    // TODO: implement the `fibonacci` function
+    // TODO: реализуйте функцию `fibonacci`
     //
-    // Hint: use a `Vec` to memoize the results you have already calculated
-    // so that you don't have to recalculate them several times.
+    // Подсказка: используйте `Vec`, чтобы запоминать уже вычисленные результаты
+    // и не вычислять их повторно несколько раз.
     todo!()
 }
 

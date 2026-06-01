@@ -41,7 +41,7 @@ If we try to access `assigned_to` on a `Status` instance,
 ```rust
 let status: Status = /* */;
 
-// This won't compile
+// Это не скомпилируется
 println!("Assigned to: {}", status.assigned_to);
 ```
 

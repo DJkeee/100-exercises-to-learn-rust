@@ -1,4 +1,4 @@
-// TODO: Implement the `From` trait for the `WrappingU32` type to make `example` compile.
+// TODO: Реализуйте трейт `From` для типа `WrappingU32`, чтобы `example` компилировался.
 
 pub struct WrappingU32 {
     value: u32,

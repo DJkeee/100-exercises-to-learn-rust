@@ -22,7 +22,7 @@ You use the `async` keyword to define an asynchronous function:
 ```rust
 use tokio::net::TcpListener;
 
-// This function is asynchronous
+// Эта функция асинхронная
 async fn bind_random() -> TcpListener {
     // [...]
 }
@@ -32,9 +32,9 @@ What happens if you call `bind_random` as you would a regular function?
 
 ```rust
 fn run() {
-    // Invoke `bind_random`
+    // Вызываем `bind_random`
     let listener = bind_random();
-    // Now what?
+    // Что теперь?
 }
 ```
 
@@ -62,9 +62,9 @@ async fn bind_random() -> TcpListener {
 }
 
 async fn run() {
-    // Invoke `bind_random` and wait for it to complete
+    // Вызываем `bind_random` и ждем завершения
     let listener = bind_random().await;
-    // Now `listener` is ready
+    // Теперь `listener` готов
 }
 ```
 
@@ -112,7 +112,7 @@ Most runtimes provide a macro to make this easier. For `tokio`, it's `tokio::mai
 ```rust
 #[tokio::main]
 async fn main() {
-    // Your async code goes here
+    // Здесь размещается ваш асинхронный код
 }
 ```
 
@@ -122,7 +122,7 @@ which expands to:
 fn main() {
     let rt = tokio::runtime::Runtime::new().unwrap();
     rt.block_on(
-        // Your async function goes here
+        // Здесь размещается ваша асинхронная функция
         // [...]
     );
 }
@@ -139,6 +139,6 @@ in your tests.\
 ```rust
 #[tokio::test]
 async fn my_test() {
-    // Your async test code goes here
+    // Здесь размещается ваш код асинхронного теста
 }
 ```

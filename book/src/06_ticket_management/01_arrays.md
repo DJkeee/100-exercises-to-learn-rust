@@ -14,7 +14,7 @@ Arrays in Rust are fixed-size collections of elements of the same type.
 Here's how you can define an array:
 
 ```rust
-// Array type syntax: [ <type> ; <number of elements> ]
+// Синтаксис типа массива: [ <type> ; <number of elements> ]
 let numbers: [u32; 3] = [1, 2, 3];
 ```
 
@@ -50,7 +50,7 @@ If you try to access an element that's out of bounds, Rust will panic:
 
 ```rust
 let numbers: [u32; 3] = [1, 2, 3];
-let fourth = numbers[3]; // This will panic
+let fourth = numbers[3]; // Здесь возникнет паника
 ```
 
 This is enforced at runtime using **bounds checking**. It comes with a small performance overhead, but it's how
@@ -63,8 +63,8 @@ If you don't want to panic, you can use the `get` method, which returns an `Opti
 ```rust
 let numbers: [u32; 3] = [1, 2, 3];
 assert_eq!(numbers.get(0), Some(&1));
-// You get a `None` if you try to access an out-of-bounds index
-// rather than a panic.
+// При попытке доступа по индексу за границами массива возвращается `None`,
+// а не возникает паника.
 assert_eq!(numbers.get(3), None);
 ```
 

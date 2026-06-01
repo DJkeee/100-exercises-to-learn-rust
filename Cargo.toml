@@ -8,7 +8,10 @@ members = [
 ]
 resolver = "2"
 
-# This is needed to guarantee the expected behaviour on that specific exercise,
-# regardless of the "global" setting for `overflow-checks` on the `dev` profile.
+# Это необходимо, чтобы гарантировать ожидаемое поведение в этом конкретном упражнении.
+# независимо от «глобальной» настройки `overflow-checks` в профиле `dev`.
 [profile.dev.package.copy]
 overflow-checks = true
+
+[profile.dev]
+overflow-checks = false

@@ -82,10 +82,10 @@ impl Add<u32> for u32 {
     
     fn add(self, rhs: u32) -> u32 {
       //                      ^^^
-      // This could be written as `Self::Output` instead.
-      // The compiler doesn't care, as long as the type you
-      // specify here matches the type you assigned to `Output` 
-      // right above.
+      // Вместо этого можно написать `Self::Output`.
+      // Компилятору все равно, если указанный здесь тип
+      // совпадает с типом, который вы присвоили `Output`
+      // чуть выше.
       // [...]
     }
 }

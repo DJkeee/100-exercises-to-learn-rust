@@ -9,7 +9,7 @@ on:
       - main
   workflow_dispatch:
   schedule:
-    # First day of a month
+    # Первый день месяца
     - cron: '0 0 1 * *'
 
 jobs:
@@ -115,12 +115,12 @@ jobs:
             --require-https
             --no-progress
             book/book/html/
-      # Upload the HTML book as an artifact
+      # Загрузите HTML-книгу как артефакт
       - uses: actions/upload-artifact@v4
         with:
           name: book
-          # When you support multiple formats, the output directory changes
-          # to include the format in its path.
+          # Если вы поддерживаете несколько форматов, выходной каталог меняется.
+          # чтобы включить формат в свой путь.
           path: book/book/html
       - uses: actions/upload-artifact@v4
         with:
@@ -142,7 +142,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y jq
       - run: |
           ./helpers/json2redirects.sh book/link2alias.json > site/_redirects
-      # Verify nothing has changed, meaning that the redirect file is up-to-date
+      # Убедитесь, что ничего не изменилось, а это означает, что файл перенаправления обновлен.
       - run: |
           git diff --exit-code site/_redirects
 

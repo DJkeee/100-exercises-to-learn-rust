@@ -16,23 +16,23 @@ It ends when one of the following happens:
 1. the block (i.e. the code between `{}`) where the variable was declared ends
    ```rust
    fn main() {
-      // `x` is not yet in scope here
+      // Здесь `x` еще не находится в области видимости
       let y = "Hello".to_string();
-      let x = "World".to_string(); // <-- x's scope starts here...
+      let x = "World".to_string(); // <-- здесь начинается область видимости x...
       let h = "!".to_string(); //   |
-   } //  <-------------- ...and ends here
+   } //  <-------------- ...а здесь заканчивается
    ```
 2. ownership of the variable is transferred to someone else (e.g. a function or another variable)
    ```rust
    fn compute(t: String) {
-      // Do something [...]
+      // Выполняем какое-либо действие [...]
    }
 
    fn main() {
-       let s = "Hello".to_string(); // <-- s's scope starts here...
+       let s = "Hello".to_string(); // <-- здесь начинается область видимости s...
                    //                    | 
-       compute(s); // <------------------- ..and ends here
-                   //   because `s` is moved into `compute`
+       compute(s); // <------------------- ..а здесь заканчивается,
+                   //   поскольку `s` перемещается в `compute`
    }
    ```
 
@@ -64,7 +64,7 @@ fn main() {
    let y = "Hello".to_string();
    let x = "World".to_string();
    let h = "!".to_string();
-   // Variables are dropped in reverse order of declaration
+   // Переменные удаляются в порядке, обратном порядку объявления
    drop(h);
    drop(x);
    drop(y);
@@ -75,7 +75,7 @@ Let's look at the second example instead, where `s`'s ownership is transferred t
 
 ```rust
 fn compute(s: String) {
-   // Do something [...]
+   // Выполняем какое-либо действие [...]
 }
 
 fn main() {
@@ -88,10 +88,10 @@ It's equivalent to this:
 
 ```rust
 fn compute(t: String) {
-    // Do something [...]
-    drop(t); // <-- Assuming `t` wasn't dropped or moved 
-             //     before this point, the compiler will call 
-             //     `drop` here, when it goes out of scope
+    // Выполняем какое-либо действие [...]
+    drop(t); // <-- Если `t` не был удален или перемещен
+             //     до этой точки, компилятор вызовет
+             //     `drop` здесь, когда переменная выйдет из области видимости
 }
 
 fn main() {

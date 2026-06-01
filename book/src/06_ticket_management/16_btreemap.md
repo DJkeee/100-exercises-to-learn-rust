@@ -18,14 +18,14 @@ Just like `HashMap`, you won't find trait bounds on the definition of `BTreeMap`
 But you'll find trait bounds on its methods. Let's look at `insert`:
 
 ```rust
-// `K` and `V` stand for the key and value types, respectively,
-// just like in `HashMap`.
+// `K` и `V` обозначают типы ключа и значения соответственно,
+// как и в `HashMap`.
 impl<K, V> BTreeMap<K, V> {
     pub fn insert(&mut self, key: K, value: V) -> Option<V>
     where
         K: Ord,
     {
-        // implementation
+        // реализация
     }
 }
 ```
@@ -70,8 +70,8 @@ the same reason why `f32` doesn't implement `Eq`.
 Both `Ord` and `PartialOrd` can be derived for your types:
 
 ```rust
-// You need to add `Eq` and `PartialEq` too,
-// since `Ord` requires them.
+// Также нужно добавить `Eq` и `PartialEq`,
+// поскольку они требуются для `Ord`.
 #[derive(Eq, PartialEq, Ord, PartialOrd)]
 struct TicketId(u64);
 ```

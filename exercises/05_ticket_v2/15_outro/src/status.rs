@@ -1,5 +1,5 @@
-// TODO: Implement `TryFrom<String>` and `TryFrom<&str>` for the `Status` enum.
-//  The parsing should be case-insensitive.
+// TODO: Реализуйте `TryFrom<String>` и `TryFrom<&str>` для перечисления `Status`.
+//  Парсинг не должен учитывать регистр.
 
 pub enum Status {
     ToDo,

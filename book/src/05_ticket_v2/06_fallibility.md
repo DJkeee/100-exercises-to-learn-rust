@@ -74,9 +74,9 @@ Rust, with `Result`, forces you to **encode fallibility in the function's signat
 If a function can fail (and you want the caller to have a shot at handling the error), it must return a `Result`.
 
 ```rust
-// Just by looking at the signature, you know that this function 
-// can fail. You can also inspect `ParseIntError` to see what 
-// kind of failures to expect.
+// Уже по сигнатуре видно, что эта функция может завершиться
+// ошибкой. Также можно изучить `ParseIntError`, чтобы понять,
+// какие ошибки возможны.
 fn parse_int(s: &str) -> Result<i32, ParseIntError> {
     // ...
 }

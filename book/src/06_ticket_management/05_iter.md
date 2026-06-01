@@ -14,7 +14,7 @@ For example:
 
 ```rust
 let numbers: Vec<u32> = vec![1, 2];
-// `n` has type `&u32` here
+// Здесь `n` имеет тип `&u32`
 for n in numbers.iter() {
     // [...]
 }
@@ -26,9 +26,9 @@ The standard library does this, that's why the following code works:
 
 ```rust
 let numbers: Vec<u32> = vec![1, 2];
-// `n` has type `&u32` here
-// We didn't have to call `.iter()` explicitly
-// It was enough to use `&numbers` in the `for` loop
+// Здесь `n` имеет тип `&u32`
+// Нам не пришлось явно вызывать `.iter()`
+// Достаточно было использовать `&numbers` в цикле `for`
 for n in &numbers {
     // [...]
 }

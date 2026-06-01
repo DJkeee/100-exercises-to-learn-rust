@@ -1,7 +1,7 @@
 pub fn example() {
-    // Trying to get the size of a str (or any other DST)
-    // via `std::mem::size_of` will result in a compile-time error.
+    // Попытка получить размер str (или любого другого DST)
+    // через `std::mem::size_of` приведет к ошибке компиляции.
     //
-    // TODO: Comment out the following line and move on to the next exercise.
+    // TODO: Закомментируйте следующую строку и переходите к следующему упражнению.
     std::mem::size_of::<str>();
 }

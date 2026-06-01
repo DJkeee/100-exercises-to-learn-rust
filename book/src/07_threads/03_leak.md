@@ -9,10 +9,10 @@ intentionally.
 This can be done, for example, using the `Box::leak` method from Rust's standard library:
 
 ```rust
-// Allocate a `u32` on the heap, by wrapping it in a `Box`.
+// Выделяем `u32` в куче, оборачивая его в `Box`.
 let x = Box::new(41u32);
-// Tell Rust that you'll never free that heap allocation
-// using `Box::leak`. You can thus get back a 'static reference.
+// С помощью `Box::leak` сообщаем Rust, что никогда не освободим
+// выделенную в куче память. Благодаря этому можно получить ссылку 'static.
 let static_ref: &'static mut u32 = Box::leak(x);
 ```
 
@@ -22,8 +22,8 @@ Leaking data is dangerous: if you keep leaking memory, you'll eventually
 run out and crash with an out-of-memory error.
 
 ```rust
-// If you leave this running for a while, 
-// it'll eventually use all the available memory.
+// Если оставить этот код работающим на некоторое время,
+// в конце концов он использует всю доступную память.
 fn oom_trigger() {
     loop {
         let v: Vec<usize> = Vec::with_capacity(1024);

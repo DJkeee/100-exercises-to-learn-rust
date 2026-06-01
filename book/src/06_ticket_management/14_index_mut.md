@@ -8,10 +8,10 @@ retrieved.
 If you want to allow mutability, you need to implement the `IndexMut` trait.
 
 ```rust
-// Slightly simplified
+// Слегка упрощено
 pub trait IndexMut<Idx>: Index<Idx>
 {
-    // Required method
+    // Обязательный метод
     fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
 }
 ```

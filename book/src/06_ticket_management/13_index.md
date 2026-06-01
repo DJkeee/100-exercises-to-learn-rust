@@ -17,12 +17,12 @@ You guessed right: we need to implement a trait, `Index`!
 The `Index` trait is defined in Rust's standard library:
 
 ```rust
-// Slightly simplified
+// Слегка упрощено
 pub trait Index<Idx>
 {
     type Output;
 
-    // Required method
+    // Обязательный метод
     fn index(&self, index: Idx) -> &Self::Output;
 }
 ```

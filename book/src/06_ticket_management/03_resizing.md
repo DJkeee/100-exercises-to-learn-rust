@@ -7,8 +7,8 @@ What happens if you try to insert an element into a `Vec` that's already at maxi
 let mut numbers = Vec::with_capacity(3);
 numbers.push(1);
 numbers.push(2);
-numbers.push(3); // Max capacity reached
-numbers.push(4); // What happens here?
+numbers.push(3); // Достигнута максимальная емкость
+numbers.push(4); // Что произойдет здесь?
 ```
 
 The `Vec` will **resize** itself.\

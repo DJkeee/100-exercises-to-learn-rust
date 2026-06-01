@@ -39,19 +39,19 @@ the guard is dropped.
 ```rust
 use std::sync::Mutex;
 
-// An integer protected by a mutex lock
+// Целое число, защищенное mutex
 let lock = Mutex::new(0);
 
-// Acquire a lock on the mutex
+// Захватываем mutex
 let mut guard = lock.lock().unwrap();
 
-// Modify the data through the guard,
-// leveraging its `Deref` implementation
+// Изменяем данные через guard,
+// используя его реализацию `Deref`
 *guard += 1;
 
-// The lock is released when `data` goes out of scope
-// This can be done explicitly by dropping the guard
-// or happen implicitly when the guard goes out of scope
+// Блокировка снимается, когда `data` выходит из области видимости
+// Это можно сделать явно, удалив guard,
+// или неявно, когда guard выходит из области видимости
 drop(guard)
 ```
 
@@ -67,7 +67,7 @@ It would be better to use **fine-grained locking**, where each ticket is protect
 This way, clients can keep working with tickets in parallel, as long as they aren't trying to access the same ticket.
 
 ```rust
-// The new structure, with a lock for each ticket
+// Новая структура с блокировкой для каждой заявки
 struct TicketStore {
     tickets: BTreeMap<TicketId, Mutex<Ticket>>,
 }
@@ -102,8 +102,8 @@ fn main() {
         receiver.recv().unwrap();
     });
 
-    // Try to send the guard over the channel
-    // to another thread
+    // Пытаемся отправить guard через канал
+    // в другой поток
     sender.send(guard);
 }
 ```
@@ -170,9 +170,9 @@ To lock a `Mutex`, we don't need an owned value. A shared reference is enough, s
 
 ```rust
 impl<T> Mutex<T> {
-    // `&self`, not `self`!
+    // `&self`, а не `self`!
     pub fn lock(&self) -> LockResult<MutexGuard<'_, T>> {
-        // Implementation details
+        // Детали реализации
     }
 }
 ```
@@ -194,8 +194,8 @@ use std::sync::Arc;
 let data: Arc<u32> = Arc::new(0);
 let data_clone = Arc::clone(&data);
 
-// `Arc<T>` implements `Deref<T>`, so can convert 
-// a `&Arc<T>` to a `&T` using deref coercion
+// `Arc<T>` реализует `Deref<T>`, поэтому можно преобразовать
+// `&Arc<T>` в `&T` с помощью deref coercion
 let data_ref: &u32 = &data;
 ```
 

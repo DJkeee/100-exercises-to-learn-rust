@@ -1,11 +1,11 @@
-// This is a `main.rs` file, therefore `cargo` interprets this as the root of a binary target.
+// Это файл `main.rs`, поэтому `cargo` интерпретирует его как корень бинарной цели.
 
-// TODO: fix this broken import. Create a new library target in the `src` directory.
-//   The library target should expose a public function named `hello_world` that takes no arguments
-//   and returns nothing.
+// TODO: Исправьте неработающий импорт. Создайте новую библиотечную цель в каталоге `src`.
+//   Библиотечная цель должна предоставлять публичную функцию `hello_world`, которая не принимает
+//   аргументов и ничего не возвращает.
 use packages::hello_world;
 
-// This is the entrypoint of the binary.
+// Это точка входа бинарного файла.
 fn main() {
     hello_world();
 }

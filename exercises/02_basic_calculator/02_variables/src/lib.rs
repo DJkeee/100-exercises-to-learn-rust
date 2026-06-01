@@ -1,15 +1,16 @@
-// 👇 The lines below, starting with `///`, are called **documentation comments**.
-//    They attach documentation to the item that follows them. In this case, the `speed` function.
-//    If you run `cargo doc --open` from this exercise's directory, Rust will generate
-//    HTML documentation from these comments and open it in your browser.
+// 👇 Строки ниже, начинающиеся с `///`, называются **комментариями к документации**.
+//    Они прикрепляют документацию к следующему за ними элементу. В данном случае это функция `speed`.
+//    Если вы запустите `cargo doc --open` из каталога этого упражнения, Rust сгенерирует
+//    HTML-документацию из этих комментариев и откройте ее в браузере.
 
-/// Given the start and end points of a journey, and the time it took to complete it,
-/// calculate the average speed.
+/// Учитывая начальную и конечную точки путешествия, а также время, необходимое для его завершения,
+/// вычислить среднюю скорость.
 pub fn speed(start: u32, end: u32, time_elapsed: u32) -> u32 {
-    // TODO: define a variable named `distance` with the right value to get tests to pass
-    //  Do you need to annotate the type of `distance`? Why or why not?
+    // TODO: определить переменную с именем `distance` с правильным значением, чтобы тесты проходили успешно.
+    //  Вам нужно аннотировать тип `distance`? Почему или почему нет?
+    let distance = end - start;
 
-    // Don't change the line below
+    // Не меняйте строку ниже
     distance / time_elapsed
 }
 

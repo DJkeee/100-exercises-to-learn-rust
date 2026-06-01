@@ -1,14 +1,14 @@
 use crate::{TicketDescription, TicketTitle};
 use common::{valid_description, valid_title};
 
-/// A function to generate a valid ticket title,
-/// for test purposes.
+/// Функция для генерации допустимого заголовка заявки
+/// в целях тестирования.
 pub fn ticket_title() -> TicketTitle {
     valid_title().try_into().unwrap()
 }
 
-/// A function to generate a valid ticket description,
-/// for test purposes.
+/// Функция для генерации допустимого описания заявки
+/// в целях тестирования.
 pub fn ticket_description() -> TicketDescription {
     valid_description().try_into().unwrap()
 }

@@ -21,9 +21,9 @@ impl AliasGenerator {
         AliasGenerator { cursors: [0, 0, 0] }
     }
 
-    /// Generate a 4 alphanumeric long alias, starting from "aaaa" and incrementing by one each time
-    /// until "9999", using only lowercase letters and numbers.
-    /// We skip ambiguous characters like "0", "o", "1", "l".
+    /// Генерирует буквенно-цифровой alias длиной 4 символа, начиная с "aaaa" и увеличивая его каждый раз
+    /// до "9999", используя только строчные буквы и цифры.
+    /// Пропускает неоднозначные символы, такие как "0", "o", "1", "l".
     fn next(&mut self) -> String {
         let mut alias = String::with_capacity(4);
         for cursor in &mut self.cursors {
@@ -42,7 +42,7 @@ impl AliasGenerator {
         alias
     }
 
-    /// Generate a unique alias that is not already used by the `link2alias` map.
+    /// Генерирует уникальный alias, который еще не используется в map `link2alias`.
     fn next_until_unique(&mut self, link2alias: &BiHashMap<String, String>) -> String {
         let mut alias = self.next();
         while link2alias.contains_right(&alias) {
@@ -96,7 +96,7 @@ impl Preprocessor for LinkShortener {
             .get("preprocessor.link-shortener.verify")
             .context("Failed to get `verify`")?
             .context("`verify` is not set")?;
-        // Env var overrides config
+        // Переменная окружения переопределяет конфигурацию
         let verify = std::env::var("LINK_SHORTENER_VERIFY")
             .map(|v| v == "true")
             .unwrap_or(verify);

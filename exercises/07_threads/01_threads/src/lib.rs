@@ -1,17 +1,17 @@
-// TODO: implement a multi-threaded version of the `sum` function
-//  using `spawn` and `join`.
-//  Given a vector of integers, split the vector into two halves and
-//  sum each half in a separate thread.
+// TODO: Реализуйте многопоточную версию функции `sum`
+//  с помощью `spawn` и `join`.
+//  Разделите заданный вектор целых чисел на две половины и
+//  просуммируйте каждую половину в отдельном потоке.
 
-// Caveat: We can't test *how* the function is implemented,
-// we can only verify that it produces the correct result.
-// You _could_ pass this test by just returning `v.iter().sum()`,
-// but that would defeat the purpose of the exercise.
+// Важное замечание: мы не можем проверить, *как* реализована функция,
+// а можем только убедиться, что она выдает правильный результат.
+// Тест _можно_ пройти, просто вернув `v.iter().sum()`,
+// но это противоречит цели упражнения.
 //
-// Hint: you won't be able to get the spawned threads to _borrow_
-// slices of the vector directly. You'll need to allocate new
-// vectors for each half of the original vector. We'll see why
-// this is necessary in the next exercise.
+// Подсказка: созданные потоки не смогут напрямую _заимствовать_
+// срезы вектора. Потребуется выделить новые векторы
+// для каждой половины исходного вектора. В следующем упражнении
+// мы увидим, почему это необходимо.
 use std::thread;
 
 pub fn sum(v: Vec<i32>) -> i32 {

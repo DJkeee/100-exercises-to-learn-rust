@@ -1,6 +1,6 @@
-/// Return `12` if `n` is even,
-/// `13` if `n` is divisible by `3`,
-/// `17` otherwise.
+/// Верните `12`, если `n` четное,
+/// `13`, если `n` делится на `3`,
+/// `17` иначе.
 fn magic_number(n: u32) -> u32 {
     match n {
         n if (n % 2 ==0)=> 12,

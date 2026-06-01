@@ -61,8 +61,8 @@ You can also use the `get` method, which returns an `Option<&T>`:
 ```rust
 let numbers = vec![1, 2, 3];
 assert_eq!(numbers.get(0), Some(&1));
-// You get a `None` if you try to access an out-of-bounds index
-// rather than a panic.
+// При попытке доступа по индексу за границами возвращается `None`,
+// а не возникает паника.
 assert_eq!(numbers.get(3), None);
 ```
 

@@ -14,8 +14,8 @@ impl Status {
     fn is_done(&self) -> bool {
         match self {
             Status::Done => true,
-            // The `|` operator lets you match multiple patterns.
-            // It reads as "either `Status::ToDo` or `Status::InProgress`".
+            // Оператор `|` позволяет сопоставлять несколько паттернов.
+            // Читается как «либо `Status::ToDo`, либо `Status::InProgress`».
             Status::InProgress | Status::ToDo => false
         }
     }

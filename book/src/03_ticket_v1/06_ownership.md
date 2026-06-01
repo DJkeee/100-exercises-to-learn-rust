@@ -24,9 +24,9 @@ Consider this snippet:
 
 ```rust
 if ticket.status() == "To-Do" {
-    // We haven't covered the `println!` macro yet,
-    // but for now it's enough to know that it prints 
-    // a (templated) message to the console
+    // Мы еще не рассматривали макрос `println!`,
+    // но пока достаточно знать, что он выводит
+    // (шаблонное) сообщение в консоль
     println!("Your next task is: {}", ticket.title());
 }
 ```
@@ -97,8 +97,8 @@ Ownership can be transferred.
 If you own a value, for example, you can transfer ownership to another variable:
 
 ```rust
-let a = "hello, world".to_string(); // <- `a` is the owner of the String
-let b = a;  // <- `b` is now the owner of the String
+let a = "hello, world".to_string(); // <- `a` владеет String
+let b = a;  // <- теперь `b` владеет String
 ```
 
 Rust's ownership system is baked into the type system: each function has to declare in its signature
@@ -202,23 +202,23 @@ fn main() {
         version: 1,
         active: true,
     };
-    // `b` is a reference to the `version` field of `config`.
-    // The type of `b` is `&u32`, since it contains a reference to 
-    // a `u32` value.
-    // We create a reference by borrowing `config.version`, using 
-    // the `&` operator.
-    // Same symbol (`&`), different meaning depending on the context!
+    // `b` — ссылка на поле `version` структуры `config`.
+    // Тип `b` — `&u32`, поскольку переменная содержит ссылку
+    // на значение `u32`.
+    // Мы создаем ссылку, заимствуя `config.version` с помощью
+    // оператора `&`.
+    // Один и тот же символ (`&`) имеет разный смысл в зависимости от контекста!
     let b: &u32 = &config.version;
-    //     ^ The type annotation is not necessary, 
-    //       it's just there to clarify what's going on
+    //     ^ Аннотация типа не обязательна,
+    //       она нужна только для пояснения происходящего
 }
 ```
 
 The same concept applies to function arguments and return types:
 
 ```rust
-// `f` takes a mutable reference to a `u32` as an argument, 
-// bound to the name `number`
+// `f` принимает изменяемую ссылку на `u32` в качестве аргумента,
+// связанного с именем `number`
 fn f(number: &mut u32) -> &u32 {
     // [...]
 }

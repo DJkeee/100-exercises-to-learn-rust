@@ -25,7 +25,7 @@ fn is_even_i64(n: i64) -> bool {
     n % 2 == 0
 }
 
-// Etc.
+// И так далее.
 ```
 
 Alternatively, we could write a single extension trait and then different implementations for each integer type:
@@ -47,7 +47,7 @@ impl IsEven for i64 {
     }
 }
 
-// Etc.
+// И так далее.
 ```
 
 The duplication remains.
@@ -133,7 +133,7 @@ fn print_if_even<T>(n: T)
 where
     T: IsEven + Debug
 //  ^^^^^^^^^^^^^^^^^
-//  This is a `where` clause
+//  Это предложение `where`
 {
     // [...]
 }
@@ -144,7 +144,7 @@ If the trait bounds are simple, you can **inline** them directly next to the typ
 ```rust
 fn print_if_even<T: IsEven + Debug>(n: T) {
     //           ^^^^^^^^^^^^^^^^^
-    //           This is an inline trait bound
+    //           Это встроенное ограничение трейта
     // [...]
 }
 ```

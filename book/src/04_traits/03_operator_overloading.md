@@ -13,16 +13,16 @@ For example, the [`PartialEq` trait](https://doc.rust-lang.org/std/cmp/trait.Par
 the `==` and `!=` operators:
 
 ```rust
-// The `PartialEq` trait definition, from Rust's standard library
-// (It is *slightly* simplified, for now)
+// Определение трейта `PartialEq` из стандартной библиотеки Rust
+// (пока оно *слегка* упрощено)
 pub trait PartialEq {
-    // Required method
+    // Обязательный метод
     //
-    // `Self` is a Rust keyword that stands for 
-    // "the type that is implementing the trait"
+    // `Self` — ключевое слово Rust, означающее
+    // «тип, реализующий трейт»
     fn eq(&self, other: &Self) -> bool;
 
-    // Provided method
+    // Предоставляемый метод
     fn ne(&self, other: &Self) -> bool { ... }
 }
 ```
@@ -76,7 +76,7 @@ impl PartialEq for WrappingU8 {
         self.inner == other.inner
     }
     
-    // No `ne` implementation here
+    // Здесь нет реализации `ne`
 }
 ```
 
@@ -88,11 +88,11 @@ struct MyType;
 
 impl PartialEq for MyType {
     fn eq(&self, other: &MyType) -> bool {
-        // Custom implementation
+        // Пользовательская реализация
     }
 
     fn ne(&self, other: &MyType) -> bool {
-        // Custom implementation
+        // Пользовательская реализация
     }
 }
 ```

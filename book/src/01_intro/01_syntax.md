@@ -19,8 +19,8 @@ One step at a time!
 You can use `//` for single-line comments:
 
 ```rust
-// This is a single-line comment
-// Followed by another single-line comment
+// Это однострочный комментарий
+// За ним следует еще один однострочный комментарий
 ```
 
 ## Functions
@@ -34,7 +34,7 @@ In previous exercise, you saw the `greeting` function:
 ```rust
 // `fn` <function_name> ( <input params> ) -> <return_type> { <body> }
 fn greeting() -> &'static str {
-    // TODO: fix me 👇
+    // TODO: исправьте меня 👇
     "I'm ready to __!"
 }
 ```
@@ -56,7 +56,7 @@ fn test_welcome() {
 The above is equivalent to:
 
 ```rust
-// Spelling out the unit return type explicitly
+// Явно указываем единичный возвращаемый тип
 //                   👇
 fn test_welcome() -> () {
     assert_eq!(greeting(), "I'm ready to learn Rust!");
@@ -69,8 +69,8 @@ The last expression in a function is implicitly returned:
 
 ```rust
 fn greeting() -> &'static str {
-    // This is the last expression in the function
-    // Therefore its value is returned by `greeting`
+    // Это последнее выражение в функции
+    // Поэтому его значение возвращается из `greeting`
     "I'm ready to learn Rust!"
 }
 ```
@@ -79,7 +79,7 @@ You can also use the `return` keyword to return a value early:
 
 ```rust
 fn greeting() -> &'static str {
-    // Notice the semicolon at the end of the line!
+    // Обратите внимание на точку с запятой в конце строки!
     return "I'm ready to learn Rust!";
 }
 ```
@@ -94,7 +94,7 @@ Each parameter is declared with its name, followed by a colon `:`, followed by i
 For example, the `greet` function below takes a `name` parameter of type `&str` (a "string slice"):
 
 ```rust
-// An input parameter
+// Входной параметр
 //        👇
 fn greet(name: &str) -> String {
     format!("Hello, {}!", name)

@@ -8,7 +8,7 @@ Let's start by filling in the most "obvious" parts of the implementation:
 ```rust
 impl IntoIterator for &TicketStore {
     type Item = &Ticket;
-    type IntoIter = // What goes here?
+    type IntoIter = // Что должно быть здесь?
 
     fn into_iter(self) -> Self::IntoIter {
         self.tickets.iter()
@@ -42,7 +42,7 @@ Let's look at the signature of `Vec::iter()`:
 
 ```rust
 impl <T> Vec<T> {
-    // Slightly simplified
+    // Слегка упрощено
     pub fn iter<'a>(&'a self) -> Iter<'a, T> {
         // [...]
     }

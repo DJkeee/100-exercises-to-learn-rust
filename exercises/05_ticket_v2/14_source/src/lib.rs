@@ -1,17 +1,17 @@
 use crate::status::Status;
 
-// We've seen how to declare modules in one of the earliest exercises, but
-// we haven't seen how to extract them into separate files.
-// Let's fix that now!
+// Мы видели, как объявлять модули, в одном из первых упражнений, но
+// еще не рассматривали, как выносить их в отдельные файлы.
+// Исправим это сейчас!
 //
-// In the simplest case, when the extracted module is a single file, it is enough to
-// create a new file with the same name as the module and move the module content there.
-// The module file should be placed in the same directory as the file that declares the module.
-// In this case, `src/lib.rs`, thus `status.rs` should be placed in the `src` directory.
+// В простейшем случае, когда вынесенный модуль представляет собой один файл, достаточно
+// создать новый файл с именем модуля и переместить туда содержимое модуля.
+// Файл модуля должен находиться в том же каталоге, что и файл, объявляющий модуль.
+// В данном случае это `src/lib.rs`, поэтому `status.rs` нужно поместить в каталог `src`.
 mod status;
 
-// TODO: Add a new error variant to `TicketNewError` for when the status string is invalid.
-//   When calling `source` on an error of that variant, it should return a `ParseStatusError` rather than `None`.
+// TODO: Добавьте в `TicketNewError` новый вариант ошибки для недопустимой строки статуса.
+//   При вызове `source` для ошибки этого варианта должен возвращаться `ParseStatusError`, а не `None`.
 
 #[derive(Debug, thiserror::Error)]
 pub enum TicketNewError {
@@ -47,7 +47,7 @@ impl Ticket {
             return Err(TicketNewError::DescriptionTooLong);
         }
 
-        // TODO: Parse the status string into a `Status` enum.
+        // TODO: Преобразуйте строку статуса в перечисление `Status`.
 
         Ok(Ticket {
             title,

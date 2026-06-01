@@ -13,14 +13,14 @@ but only one writer at a time.
 ```rust
 use std::sync::RwLock;
 
-// An integer protected by a read-write lock
+// Целое число, защищенное read-write lock
 let lock = RwLock::new(0);
 
-// Acquire a read lock on the RwLock
+// Захватываем блокировку чтения RwLock
 let guard1 = lock.read().unwrap();
 
-// Acquire a **second** read lock
-// while the first one is still active
+// Захватываем **вторую** блокировку чтения,
+// пока первая еще активна
 let guard2 = lock.read().unwrap();
 ```
 

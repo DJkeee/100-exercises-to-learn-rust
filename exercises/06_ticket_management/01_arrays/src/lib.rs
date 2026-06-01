@@ -1,4 +1,4 @@
-// TODO: Flesh out the `WeekTemperatures` struct and its method implementations to pass the tests.
+// TODO: Дополните структуру `WeekTemperatures` и реализации ее методов, чтобы тесты проходили успешно.
 
 pub struct WeekTemperatures {
     // TODO

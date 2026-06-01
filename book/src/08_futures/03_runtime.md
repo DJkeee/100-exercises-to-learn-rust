@@ -63,8 +63,8 @@ after the spawning context is destroyed.
 ```rust
 fn spawner() {
     let v = vec![1, 2, 3];
-    // This won't work, since `&v` doesn't
-    // live long enough.
+    // Это не сработает, поскольку `&v`
+    // живет недостаточно долго.
     tokio::spawn(async { 
         for x in &v {
             println!("{x}")
@@ -79,8 +79,8 @@ thus requiring a `Send` bound since we're crossing thread boundaries.
 
 ```rust
 fn spawner(input: Rc<u64>) {
-    // This won't work either, because
-    // `Rc` isn't `Send`.
+    // Это тоже не сработает, поскольку
+    // `Rc` не реализует `Send`.
     tokio::spawn(async move {
         println!("{}", input);
     })

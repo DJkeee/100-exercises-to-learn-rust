@@ -20,7 +20,7 @@ They are usually **chained** together to create complex transformations in a con
 
 ```rust
 let numbers = vec![1, 2, 3, 4, 5];
-// The sum of the squares of the even numbers
+// Сумма квадратов четных чисел
 let outcome: u32 = numbers.iter()
     .filter(|&n| n % 2 == 0)
     .map(|&n| n * n)
@@ -38,9 +38,9 @@ They are defined using the `|args| body` syntax, where `args` are the arguments 
 For example:
 
 ```rust
-// An anonymous function that adds 1 to its argument
+// Анонимная функция, прибавляющая 1 к аргументу
 let add_one = |x| x + 1;
-// Could be written with a block too:
+// Также можно записать с помощью блока:
 let add_one = |x| { x + 1 };
 ```
 
@@ -62,9 +62,9 @@ let sum = add_x(1);
 If necessary, you can specify the types of the arguments and/or the return type:
 
 ```rust
-// Just the input type
+// Только входной тип
 let add_one = |x: i32| x + 1;
-// Or both input and output types, using the `fn` syntax
+// Или входной и выходной типы с использованием синтаксиса `fn`
 let add_one: fn(i32) -> i32 = |x| x + 1;
 ```
 
@@ -95,8 +95,8 @@ Alternatively, you can use the **turbofish syntax** to specify the type:
 let squares_of_evens = numbers.iter()
     .filter(|&n| n % 2 == 0)
     .map(|&n| n * n)
-    // Turbofish syntax: `<method_name>::<type>()`
-    // It's called turbofish because `::<>` looks like a fish
+    // Синтаксис turbofish: `<method_name>::<type>()`
+    // Он называется turbofish, потому что `::<>` похож на рыбу
     .collect::<Vec<u32>>();
 ```
 

@@ -45,7 +45,7 @@ struct Configuration {
 You can create an instance of a struct by specifying the values for each field:
 
 ```rust
-// Syntax: <StructName> { <field_name>: <value>, ... }
+// Синтаксис: <StructName> { <field_name>: <value>, ... }
 let ticket = Ticket {
     title: "Build a ticket system".into(),
     description: "A Kanban board".into(),
@@ -58,7 +58,7 @@ let ticket = Ticket {
 You can access the fields of a struct using the `.` operator:
 
 ```rust
-// Field access
+// Доступ к полю
 let x = ticket.description;
 ```
 
@@ -74,10 +74,10 @@ impl Ticket {
     }
 }
 
-// Syntax:
+// Синтаксис:
 // impl <StructName> {
 //    fn <method_name>(<parameters>) -> <return_type> {
-//        // Method body
+//        // Тело метода
 //    }
 // }
 ```
@@ -93,7 +93,7 @@ Methods are pretty similar to functions, with two key differences:
 If a method takes `self` as its first parameter, it can be called using the **method call syntax**:
 
 ```rust
-// Method call syntax: <instance>.<method_name>(<parameters>)
+// Синтаксис вызова метода: <instance>.<method_name>(<parameters>)
 let is_open = ticket.is_open();
 ```
 
@@ -111,7 +111,7 @@ struct Configuration {
 }
 
 impl Configuration {
-    // `default` is a static method on `Configuration`
+    // `default` — статический метод `Configuration`
     fn default() -> Configuration {
         Configuration { version: 0, active: false }
     }
@@ -121,7 +121,7 @@ impl Configuration {
 The only way to call a static method is by using the **function call syntax**:
 
 ```rust
-// Function call syntax: <StructName>::<method_name>(<parameters>)
+// Синтаксис вызова функции: <StructName>::<method_name>(<parameters>)
 let default_config = Configuration::default();
 ```
 
@@ -130,7 +130,7 @@ let default_config = Configuration::default();
 You can use the function call syntax even for methods that take `self` as their first parameter:
 
 ```rust
-// Function call syntax:
+// Синтаксис вызова функции:
 //   <StructName>::<method_name>(<instance>, <parameters>)
 let is_open = Ticket::is_open(ticket);
 ```

@@ -1,10 +1,10 @@
-// TODO: Define a new `SaturatingU16` type.
-//   It should hold a `u16` value.
-//   It should provide conversions from `u16`, `u8`, `&u16` and `&u8`.
-//   It should support addition with a right-hand side of type
-//   SaturatingU16, u16, &u16, and &SaturatingU16. Addition should saturate at the
-//   maximum value for `u16`.
-//   It should be possible to compare it with another `SaturatingU16` or a `u16`.
-//   It should be possible to print its debug representation.
+// TODO: Определите новый тип `SaturatingU16`.
+//   Он должен хранить значение `u16`.
+//   Он должен поддерживать преобразования из `u16`, `u8`, `&u16` и `&u8`.
+//   Он должен поддерживать сложение с правой частью типа
+//   SaturatingU16, u16, &u16 и &SaturatingU16. Сложение должно насыщаться на
+//   максимальном значении `u16`.
+//   Должна быть возможность сравнивать его с другим `SaturatingU16` или с `u16`.
+//   Должна быть возможность вывести его отладочное представление.
 //
-// Tests are located in the `tests` folder—pay attention to the visibility of your types and methods.
+// Тесты находятся в папке `tests` — обратите внимание на видимость типов и методов.

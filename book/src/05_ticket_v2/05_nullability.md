@@ -56,9 +56,9 @@ Tuples are another example of a primitive Rust type.
 They group together a fixed number of values with (potentially different) types:
 
 ```rust
-// Two values, same type
+// Два значения одного типа
 let first: (i32, i32) = (3, 4);
-// Three values, different types
+// Три значения разных типов
 let second: (i32, u32, u8) = (-42, 3, 8);
 ```
 

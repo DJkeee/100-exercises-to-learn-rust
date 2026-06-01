@@ -31,11 +31,11 @@ the `IsEven` trait and then implementing it for `i32` and `u32`. You are then
 free to call `is_even` on those types as long as `IsEven` is in scope.
 
 ```rust
-// Bring the trait in scope
+// Вводим трейт в область видимости
 use my_library::IsEven;
 
 fn main() {
-    // Invoke its method on a type that implements it
+    // Вызываем его метод для типа, который его реализует
     if 4.is_even() {
         // [...]
     }

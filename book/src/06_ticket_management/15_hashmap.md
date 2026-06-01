@@ -9,8 +9,8 @@ We can do better by using a different data structure for storing tickets: a `Has
 ```rust
 use std::collections::HashMap;
 
-// Type inference lets us omit an explicit type signature (which
-// would be `HashMap<String, String>` in this example).
+// Вывод типов позволяет опустить явную сигнатуру типа (в этом
+// примере это был бы `HashMap<String, String>`).
 let mut book_reviews = HashMap::new();
 
 book_reviews.insert(
@@ -31,7 +31,7 @@ There are no trait bounds on `HashMap`'s struct definition, but you'll find some
 on its methods. Let's look at `insert`, for example:
 
 ```rust
-// Slightly simplified
+// Слегка упрощено
 impl<K, V> HashMap<K, V>
 where
     K: Eq + Hash,
@@ -60,7 +60,7 @@ You can find the `Hash` trait in the `std::hash` module:
 
 ```rust
 pub trait Hash {
-    // Required method
+    // Обязательный метод
     fn hash<H>(&self, state: &mut H)
        where H: Hasher;
 }
@@ -92,7 +92,7 @@ The `Eq` trait extends `PartialEq` with the reflexivity property:
 
 ```rust
 pub trait Eq: PartialEq {
-    // No additional methods
+    // Дополнительных методов нет
 }
 ```
 

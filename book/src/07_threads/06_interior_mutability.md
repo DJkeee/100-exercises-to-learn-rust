@@ -79,16 +79,16 @@ The value wrapped in an `Rc` is immutable: you can only get shared references to
 use std::rc::Rc;
 
 let a: Rc<String> = Rc::new("My string".to_string());
-// Only one reference to the string data exists.
+// Существует только одна ссылка на строковые данные.
 assert_eq!(Rc::strong_count(&a), 1);
 
-// When we call `clone`, the string data is not copied!
-// Instead, the reference count for `Rc` is incremented.
+// При вызове `clone` строковые данные не копируются!
+// Вместо этого увеличивается счетчик ссылок `Rc`.
 let b = Rc::clone(&a);
 assert_eq!(Rc::strong_count(&a), 2);
 assert_eq!(Rc::strong_count(&b), 2);
-// ^ Both `a` and `b` point to the same string data
-//   and share the same reference counter.
+// ^ И `a`, и `b` указывают на одни и те же строковые данные
+//   и используют общий счетчик ссылок.
 ```
 
 `Rc` uses `UnsafeCell` internally to allow shared references to increment and decrement the reference count.
@@ -109,6 +109,6 @@ use std::cell::RefCell;
 
 let x = RefCell::new(42);
 
-let y = x.borrow(); // Immutable borrow
-let z = x.borrow_mut(); // Panics! There is an active immutable borrow.
+let y = x.borrow(); // Неизменяемое заимствование
+let z = x.borrow_mut(); // Паника! Существует активное неизменяемое заимствование.
 ```

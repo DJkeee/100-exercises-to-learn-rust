@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [lints.rust]
-# We silence dead code warnings for the time being in order to reduce
-# compiler noise.
-# We'll re-enable them again once we explain how visibility works in Rust.
+# На данный момент мы отключаем предупреждения о неработающем коде, чтобы уменьшить
+# шум компилятора.
+# Мы снова включим их, как только объясним, как работает видимость в Rust.
 dead_code = "allow"

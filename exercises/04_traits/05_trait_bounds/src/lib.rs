@@ -1,11 +1,11 @@
-// TODO: Add the necessary trait bounds to `min` so that it compiles successfully.
-//   Refer to the documentation of the `std::cmp` module for more information on the traits you might need.
+// TODO: Добавьте необходимые ограничения трейтов к `min`, чтобы функция успешно компилировалась.
+//   Дополнительную информацию о нужных трейтах можно найти в документации модуля `std::cmp`.
 //
-// Note: there are different trait bounds that'll make the compiler happy, but they come with
-// different _semantics_. We'll cover those differences later in the course when we talk about ordered
-// collections (e.g. BTreeMap).
+// Примечание: компилятор примет разные ограничения трейтов, но у них будет разная _семантика_.
+// Мы рассмотрим эти различия далее в курсе, когда будем обсуждать упорядоченные коллекции
+// (например, BTreeMap).
 
-/// Return the minimum of two values.
+/// Возвращает минимальное из двух значений.
 pub fn min<T>(left: T, right: T) -> T {
     if left <= right {
         left

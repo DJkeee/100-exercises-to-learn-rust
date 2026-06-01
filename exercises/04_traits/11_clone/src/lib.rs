@@ -1,5 +1,5 @@
-// TODO: add the necessary `Clone` implementations (and invocations)
-//  to get the code to compile.
+// TODO: Добавьте необходимые реализации `Clone` (и вызовы),
+//  чтобы код компилировался.
 
 pub fn summary(ticket: Ticket) -> (Ticket, Summary) {
     (ticket, ticket.summary())

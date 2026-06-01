@@ -1,6 +1,6 @@
-// TODO: Implement `TryFrom<String>` and `TryFrom<&str>` for the `TicketDescription` type,
-//   enforcing that the description is not empty and is not longer than 500 bytes.
-//   Implement the traits required to make the tests pass too.
+// TODO: Реализуйте `TryFrom<String>` и `TryFrom<&str>` для типа `TicketDescription`,
+//   проверяя, что описание не пусто и не длиннее 500 байт.
+//   Также реализуйте трейты, необходимые для прохождения тестов.
 
 pub struct TicketDescription(String);
 

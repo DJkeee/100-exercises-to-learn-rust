@@ -6,11 +6,11 @@ pub mod data;
 pub mod store;
 
 #[derive(Clone)]
-// TODO: flesh out the client implementation.
+// TODO: Дополните реализацию клиента.
 pub struct TicketStoreClient {}
 
 impl TicketStoreClient {
-    // Feel free to panic on all errors, for simplicity.
+    // Для простоты можете вызывать панику при любых ошибках.
     pub fn insert(&self, draft: TicketDraft) -> TicketId {
         todo!()
     }
@@ -26,7 +26,7 @@ pub fn launch() -> TicketStoreClient {
     todo!()
 }
 
-// No longer public! This becomes an internal detail of the library now.
+// Больше не является публичной! Теперь это внутренняя деталь библиотеки.
 enum Command {
     Insert {
         draft: TicketDraft,
@@ -57,8 +57,8 @@ fn server(receiver: Receiver<Command>) {
                 let _ = response_channel.send(ticket.cloned());
             }
             Err(_) => {
-                // There are no more senders, so we can safely break
-                // and shut down the server.
+                // Отправителей больше нет, поэтому можно безопасно выйти из цикла
+                // и остановить сервер.
                 break;
             }
         }

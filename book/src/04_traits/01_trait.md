@@ -75,7 +75,7 @@ but the syntax is a bit different:
 ```rust
 impl <TraitName> for <TypeName> {
     fn <method_name>(<parameters>) -> <return_type> {
-        // Method body
+        // Тело метода
     }
 }
 ```
