@@ -1,12 +1,11 @@
 # `Sized`
 
-There's more to `&str` than meets the eye, even after having
-investigated deref coercion.\
-From our previous [discussion on memory layouts](../03_ticket_v1/10_references_in_memory.md),
-it would have been reasonable to expect `&str` to be represented as a single `usize` on
-the stack, a pointer. That's not the case though. `&str` stores some **metadata** next
-to the pointer: the length of the slice it points to. Going back to the example from
-[a previous section](06_str_slice.md):
+Даже после изучения deref coercion type `&str` оказывается сложнее, чем кажется.\
+После нашего предыдущего [обсуждения memory layouts](../03_ticket_v1/10_references_in_memory.md)
+было бы логично ожидать, что `&str` представлен в stack одним `usize` —
+pointer. Однако это не так. Рядом с pointer type `&str` хранит **metadata**:
+длину slice, на который указывает. Вернёмся к примеру из
+[предыдущего раздела](06_str_slice.md):
 
 ```rust
 let mut s = String::with_capacity(5);
@@ -16,7 +15,7 @@ s.push_str("Hello");
 let slice: &str = &s[1..];
 ```
 
-In memory, we get:
+В memory получаем:
 
 ```text
                     s                              slice
@@ -35,20 +34,20 @@ Heap:    | H | e | l | l | o |                  |
                +--------------------------------+
 ```
 
-What's going on?
+Что происходит?
 
 ## Dynamically sized types
 
-`str` is a **dynamically sized type** (DST).\
-A DST is a type whose size is not known at compile time. Whenever you have a
-reference to a DST, like `&str`, it has to include additional
-information about the data it points to. It is a **fat pointer**.\
-In the case of `&str`, it stores the length of the slice it points to.
-We'll see more examples of DSTs in the rest of the course.
+`str` — это **dynamically sized type** (DST).\
+DST — type, размер которого неизвестен во время compilation. Любая
+reference на DST, например `&str`, должна содержать дополнительную
+информацию о данных, на которые указывает. Это **fat pointer**.\
+В случае `&str` хранится длина slice, на который он указывает.
+В следующих частях курса встретятся и другие примеры DST.
 
-## The `Sized` trait
+## Trait `Sized`
 
-Rust's `std` library defines a trait called `Sized`.
+Library `std` в Rust определяет trait `Sized`.
 
 ```rust
 pub trait Sized {
@@ -56,25 +55,25 @@ pub trait Sized {
 }
 ```
 
-A type is `Sized` if its size is known at compile time. In other words, it's not a DST.
+Type является `Sized`, если его размер известен во время compilation. Иными словами, это не DST.
 
 ### Marker traits
 
-`Sized` is your first example of a **marker trait**.\
-A marker trait is a trait that doesn't require any methods to be implemented. It doesn't define any behavior.
-It only serves to **mark** a type as having certain properties.
-The mark is then leveraged by the compiler to enable certain behaviors or optimizations.
+`Sized` — первый пример **marker trait**.\
+Marker trait не требует implementation каких-либо methods и не определяет никакого behavior.
+Он лишь **помечает** type как обладающий определёнными свойствами.
+Затем compiler использует эту отметку, чтобы включить определённое behavior или optimizations.
 
 ### Auto traits
 
-In particular, `Sized` is also an **auto trait**.\
-You don't need to implement it explicitly; the compiler implements it automatically for you
-based on the type's definition.
+Кроме того, `Sized` является **auto trait**.\
+Его не нужно реализовывать явно: compiler делает это автоматически
+на основе определения type.
 
-### Examples
+### Примеры
 
-All the types we've seen so far are `Sized`: `u32`, `String`, `bool`, etc.
+Все types, встречавшиеся до сих пор, являются `Sized`: `u32`, `String`, `bool` и т. д.
 
-`str`, as we just saw, is not `Sized`.\
-`&str` is `Sized` though! We know its size at compile time: two `usize`s, one for the pointer
-and one for the length.
+Как мы только что выяснили, `str` не является `Sized`.\
+А вот `&str` является `Sized`! Его размер известен во время compilation: два `usize`, один для pointer,
+второй для длины.

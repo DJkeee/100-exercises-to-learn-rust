@@ -1,49 +1,49 @@
-# Types, part 1
+# Types, часть 1
 
-In the ["Syntax" section](../01_intro/01_syntax.md) `compute`'s input parameters were of type `u32`.\
-Let's unpack what that _means_.
+В разделе ["Syntax"](../01_intro/01_syntax.md) input parameters `compute` имели type `u32`.\
+Разберёмся, что это _означает_.
 
 ## Primitive types
 
-`u32` is one of Rust's **primitive types**. Primitive types are the most basic building blocks of a language.
-They're built into the language itself—i.e. they are not defined in terms of other types.
+`u32` является одним из **primitive types** Rust. Primitive types — это простейшие строительные блоки языка.
+Они встроены в сам язык, то есть не определяются через другие types.
 
-You can combine these primitive types to create more complex types. We'll see how soon enough.
+Primitive types можно комбинировать, создавая более сложные types. Скоро мы увидим, как это делается.
 
 ## Integers
 
-`u32`, in particular, is an **unsigned 32-bit integer**.
+В частности, `u32` — это **unsigned 32-bit integer**.
 
-An integer is a number that can be written without a fractional component. E.g. `1` is an integer, while `1.2` is not.
+Integer — это число, которое можно записать без дробной части. Например, `1` является integer, а `1.2` — нет.
 
-### Signed vs. unsigned
+### Signed и unsigned
 
-An integer can be **signed** or **unsigned**.\
-An unsigned integer can only represent non-negative numbers (i.e. `0` or greater).
-A signed integer can represent both positive and negative numbers (e.g. `-1`, `12`, etc.).
+Integer может быть **signed** или **unsigned**.\
+Unsigned integer может представлять только неотрицательные числа (то есть `0` или больше).
+Signed integer может представлять как положительные, так и отрицательные числа (например, `-1`, `12` и т. д.).
 
-The `u` in `u32` stands for **unsigned**.\
-The equivalent type for signed integer is `i32`, where the `i` stands for integer (i.e. any integer, positive or
-negative).
+Буква `u` в `u32` означает **unsigned**.\
+Соответствующий type для signed integer — `i32`, где `i` означает integer (то есть любое целое число: положительное или
+отрицательное).
 
 ### Bit width
 
-The `32` in `u32` refers to the **number of bits[^bit]** used to represent the number in memory.\
-The more bits, the larger the range of numbers that can be represented.
+Число `32` в `u32` обозначает **количество bits[^bit]**, используемых для представления числа в memory.\
+Чем больше bits, тем шире диапазон представимых чисел.
 
-Rust supports multiple bit widths for integers: `8`, `16`, `32`, `64`, `128`.
+Rust поддерживает несколько вариантов bit width для integers: `8`, `16`, `32`, `64`, `128`.
 
-With 32 bits, `u32` can represent numbers from `0` to `2^32 - 1` (a.k.a. [`u32::MAX`](https://doc.rust-lang.org/std/primitive.u32.html#associatedconstant.MAX)).\
-With the same number of bits, a signed integer (`i32`) can represent numbers from `-2^31` to `2^31 - 1`
-(i.e. from [`i32::MIN`](https://doc.rust-lang.org/std/primitive.i32.html#associatedconstant.MIN)
-to [`i32::MAX`](https://doc.rust-lang.org/std/primitive.i32.html#associatedconstant.MAX)).\
-The maximum value for `i32` is smaller than the maximum value for `u32` because one bit is used to represent
-the sign of the number. Check out the [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement)
-representation for more details on how signed integers are represented in memory.
+При 32 bits `u32` может представлять числа от `0` до `2^32 - 1` (то есть до [`u32::MAX`](https://doc.rust-lang.org/std/primitive.u32.html#associatedconstant.MAX)).\
+При том же количестве bits signed integer (`i32`) может представлять числа от `-2^31` до `2^31 - 1`
+(то есть от [`i32::MIN`](https://doc.rust-lang.org/std/primitive.i32.html#associatedconstant.MIN)
+до [`i32::MAX`](https://doc.rust-lang.org/std/primitive.i32.html#associatedconstant.MAX)).\
+Максимальное значение `i32` меньше максимального значения `u32`, поскольку один bit используется для представления
+знака числа. Подробнее о представлении signed integers в memory можно прочитать о
+[two's complement](https://en.wikipedia.org/wiki/Two%27s_complement).
 
-### Summary
+### Итоги
 
-Combining the two variables (signed/unsigned and bit width), we get the following integer types:
+Комбинируя два параметра (signed/unsigned и bit width), получаем следующие integer types:
 
 | Bit width | Signed | Unsigned |
 | --------- | ------ | -------- |
@@ -55,57 +55,56 @@ Combining the two variables (signed/unsigned and bit width), we get the followin
 
 ## Literals
 
-A **literal** is a notation for representing a fixed value in source code.\
-For example, `42` is a Rust literal for the number forty-two.
+**Literal** — это запись фиксированного значения в source code.\
+Например, `42` является literal Rust для числа сорок два.
 
-### Type annotations for literals
+### Type annotations для literals
 
-But all values in Rust have a type, so... what's the type of `42`?
+Но у каждого значения в Rust есть type. Тогда какой type у `42`?
 
-The Rust compiler will try to infer the type of a literal based on how it's used.\
-If you don't provide any context, the compiler will default to `i32` for integer literals.\
-If you want to use a different type, you can add the desired integer type as a suffix—e.g. `2u64` is a 2 that's
-explicitly typed as a `u64`.
+Compiler Rust попытается вывести type literal из контекста его использования.\
+Если контекст отсутствует, compiler по умолчанию назначит integer literals type `i32`.\
+Если нужен другой type, желаемый integer type можно добавить в виде suffix: например, `2u64` — это число 2,
+для которого явно указан type `u64`.
 
-### Underscores in literals
+### Символы подчёркивания в literals
 
-You can use underscores `_` to improve the readability of large numbers.\
-For example, `1_000_000` is the same as `1000000`.
+Для удобства чтения больших чисел можно использовать символы подчёркивания `_`.\
+Например, `1_000_000` эквивалентно `1000000`.
 
 ## Arithmetic operators
 
-Rust supports the following arithmetic operators[^traits] for integers:
+Rust поддерживает следующие arithmetic operators[^traits] для integers:
 
-- `+` for addition
-- `-` for subtraction
-- `*` for multiplication
-- `/` for division
-- `%` for remainder
+- `+` для сложения
+- `-` для вычитания
+- `*` для умножения
+- `/` для деления
+- `%` для остатка от деления
 
-Precedence and associativity rules for these operators are the same as in mathematics.\
-You can use parentheses to override the default precedence. E.g. `2 * (3 + 4)`.
+Правила precedence и associativity для этих operators совпадают с математическими.\
+Чтобы изменить precedence по умолчанию, можно использовать скобки. Например, `2 * (3 + 4)`.
 
-> ⚠️ **Warning**
+> ⚠️ **Предупреждение**
 >
-> The division operator `/` performs integer division when used with integer types.
-> I.e. the result is truncated towards zero. For example, `5 / 2` is `2`, not `2.5`.
+> При использовании с integer types operator деления `/` выполняет integer division.
+> Иными словами, результат округляется к нулю. Например, `5 / 2` равно `2`, а не `2.5`.
 
-## No automatic type coercion
+## Без автоматического type coercion
 
-As we discussed in the previous exercise, Rust is a statically typed language.\
-In particular, Rust is quite strict about type coercion. It won't automatically convert a value from one type to
-another[^coercion],
-even if the conversion is lossless. You have to do it explicitly.
+Как мы уже обсуждали в предыдущем упражнении, Rust является statically typed language.\
+В частности, Rust довольно строго относится к type coercion. Он не станет автоматически преобразовывать значение одного type
+в другой[^coercion],
+даже если преобразование не приводит к потере данных. Это необходимо делать явно.
 
-For example, you can't assign a `u8` value to a variable with type `u32`, even though all `u8` values are valid `u32`
-values:
+Например, значение `u8` нельзя присвоить variable типа `u32`, хотя все значения `u8` являются допустимыми значениями `u32`:
 
 ```rust
 let b: u8 = 100;
 let a: u32 = b;
 ```
 
-It'll throw a compilation error:
+Это приведёт к compilation error:
 
 ```text
 error[E0308]: mismatched types
@@ -117,18 +116,18 @@ error[E0308]: mismatched types
   |
 ```
 
-We'll see how to convert between types [later in this course](../04_traits/09_from.md).
+Позже в курсе мы рассмотрим [преобразование между types](../04_traits/09_from.md).
 
-## Further reading
+## Дополнительные материалы
 
-- [The integer types section](https://doc.rust-lang.org/book/ch03-02-data-types.html#integer-types) in the official Rust book
+- [Раздел об integer types](https://doc.rust-lang.org/book/ch03-02-data-types.html#integer-types) в официальной книге по Rust
 
-[^bit]: A bit is the smallest unit of data in a computer. It can only have two values: `0` or `1`.
+[^bit]: Bit — это минимальная единица данных в компьютере. Он может принимать только два значения: `0` или `1`.
 
-[^traits]: Rust doesn't let you define custom operators, but it puts you in control of how the built-in operators
-behave.
-We'll talk about operator overloading [later in the course](../04_traits/03_operator_overloading.md), after we've covered traits.
+[^traits]: Rust не позволяет определять собственные operators, но даёт возможность управлять поведением встроенных
+operators.
+Мы поговорим об operator overloading [позже в курсе](../04_traits/03_operator_overloading.md), после изучения traits.
 
-[^coercion]: There are some exceptions to this rule, mostly related to references, smart pointers and ergonomics. We'll
-cover those [later on](../04_traits/07_deref.md).
-A mental model of "all conversions are explicit" will serve you well in the meantime.
+[^coercion]: У этого правила есть несколько исключений, в основном связанных с references, smart pointers и ergonomics. Мы
+рассмотрим их [позже](../04_traits/07_deref.md).
+Пока полезно придерживаться мысленной модели «все преобразования выполняются явно».

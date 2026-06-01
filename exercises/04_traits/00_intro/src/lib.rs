@@ -1,6 +1,6 @@
 fn intro() -> &'static str {
     // TODO: исправьте меня 👇
-    "I'm ready to __!"
+    "I'm ready to learn about traits!"
 }
 
 #[cfg(test)]

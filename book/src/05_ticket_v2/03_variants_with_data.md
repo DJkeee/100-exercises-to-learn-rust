@@ -1,4 +1,4 @@
-# Variants can hold data
+# Variants могут содержать данные
 
 ```rust
 enum Status {
@@ -8,18 +8,18 @@ enum Status {
 }
 ```
 
-Our `Status` enum is what's usually called a **C-style enum**.\
-Each variant is a simple label, a bit like a named constant. You can find this kind of enum in many programming
-languages, like C, C++, Java, C#, Python, etc.
+Наш `Status` enum обычно называют **C-style enum**.\
+Каждый variant представляет собой простую метку, похожую на именованную constant. Такой enum встречается во многих
+языках программирования: C, C++, Java, C#, Python и других.
 
-Rust enums can go further though. We can **attach data to each variant**.
+Но enums в Rust способны на большее. К каждому variant можно **прикрепить данные**.
 
 ## Variants
 
-Let's say that we want to store the name of the person who's currently working on a ticket.\
-We would only have this information if the ticket is in progress. It wouldn't be there for a to-do ticket or
-a done ticket.
-We can model this by attaching a `String` field to the `InProgress` variant:
+Предположим, мы хотим хранить имя человека, который сейчас работает над ticket.\
+Эта информация будет доступна только для ticket в процессе выполнения. У ticket со status to-do или done
+её не будет.
+Это можно смоделировать, прикрепив field `String` к variant `InProgress`:
 
 ```rust
 enum Status {
@@ -31,12 +31,12 @@ enum Status {
 }
 ```
 
-`InProgress` is now a **struct-like variant**.\
-The syntax mirrors, in fact, the one we used to define a struct—it's just "inlined" inside the enum, as a variant.
+Теперь `InProgress` — это **struct-like variant**.\
+Syntax фактически повторяет syntax объявления struct: оно просто «встроено» внутрь enum в качестве variant.
 
-## Accessing variant data
+## Доступ к данным variant
 
-If we try to access `assigned_to` on a `Status` instance,
+Если попытаться обратиться к `assigned_to` у instance `Status`,
 
 ```rust
 let status: Status = /* */;
@@ -45,7 +45,7 @@ let status: Status = /* */;
 println!("Assigned to: {}", status.assigned_to);
 ```
 
-the compiler will stop us:
+compiler не позволит это сделать:
 
 ```text
 error[E0609]: no field `assigned_to` on type `Status`
@@ -55,8 +55,8 @@ error[E0609]: no field `assigned_to` on type `Status`
   |                                        ^^^^^^^^^^^ unknown field
 ```
 
-`assigned_to` is **variant-specific**, it's not available on all `Status` instances.\
-To access `assigned_to`, we need to use **pattern matching**:
+`assigned_to` является **variant-specific**: оно доступно не для всех instances `Status`.\
+Чтобы обратиться к `assigned_to`, необходимо использовать **pattern matching**:
 
 ```rust
 match status {
@@ -71,10 +71,10 @@ match status {
 
 ## Bindings
 
-In the match pattern `Status::InProgress { assigned_to }`, `assigned_to` is a **binding**.\
-We're **destructuring** the `Status::InProgress` variant and binding the `assigned_to` field to
-a new variable, also named `assigned_to`.\
-If we wanted, we could bind the field to a different variable name:
+В match pattern `Status::InProgress { assigned_to }` элемент `assigned_to` является **binding**.\
+Мы выполняем **destructuring** variant `Status::InProgress` и привязываем field `assigned_to`
+к новой variable, которая также называется `assigned_to`.\
+При желании field можно привязать к variable с другим именем:
 
 ```rust
 match status {

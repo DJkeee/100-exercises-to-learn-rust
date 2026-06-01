@@ -1,110 +1,110 @@
 # Overflow
 
-The factorial of a number grows quite fast.\
-For example, the factorial of 20 is 2,432,902,008,176,640,000. That's already bigger than the maximum value for a
-32-bit integer, 2,147,483,647.
+Факториал числа растёт довольно быстро.\
+Например, факториал 20 равен 2,432,902,008,176,640,000. Это уже больше максимального значения
+32-bit integer: 2,147,483,647.
 
-When the result of an arithmetic operation is bigger than the maximum value for a given integer type,
-we are talking about **an integer overflow**.
+Если результат arithmetic operation превышает максимальное значение заданного integer type,
+возникает **integer overflow**.
 
-Integer overflows are an issue because they violate the contract for arithmetic operations.\
-The result of an arithmetic operation between two integers of a given type should be another integer of the same type.
-But the _mathematically correct result_ doesn't fit into that integer type!
+Integer overflows представляют проблему, поскольку нарушают контракт arithmetic operations.\
+Результатом arithmetic operation над двумя integers заданного type должен быть ещё один integer того же type.
+Но _математически правильный результат_ не помещается в этот integer type!
 
-> If the result is smaller than the minimum value for a given integer type, we refer to the event as **an integer
+> Если результат меньше минимального значения заданного integer type, возникает **integer
 > underflow**.\
-> For brevity, we'll only talk about integer overflows for the rest of this section, but keep in mind that
-> everything we say applies to integer underflows as well.
+> Для краткости в оставшейся части раздела мы будем говорить только об integer overflows, но имейте в виду:
+> всё сказанное относится и к integer underflows.
 >
-> The `speed` function you wrote in the ["Variables" section](02_variables.md) underflowed for some input
-> combinations.
-> E.g. if `end` is smaller than `start`, `end - start` will underflow the `u32` type since the result is supposed
-> to be negative but `u32` can't represent negative numbers.
+> Function `speed`, которую вы написали в разделе ["Variables"](02_variables.md), приводит к underflow при некоторых комбинациях
+> input.
+> Например, если `end` меньше `start`, выражение `end - start` вызовет underflow type `u32`, поскольку результат должен
+> быть отрицательным, а `u32` не может представлять отрицательные числа.
 
-## No automatic promotion
+## Без автоматического promotion
 
-One possible approach would be automatically promote the result to a bigger integer type.
-E.g. if you're summing two `u8` integers and the result is 256 (`u8::MAX + 1`), Rust could choose to interpret the
-result as `u16`, the next integer type that's big enough to hold 256.
+Один из возможных подходов — автоматически выполнять promotion результата до более крупного integer type.
+Например, если сложить два integers `u8` и получить 256 (`u8::MAX + 1`), Rust мог бы интерпретировать
+результат как `u16`: следующий integer type, в который помещается 256.
 
-But, as we've discussed before, Rust is quite picky about type conversions. Automatic integer promotion
-is not Rust's solution to the integer overflow problem.
+Но, как мы уже обсуждали, Rust довольно строго относится к type conversions. Automatic integer promotion
+не является решением проблемы integer overflow в Rust.
 
-## Alternatives
+## Альтернативы
 
-Since we ruled out automatic promotion, what can we do when an integer overflow occurs?\
-It boils down to two different approaches:
+Поскольку automatic promotion исключён, что можно сделать при возникновении integer overflow?\
+Есть два основных подхода:
 
-- Reject the operation
-- Come up with a "sensible" result that fits into the expected integer type
+- Отклонить operation
+- Подобрать «разумный» результат, который помещается в ожидаемый integer type
 
-### Reject the operation
+### Отклонить operation
 
-This is the most conservative approach: we stop the program when an integer overflow occurs.\
-That's done via a panic, the mechanism we've already seen in the ["Panics" section](04_panics.md).
+Это самый консервативный подход: при возникновении integer overflow программа останавливается.\
+Для этого используется panic, механизм, с которым мы уже познакомились в разделе ["Panics"](04_panics.md).
 
-### Come up with a "sensible" result
+### Подобрать «разумный» результат
 
-When the result of an arithmetic operation is bigger than the maximum value for a given integer type, you can
-choose to **wrap around**.\
-If you think of all the possible values for a given integer type as a circle, wrapping around means that when you
-reach the maximum value, you start again from the minimum value.
+Если результат arithmetic operation превышает максимальное значение заданного integer type, можно
+выбрать **wrapping**.\
+Если представить все допустимые значения заданного integer type расположенными по кругу, wrapping означает, что после
+достижения максимального значения отсчёт снова начинается с минимального.
 
-For example, if you do a **wrapping addition** between 1 and 255 (=`u8::MAX`), the result is 0 (=`u8::MIN`).
-If you're working with signed integers, the same principle applies. E.g. adding 1 to 127 (=`i8::MAX`) with wrapping
-will give you -128 (=`i8::MIN`).
+Например, результат **wrapping addition** значений 1 и 255 (=`u8::MAX`) равен 0 (=`u8::MIN`).
+Для signed integers действует тот же принцип. Например, прибавление 1 к 127 (=`i8::MAX`) с wrapping
+даст -128 (=`i8::MIN`).
 
 ## `overflow-checks`
 
-Rust lets you, the developer, choose which approach to use when an integer overflow occurs.
-The behaviour is controlled by the `overflow-checks` profile setting.
+Rust позволяет developer выбрать подход, используемый при возникновении integer overflow.
+Поведение управляется setting profile `overflow-checks`.
 
-If `overflow-checks` is set to `true`, Rust will **panic at runtime** when an integer operation overflows.
-If `overflow-checks` is set to `false`, Rust will **wrap around** when an integer operation overflows.
+Если `overflow-checks` имеет значение `true`, Rust вызовет **panic at runtime** при overflow integer operation.
+Если `overflow-checks` имеет значение `false`, Rust применит **wrapping** при overflow integer operation.
 
-You may be wondering—what is a profile setting? Let's get into that!
+Возможно, вы задаётесь вопросом: что такое setting profile? Давайте разберёмся!
 
 ## Profiles
 
-A [**profile**](https://doc.rust-lang.org/cargo/reference/profiles.html) is a set of configuration options that can be
-used to customize the way Rust code is compiled.
+[**Profile**](https://doc.rust-lang.org/cargo/reference/profiles.html) — это набор configuration options, позволяющих
+настроить способ compilation code Rust.
 
-Cargo provides 4 built-in profiles: `dev`, `release`, `test`, and `bench`.\
-The `dev` profile is used every time you run `cargo build`, `cargo run` or `cargo test`. It's aimed at local
-development,
-therefore it sacrifices runtime performance in favor of faster compilation times and a better debugging experience.\
-The `release` profile, instead, is optimized for runtime performance but incurs longer compilation times. You need
-to explicitly request via the `--release` flag—e.g. `cargo build --release` or `cargo run --release`.
-The `test` profile is the default profile used by `cargo test`. The `test` profile inherits the settings from the `dev` profile.
-The `bench` profile is the default profile used by `cargo bench`. The `bench` profile inherits from the `release` profile.
-Use `dev` for iterative development and debugging, `release` for optimized production builds,\
-`test` for correctness testing, and `bench` for performance benchmarking.
+Cargo предоставляет 4 встроенных profiles: `dev`, `release`, `test` и `bench`.\
+Profile `dev` используется при каждом запуске `cargo build`, `cargo run` или `cargo test`. Он предназначен для локальной
+разработки,
+поэтому жертвует runtime performance ради более быстрой compilation и удобной debugging.\
+Profile `release`, напротив, оптимизирован для runtime performance, но требует больше времени на compilation. Его нужно
+явно запрашивать с помощью flag `--release`, например: `cargo build --release` или `cargo run --release`.
+Profile `test` используется по умолчанию командой `cargo test`. Profile `test` наследует settings profile `dev`.
+Profile `bench` используется по умолчанию командой `cargo bench`. Profile `bench` наследует settings profile `release`.
+Используйте `dev` для iterative development и debugging, `release` для оптимизированных production builds,\
+`test` для проверки корректности, а `bench` для performance benchmarking.
 
-> "Have you built your project in release mode?" is almost a meme in the Rust community.\
-> It refers to developers who are not familiar with Rust and complain about its performance on
-> social media (e.g. Reddit, Twitter) before realizing they haven't built their project in
+> "Have you built your project in release mode?" — почти мем в Rust community.\
+> Речь идёт о developers, которые ещё не знакомы с Rust и жалуются на его performance в
+> социальных сетях (например, Reddit или Twitter), прежде чем понимают, что не выполнили build проекта в
 > release mode.
 
-You can also define custom profiles or customize the built-in ones.
+Можно также определять собственные profiles или настраивать встроенные.
 
 ### `overflow-check`
 
-By default, `overflow-checks` is set to:
+По умолчанию для `overflow-checks` установлены следующие значения:
 
-- `true` for the `dev` profile
-- `false` for the `release` profile
+- `true` для profile `dev`
+- `false` для profile `release`
 
-This is in line with the goals of the two profiles.\
-`dev` is aimed at local development, so it panics in order to highlight potential issues as early as possible.\
-`release`, instead, is tuned for runtime performance: checking for overflows would slow down the program, so it
-prefers to wrap around.
+Это соответствует назначению двух profiles.\
+`dev` предназначен для локальной разработки, поэтому вызывает panic, чтобы как можно раньше выявлять потенциальные проблемы.\
+`release`, напротив, настроен для runtime performance: проверки overflow замедлили бы программу, поэтому он
+предпочитает wrapping.
 
-At the same time, having different behaviours for the two profiles can lead to subtle bugs.\
-Our recommendation is to enable `overflow-checks` for both profiles: it's better to crash than to silently produce
-incorrect results. The runtime performance hit is negligible in most cases; if you're working on a performance-critical
-application, you can run benchmarks to decide if it's something you can afford.
+В то же время различное поведение двух profiles может приводить к трудноуловимым bugs.\
+Мы рекомендуем включить `overflow-checks` для обоих profiles: лучше завершить работу с ошибкой, чем незаметно получить
+неверный результат. В большинстве случаев влияние на runtime performance пренебрежимо мало. Если вы работаете над
+performance-critical application, выполните benchmarks и решите, допустимы ли эти затраты.
 
-## Further reading
+## Дополнительные материалы
 
-- Check out ["Myths and legends about integer overflow in Rust"](https://huonw.github.io/blog/2016/04/myths-and-legends-about-integer-overflow-in-rust/)
-  for an in-depth discussion about integer overflow in Rust.
+- Прочитайте ["Myths and legends about integer overflow in Rust"](https://huonw.github.io/blog/2016/04/myths-and-legends-about-integer-overflow-in-rust/)
+  для подробного обсуждения integer overflow в Rust.

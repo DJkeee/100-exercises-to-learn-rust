@@ -1,12 +1,12 @@
 # Unwrapping
 
-`Ticket::new` now returns a `Result` instead of panicking on invalid inputs.\
-What does this mean for the caller?
+Теперь `Ticket::new` возвращает `Result`, а не вызывает `panic` при недопустимых входных данных.\
+Что это означает для вызывающей стороны?
 
-## Failures can't be (implicitly) ignored
+## Неудачи нельзя игнорировать неявно
 
-Unlike exceptions, Rust's `Result` forces you to **handle errors at the call site**.\
-If you call a function that returns a `Result`, Rust won't allow you to implicitly ignore the error case.
+В отличие от exceptions, `Result` в Rust заставляет **обрабатывать errors в call site**.\
+Если вызвать function, возвращающую `Result`, Rust не позволит неявно проигнорировать случай error.
 
 ```rust
 fn parse_int(s: &str) -> Result<i32, ParseIntError> {
@@ -19,19 +19,19 @@ fn parse_int(s: &str) -> Result<i32, ParseIntError> {
 let number = parse_int("42") + 2;
 ```
 
-## You got a `Result`. Now what?
+## Получен `Result`. Что дальше?
 
-When you call a function that returns a `Result`, you have two key options:
+При вызове function, возвращающей `Result`, есть два основных варианта:
 
-- Panic if the operation failed.
-  This is done using either the `unwrap` or `expect` methods.
+- Вызвать `panic`, если operation завершилась неудачей.
+  Для этого используются methods `unwrap` или `expect`.
   ```rust
   // Вызывает панику, если `parse_int` возвращает `Err`.
   let number = parse_int("42").unwrap();
   // `expect` позволяет указать собственное сообщение паники.
   let number = parse_int("42").expect("Failed to parse integer");
   ```
-- Destructure the `Result` using a `match` expression to deal with the error case explicitly.
+- Выполнить destructuring `Result` с помощью expression `match`, чтобы явно обработать случай error.
   ```rust
   match parse_int("42") {
       Ok(number) => println!("Parsed number: {}", number),

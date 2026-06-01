@@ -1,14 +1,14 @@
 # Derive macros
 
-Implementing `PartialEq` for `Ticket` was a bit tedious, wasn't it?
-You had to manually compare each field of the struct.
+Реализовывать `PartialEq` для `Ticket` было несколько утомительно, не так ли?
+Пришлось вручную сравнивать каждый field struct.
 
-## Destructuring syntax
+## Синтаксис destructuring
 
-Furthermore, the implementation is brittle: if the struct definition changes
-(e.g. a new field is added), you have to remember to update the `PartialEq` implementation.
+Кроме того, implementation хрупка: если определение struct изменится
+(например, будет добавлен новый field), нужно не забыть обновить implementation `PartialEq`.
 
-You can mitigate the risk by **destructuring** the struct into its fields:
+Риск можно снизить, выполнив **destructuring** struct на fields:
 
 ```rust
 impl PartialEq for Ticket {
@@ -23,9 +23,8 @@ impl PartialEq for Ticket {
 }
 ```
 
-If the definition of `Ticket` changes, the compiler will error out, complaining that your
-destructuring is no longer exhaustive.\
-You can also rename struct fields, to avoid variable shadowing:
+Если определение `Ticket` изменится, compiler сообщит об ошибке: destructuring больше не является exhaustive.\
+Fields struct также можно переименовать, чтобы избежать variable shadowing:
 
 ```rust
 impl PartialEq for Ticket {
@@ -45,30 +44,30 @@ impl PartialEq for Ticket {
 }
 ```
 
-Destructuring is a useful pattern to have in your toolkit, but
-there's an even more convenient way to do this: **derive macros**.
+Destructuring — полезный pattern, который стоит иметь в своём арсенале, но
+есть ещё более удобный способ: **derive macros**.
 
 ## Macros
 
-You've already encountered a few macros in past exercises:
+В предыдущих упражнениях вам уже встречались несколько macros:
 
-- `assert_eq!` and `assert!`, in the test cases
-- `println!`, to print to the console
+- `assert_eq!` и `assert!` в тестах
+- `println!` для вывода в console
 
-Rust macros are **code generators**.\
-They generate new Rust code based on the input you provide, and that generated code is then compiled alongside
-the rest of your program. Some macros are built into Rust's standard library, but you can also
-write your own. We won't be creating our own macro in this course, but you can find some useful
-pointers in the ["Further reading" section](#further-reading).
+Macros Rust — это **code generators**.\
+Они генерируют новый код Rust на основе переданных input, после чего созданный код компилируется вместе
+с остальной программой. Некоторые macros встроены в standard library Rust, но можно
+писать и собственные. В этом курсе мы не будем создавать свои macros, однако полезные
+ссылки приведены в [разделе «Дополнительные материалы»](#further-reading).
 
-### Inspection
+### Изучение
 
-Some IDEs let you expand a macro to inspect the generated code. If that's not possible, you can use
+Некоторые IDE позволяют раскрыть macro и изучить сгенерированный код. Если такой возможности нет, используйте
 [`cargo-expand`](https://github.com/dtolnay/cargo-expand).
 
 ### Derive macros
 
-A **derive macro** is a particular flavour of Rust macro. It is specified as an **attribute** on top of a struct.
+**Derive macro** — особая разновидность macro Rust. Она задаётся как **attribute** над struct.
 
 ```rust
 #[derive(PartialEq)]
@@ -79,10 +78,10 @@ struct Ticket {
 }
 ```
 
-Derive macros are used to automate the implementation of common (and "obvious") traits for custom types.
-In the example above, the `PartialEq` trait is automatically implemented for `Ticket`.
-If you expand the macro, you'll see that the generated code is functionally equivalent to the one you wrote manually,
-although a bit more cumbersome to read:
+Derive macros используются для автоматизации implementation распространённых (и «очевидных») traits для пользовательских types.
+В примере выше trait `PartialEq` автоматически реализуется для `Ticket`.
+Если раскрыть macro, можно увидеть, что сгенерированный код функционально эквивалентен написанному вручную,
+хотя читать его несколько сложнее:
 
 ```rust
 #[automatically_derived]
@@ -96,9 +95,9 @@ impl ::core::cmp::PartialEq for Ticket {
 }
 ```
 
-The compiler will nudge you to derive traits when possible.
+Когда это возможно, compiler предложит использовать derive для traits.
 
-## Further reading
+## Дополнительные материалы
 
 - [The little book of Rust macros](https://veykril.github.io/tlborm/)
 - [Proc macro workshop](https://github.com/dtolnay/proc-macro-workshop)

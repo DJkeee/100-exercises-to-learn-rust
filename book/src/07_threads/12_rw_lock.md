@@ -1,14 +1,14 @@
-# Readers and writers
+# Readers и writers
 
-Our new `TicketStore` works, but its read performance is not great: there can only be one client at a time
-reading a specific ticket, because `Mutex<T>` doesn't distinguish between readers and writers.
+Новый `TicketStore` работает, но его performance при read operations оставляет желать лучшего: конкретную заявку
+может одновременно читать только один client, поскольку `Mutex<T>` не различает readers и writers.
 
-We can solve the issue by using a different locking primitive: `RwLock<T>`.\
-`RwLock<T>` stands for **read-write lock**. It allows **multiple readers** to access the data simultaneously,
-but only one writer at a time.
+Проблему можно решить с помощью другой locking primitive: `RwLock<T>`.\
+`RwLock<T>` означает **read-write lock**. Он разрешает одновременный доступ к data **нескольким readers**,
+но только одному writer.
 
-`RwLock<T>` has two methods to acquire a lock: `read` and `write`.\
-`read` returns a guard that allows you to read the data, while `write` returns a guard that allows you to modify it.
+У `RwLock<T>` есть два methods для acquire lock: `read` и `write`.\
+`read` возвращает guard для read access к data, а `write` — guard для их изменения.
 
 ```rust
 use std::sync::RwLock;
@@ -26,20 +26,20 @@ let guard2 = lock.read().unwrap();
 
 ## Trade-offs
 
-On the surface, `RwLock<T>` seems like a no-brainer: it provides a superset of the functionality of `Mutex<T>`.
-Why would you ever use `Mutex<T>` if you can use `RwLock<T>` instead?
+На первый взгляд выбор `RwLock<T>` очевиден: он предоставляет superset возможностей `Mutex<T>`.
+Зачем вообще использовать `Mutex<T>`, если вместо него можно взять `RwLock<T>`?
 
-There are two key reasons:
+Есть две основные причины:
 
-- Locking a `RwLock<T>` is more expensive than locking a `Mutex<T>`.\
-  This is because `RwLock<T>` has to keep track of the number of active readers and writers, while `Mutex<T>`
-  only has to keep track of whether the lock is held or not.
-  This performance overhead is not an issue if there are more readers than writers, but if the workload
-  is write-heavy `Mutex<T>` might be a better choice.
-- `RwLock<T>` can cause **writer starvation**.\
-  If there are always readers waiting to acquire the lock, writers might never get a chance to run.\
-  `RwLock<T>` doesn't provide any guarantees about the order in which readers and writers are granted access to the lock.
-  It depends on the policy implemented by the underlying OS, which might not be fair to writers.
+- Locking `RwLock<T>` дороже, чем locking `Mutex<T>`.\
+  Причина в том, что `RwLock<T>` должен отслеживать количество активных readers и writers, а `Mutex<T>` —
+  только факт удержания lock.
+  Эти дополнительные расходы несущественны, если readers больше, чем writers, но при write-heavy workload
+  `Mutex<T>` может оказаться лучшим выбором.
+- `RwLock<T>` может вызвать **writer starvation**.\
+  Если readers постоянно ожидают acquire lock, writers могут вообще не получить возможности выполниться.\
+  `RwLock<T>` не гарантирует порядок предоставления доступа к lock для readers и writers.
+  Он зависит от policy базовой OS, которая может быть несправедливой к writers.
 
-In our case, we can expect the workload to be read-heavy (since most clients will be reading tickets, not modifying them),
-so `RwLock<T>` is a good choice.
+В нашем случае workload, скорее всего, будет read-heavy, поскольку большинство clients будут читать заявки,
+а не изменять их. Поэтому `RwLock<T>` — подходящий выбор.

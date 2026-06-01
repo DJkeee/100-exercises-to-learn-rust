@@ -30,6 +30,19 @@ pub mod ticket {
             }
         }
 
+
+        pub fn title(&self) -> &String {
+            &self.title
+        }
+
+        pub fn status(&self) -> &String {
+            &self.status
+        }
+        pub fn description(&self) -> &String {
+            &self.description
+    }
+
+
         // TODO: Добавьте в структуру `Ticket` три публичных метода:
         //  - `title`, возвращающий поле `title`.
         //  - `description`, возвращающий поле `description`.

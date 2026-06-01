@@ -1,15 +1,15 @@
-# Conversions, pt. 1
+# Conversions, часть 1
 
-We've repeated over and over again that Rust won't perform
-implicit type conversions for integers.\
-How do you perform _explicit_ conversions then?
+Мы уже не раз повторяли, что Rust не выполняет
+implicit type conversions для integers.\
+Как же выполнять _explicit_ conversions?
 
 ## `as`
 
-You can use the `as` operator to convert between integer types.\
-`as` conversions are **infallible**.
+Для преобразования между integer types можно использовать operator `as`.\
+Conversions с `as` являются **infallible**.
 
-For example:
+Например:
 
 ```rust
 let a: u32 = 10;
@@ -23,12 +23,11 @@ let b = a as u64;
 let c: u64 = a as _;
 ```
 
-The semantics of this conversion are what you expect: all `u32` values are valid `u64`
-values.
+Semantics этого conversion вполне ожидаема: все значения `u32` являются допустимыми значениями `u64`.
 
 ### Truncation
 
-Things get more interesting if we go in the opposite direction:
+В обратном направлении всё становится интереснее:
 
 ```rust
 // Число, слишком большое,
@@ -37,13 +36,13 @@ let a: u16 = 255 + 1;
 let b = a as u8;
 ```
 
-This program will run without issues, because `as` conversions are infallible.
-But what is the value of `b`?
-When going from a larger integer type to a smaller, the Rust compiler will perform
-a **truncation**.
+Эта программа выполнится без проблем, поскольку conversions с `as` являются infallible.
+Но чему равно значение `b`?
+При переходе от более крупного integer type к меньшему compiler Rust выполнит
+**truncation**.
 
-To understand what happens, let's start by looking at how `256u16` is
-represented in memory, as a sequence of bits:
+Чтобы понять происходящее, сначала посмотрим, как `256u16`
+представлено в memory в виде последовательности bits:
 
 ```text
  0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0
@@ -52,8 +51,8 @@ represented in memory, as a sequence of bits:
   First 8 bits    Last 8 bits
 ```
 
-When converting to a `u8`, the Rust compiler will keep the last 8 bits of a `u16`
-memory representation:
+При conversion в `u8` compiler Rust сохранит последние 8 bits представления `u16`
+в memory:
 
 ```text
  0 0 0 0 0 0 0 0 
@@ -62,9 +61,9 @@ memory representation:
   Last 8 bits
 ```
 
-Hence `256 as u8` is equal to `0`. That's... not ideal, in most scenarios.\
-In fact, the Rust compiler will actively try to stop you if it sees you trying
-to cast a literal value which will result in a truncation:
+Таким образом, `256 as u8` равно `0`. В большинстве случаев это... не лучший результат.\
+Более того, compiler Rust постарается остановить вас, если заметит попытку
+выполнить cast literal value, приводящий к truncation:
 
 ```text
 error: literal out of range for `i8`
@@ -78,25 +77,25 @@ error: literal out of range for `i8`
   = note: `#[deny(overflowing_literals)]` on by default
 ```
 
-### Recommendation
+### Рекомендация
 
-As a rule of thumb, be quite careful with `as` casting.\
-Use it _exclusively_ for going from a smaller type to a larger type.
-To convert from a larger to smaller integer type, rely on the
-[_fallible_ conversion machinery](../05_ticket_v2/13_try_from.md) that we'll
-explore later in the course.
+Общее правило: соблюдайте осторожность при casting с помощью `as`.\
+Используйте его _исключительно_ для перехода от меньшего type к большему.
+Для перехода от большего integer type к меньшему полагайтесь на
+[механизм _fallible_ conversion](../05_ticket_v2/13_try_from.md), который мы
+рассмотрим позже в курсе.
 
-### Limitations
+### Ограничения
 
-Surprising behaviour is not the only downside of `as` casting.
-It is also fairly limited: you can only rely on `as` casting
-for primitive types and a few other special cases.\
-When working with composite types, you'll have to rely on
-different conversion mechanisms ([fallible](../05_ticket_v2/13_try_from.md)
-and [infallible](../04_traits/09_from.md)), which we'll explore later on.
+Неожиданное поведение — не единственный недостаток casting с помощью `as`.
+Его возможности также весьма ограничены: casting с помощью `as`
+можно использовать только для primitive types и нескольких других особых случаев.\
+При работе с composite types потребуется применять
+другие механизмы conversion ([fallible](../05_ticket_v2/13_try_from.md)
+и [infallible](../04_traits/09_from.md)), которые мы рассмотрим позже.
 
-## Further reading
+## Дополнительные материалы
 
-- Check out [Rust's official reference](https://doc.rust-lang.org/reference/expressions/operator-expr.html#numeric-cast)
-  to learn the precise behaviour of `as` casting for each source/target combination,
-  as well as the exhaustive list of allowed conversions.
+- Прочитайте [официальный reference Rust](https://doc.rust-lang.org/reference/expressions/operator-expr.html#numeric-cast),
+  чтобы узнать точное поведение casting с помощью `as` для каждой комбинации source/target,
+  а также полный список разрешённых conversions.

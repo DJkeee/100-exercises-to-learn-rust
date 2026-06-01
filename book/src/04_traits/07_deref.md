@@ -1,8 +1,8 @@
 # `Deref` trait
 
-In the previous exercise you didn't have to do much, did you?
+В предыдущем упражнении почти ничего не пришлось делать, верно?
 
-Changing
+Достаточно было заменить
 
 ```rust
 impl Ticket {
@@ -12,7 +12,7 @@ impl Ticket {
 }
 ```
 
-to
+на
 
 ```rust
 impl Ticket {
@@ -22,24 +22,24 @@ impl Ticket {
 }
 ```
 
-was all you needed to do to get the code to compile and the tests to pass.
-Some alarm bells should be ringing in your head though.
+чтобы код скомпилировался, а тесты прошли.
+Но это должно вызывать вопросы.
 
-## It shouldn't work, but it does
+## Это не должно работать, но работает
 
-Let's review the facts:
+Рассмотрим факты:
 
-- `self.title` is a `String`
-- `&self.title` is, therefore, a `&String`
-- The output of the (modified) `title` method is `&str`
+- `self.title` имеет type `String`
+- следовательно, `&self.title` имеет type `&String`
+- output изменённого method `title` имеет type `&str`
 
-You would expect a compiler error, wouldn't you? `Expected &String, found &str` or something similar.
-Instead, it just works. **Why**?
+Можно было бы ожидать ошибку compiler: `Expected &String, found &str` или что-то подобное.
+Вместо этого всё просто работает. **Почему**?
 
-## `Deref` to the rescue
+## На помощь приходит `Deref`
 
-The `Deref` trait is the mechanism behind the language feature known as [**deref coercion**](https://doc.rust-lang.org/std/ops/trait.Deref.html#deref-coercion).\
-The trait is defined in the standard library, in the `std::ops` module:
+Trait `Deref` лежит в основе возможности языка, известной как [**deref coercion**](https://doc.rust-lang.org/std/ops/trait.Deref.html#deref-coercion).\
+Trait определён в standard library, в module `std::ops`:
 
 ```rust
 // Пока я слегка упростил определение.
@@ -51,24 +51,24 @@ pub trait Deref {
 }
 ```
 
-`type Target` is an **associated type**.\
-It's a placeholder for a concrete type that must be specified when the trait is implemented.
+`type Target` — это **associated type**.\
+Это placeholder для concrete type, который необходимо указать при создании implementation trait.
 
 ## Deref coercion
 
-By implementing `Deref<Target = U>` for a type `T` you're telling the compiler that `&T` and `&U` are
-somewhat interchangeable.\
-In particular, you get the following behavior:
+Реализуя `Deref<Target = U>` для type `T`, вы сообщаете compiler, что `&T` и `&U`
+в некоторой степени взаимозаменяемы.\
+В частности, вы получаете следующее behavior:
 
-- References to `T` are implicitly converted into references to `U` (i.e. `&T` becomes `&U`)
-- You can call on `&T` all the methods defined on `U` that take `&self` as input.
+- References на `T` неявно преобразуются в references на `U` (то есть `&T` превращается в `&U`)
+- Для `&T` можно вызывать все methods, определённые для `U` и принимающие `&self` в качестве input.
 
-There is one more thing around the dereference operator, `*`, but we don't need it yet (see `std`'s docs
-if you're curious).
+С operator dereference `*` связан ещё один аспект, но пока он нам не нужен (если интересно,
+обратитесь к documentation `std`).
 
-## `String` implements `Deref`
+## `String` реализует `Deref`
 
-`String` implements `Deref` with `Target = str`:
+`String` реализует `Deref` с `Target = str`:
 
 ```rust
 impl Deref for String {
@@ -80,12 +80,12 @@ impl Deref for String {
 }
 ```
 
-Thanks to this implementation and deref coercion, a `&String` is automatically converted into a `&str` when needed.
+Благодаря этой implementation и deref coercion value `&String` при необходимости автоматически преобразуется в `&str`.
 
-## Don't abuse deref coercion
+## Не злоупотребляйте deref coercion
 
-Deref coercion is a powerful feature, but it can lead to confusion.\
-Automatically converting types can make the code harder to read and understand. If a method with the same name
-is defined on both `T` and `U`, which one will be called?
+Deref coercion — мощная возможность, но она может внести путаницу.\
+Автоматическое преобразование types способно усложнить чтение и понимание кода. Если method с одним и тем же именем
+определён и для `T`, и для `U`, какой из них будет вызван?
 
-We'll examine later in the course the "safest" use cases for deref coercion: smart pointers.
+Позже в курсе мы рассмотрим наиболее надёжные варианты использования deref coercion: smart pointers.

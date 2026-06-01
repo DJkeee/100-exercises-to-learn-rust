@@ -1,16 +1,16 @@
 # `.iter()`
 
-`IntoIterator` **consumes** `self` to create an iterator.
+`IntoIterator` **consumes** `self`, чтобы создать iterator.
 
-This has its benefits: you get **owned** values from the iterator.
-For example: if you call `.into_iter()` on a `Vec<Ticket>` you'll get an iterator that returns `Ticket` values.
+У этого есть преимущество: iterator выдаёт **owned** values.
+Например, если вызвать `.into_iter()` для `Vec<Ticket>`, получится iterator, возвращающий значения `Ticket`.
 
-That's also its downside: you can no longer use the original collection after calling `.into_iter()` on it.
-Quite often you want to iterate over a collection without consuming it, looking at **references** to the values instead.
-In the case of `Vec<Ticket>`, you'd want to iterate over `&Ticket` values.
+Но в этом же заключается и недостаток: после вызова `.into_iter()` исходную collection больше нельзя использовать.
+Зачастую требуется выполнить iteration по collection, не consuming её, а просматривая **references** на значения.
+В случае `Vec<Ticket>` потребуется iteration по значениям `&Ticket`.
 
-Most collections expose a method called `.iter()` that returns an iterator over references to the collection's elements.
-For example:
+Большинство collections предоставляют метод `.iter()`, который возвращает iterator по references на элементы collection.
+Например:
 
 ```rust
 let numbers: Vec<u32> = vec![1, 2];
@@ -20,9 +20,9 @@ for n in numbers.iter() {
 }
 ```
 
-This pattern can be simplified by implementing `IntoIterator` for a **reference to the collection**.
-In our example above, that would be `&Vec<Ticket>`.\
-The standard library does this, that's why the following code works:
+Этот pattern можно упростить, реализовав `IntoIterator` для **reference на collection**.
+В приведённом выше примере это будет `&Vec<Ticket>`.\
+Именно так поступает standard library, поэтому следующий код работает:
 
 ```rust
 let numbers: Vec<u32> = vec![1, 2];
@@ -34,9 +34,9 @@ for n in &numbers {
 }
 ```
 
-It's idiomatic to provide both options:
+Idiomatic подход — предоставить оба варианта:
 
-- An implementation of `IntoIterator` for a reference to the collection.
-- An `.iter()` method that returns an iterator over references to the collection's elements.
+- Implementation `IntoIterator` для reference на collection.
+- Метод `.iter()`, возвращающий iterator по references на элементы collection.
 
-The former is convenient in `for` loops, the latter is more explicit and can be used in other contexts.
+Первый вариант удобен в циклах `for`, второй более явный и может использоваться в других контекстах.

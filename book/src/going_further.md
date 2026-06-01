@@ -1,52 +1,53 @@
-# Epilogue
+# Эпилог
 
-Our tour of Rust ends here.\
-It has been quite extensive, but by no means exhaustive: Rust is a language with
-a large surface area, and an even larger ecosystem!\
-Don't let this scare you, though: there's **no need to learn everything**.
-You'll pick up whatever is necessary to be effective in the domain
-(backend, embedded, CLIs, GUIs, etc.) **while working on your projects**.
+На этом наше знакомство с Rust завершается.\
+Оно было довольно подробным, но далеко не исчерпывающим: Rust — обширный язык
+с ещё более обширной экосистемой!\
+Однако пусть это вас не пугает: **изучать всё не нужно**.
+Всё необходимое для эффективной работы в выбранной области
+(backend, embedded, CLI, GUI и т. д.) вы освоите **в процессе работы над своими проектами**.
 
-In the end, there are no shortcuts: if you want to get good at something,
-you need to do it, over and over again. Throughout this course you wrote a fair
-amount of Rust, enough to get the language and its syntax flowing under your
-fingers. It'll take many more lines of code to feel it "yours", but that moment
-will come without a doubt if you keep practicing.
+В конечном счёте коротких путей нет: чтобы научиться чему-либо,
+нужно практиковаться снова и снова. В ходе этого курса вы написали достаточно
+много кода на Rust, чтобы привыкнуть к языку и его syntax.
+Чтобы почувствовать язык «своим», потребуется написать ещё немало строк кода,
+но при регулярной практике этот момент обязательно наступит.
 
-## Going further
+## Куда двигаться дальше
 
-Let's close with some pointers to additional resources that you might find
-useful as you move forward in your journey with Rust.
+В завершение перечислим дополнительные ресурсы, которые могут пригодиться
+вам для дальнейшего изучения Rust.
 
-### Exercises
+### Упражнения
 
-You can find more exercises to practice Rust in the [`rustlings`](https://github.com/rust-lang/rustlings)
-project and on [exercism.io](https://exercism.io)'s Rust track.
+Дополнительные упражнения для практики Rust можно найти в проекте
+[`rustlings`](https://github.com/rust-lang/rustlings) и в разделе Rust на [exercism.io](https://exercism.io).
 
-### Introductory material
+### Вводные материалы
 
-Check out [the Rust book](https://doc.rust-lang.org/book/title-page.html) and
-["Programming Rust"](https://www.oreilly.com/library/view/programming-rust-2nd/9781492052586/)
-if you're looking for a different perspective on the same concepts we covered throughout this course.
-You'll certainly learn something new since they don't cover exactly the same topics; Rust has a lot of surface area!
+Если вы хотите посмотреть на изученные в этом курсе понятия с другой стороны,
+обратитесь к [the Rust book](https://doc.rust-lang.org/book/title-page.html) и
+["Programming Rust"](https://www.oreilly.com/library/view/programming-rust-2nd/9781492052586/).
+Вы наверняка узнаете что-то новое: эти материалы охватывают не совсем те же темы,
+а Rust очень обширен.
 
-### Advanced material
+### Углублённые материалы
 
-If you want to dive deeper into the language, refer to the [Rustonomicon](https://doc.rust-lang.org/nomicon/)
-and ["Rust for Rustaceans"](https://nostarch.com/rust-rustaceans).\
-The ["Decrusted" series](https://www.youtube.com/playlist?list=PLqbS7AVVErFirH9armw8yXlE6dacF-A6z) is another excellent
-resource to learn more about the internals of many of the most popular Rust libraries.
+Если вы хотите глубже изучить язык, обратитесь к [Rustonomicon](https://doc.rust-lang.org/nomicon/)
+и ["Rust for Rustaceans"](https://nostarch.com/rust-rustaceans).\
+Серия ["Decrusted"](https://www.youtube.com/playlist?list=PLqbS7AVVErFirH9armw8yXlE6dacF-A6z) — ещё один отличный
+ресурс, позволяющий подробнее изучить внутреннее устройство многих популярных библиотек Rust.
 
-### Domain-specific material
+### Материалы по отдельным областям
 
-If you want to use Rust for backend development,
-check out ["Zero to Production in Rust"](https://zero2prod.com).\
-If you want to use Rust for embedded development,
-check out the [Embedded Rust book](https://docs.rust-embedded.org/book/).
+Если вы хотите использовать Rust для backend-разработки,
+обратитесь к ["Zero to Production in Rust"](https://zero2prod.com).\
+Если вы хотите использовать Rust для embedded-разработки,
+обратитесь к [Embedded Rust book](https://docs.rust-embedded.org/book/).
 
-### Masterclasses
+### Мастер-классы
 
-You can then find resources on key topics that cut across domains.\
-For testing, check out
+Также существуют ресурсы по ключевым темам, актуальным для разных областей.\
+Для изучения testing обратитесь к
 ["Advanced testing, going beyond the basics"](https://rust-exercises.com/advanced-testing/).\
-For telemetry, check out ["You can't fix what you can't see"](https://rust-exercises.com/telemetry/).
+Для изучения telemetry обратитесь к ["You can't fix what you can't see"](https://rust-exercises.com/telemetry/).

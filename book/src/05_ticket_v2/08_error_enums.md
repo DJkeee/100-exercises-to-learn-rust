@@ -1,15 +1,15 @@
 # Error enums
 
-Your solution to the previous exercise may have felt awkward: matching on strings is not ideal!\
-A colleague might rework the error messages returned by `Ticket::new` (e.g. to improve readability) and,
-all of a sudden, your calling code would break.
+Решение предыдущего упражнения могло показаться неудобным: сопоставление strings далеко от идеала!\
+Коллега может переработать messages об errors, возвращаемые `Ticket::new`, например для улучшения читаемости,
+и вызывающий code внезапно перестанет работать.
 
-You already know the machinery required to fix this: enums!
+Вы уже знакомы с механизмом, позволяющим это исправить: enums!
 
-## Reacting to errors
+## Реакция на errors
 
-When you want to allow the caller to behave differently based on the specific error that occurred, you can
-use an enum to represent the different error cases:
+Если вызывающая сторона должна вести себя по-разному в зависимости от конкретного возникшего error,
+различные случаи error можно представить с помощью enum:
 
 ```rust
 // Перечисление ошибок для представления различных ошибок,
@@ -21,10 +21,10 @@ enum U32ParseError {
 }
 ```
 
-Using an error enum, you're encoding the different error cases in the type system—they become part of the
-signature of the fallible function.\
-This simplifies error handling for the caller, as they can use a `match` expression to react to the different
-error cases:
+Используя error enum, вы codeируете различные случаи error в type system: они становятся частью
+signature fallible function.\
+Это упрощает error handling для вызывающей стороны: с помощью expression `match` она может по-разному реагировать
+на различные случаи error:
 
 ```rust
 match s.parse_u32() {

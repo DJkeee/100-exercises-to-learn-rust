@@ -1,12 +1,12 @@
-# The `Drop` trait
+# Trait `Drop`
 
-When we introduced [destructors](../03_ticket_v1/11_destructor.md),
-we mentioned that the `drop` function:
+Когда мы знакомились с [destructors](../03_ticket_v1/11_destructor.md),
+то упомянули, что function `drop`:
 
-1. reclaims the memory occupied by the type (i.e. `std::mem::size_of` bytes)
-2. cleans up any additional resources that the value might be managing (e.g. the heap buffer of a `String`)
+1. освобождает memory, занимаемую type (то есть `std::mem::size_of` bytes)
+2. очищает дополнительные ресурсы, которыми может управлять value (например, buffer `String` в heap)
 
-Step 2. is where the `Drop` trait comes in.
+На шаге 2 в дело вступает trait `Drop`.
 
 ```rust
 pub trait Drop {
@@ -14,19 +14,19 @@ pub trait Drop {
 }
 ```
 
-The `Drop` trait is a mechanism for you to define _additional_ cleanup logic for your types,
-beyond what the compiler does for you automatically.\
-Whatever you put in the `drop` method will be executed when the value goes out of scope.
+Trait `Drop` позволяет определить для своих types _дополнительную_ логику очистки
+помимо той, которую compiler выполняет автоматически.\
+Всё, что находится в method `drop`, будет выполнено при выходе value из scope.
 
-## `Drop` and `Copy`
+## `Drop` и `Copy`
 
-When talking about the `Copy` trait, we said that a type can't implement `Copy` if it
-manages additional resources beyond the `std::mem::size_of` bytes that it occupies in memory.
+Обсуждая trait `Copy`, мы сказали, что type не может реализовывать `Copy`, если он
+управляет дополнительными ресурсами помимо занимаемых им в memory `std::mem::size_of` bytes.
 
-You might wonder: how does the compiler know if a type manages additional resources?
-That's right: `Drop` trait implementations!\
-If your type has an explicit `Drop` implementation, the compiler will assume
-that your type has additional resources attached to it and won't allow you to implement `Copy`.
+Возникает вопрос: как compiler узнаёт, управляет ли type дополнительными ресурсами?
+Верно: по implementations trait `Drop`!\
+Если у type есть явная implementation `Drop`, compiler предполагает,
+что с type связаны дополнительные ресурсы, и не разрешает реализовать `Copy`.
 
 ```rust
 // Это единичная структура, то есть структура без полей.
@@ -41,7 +41,7 @@ impl Drop for MyType {
 }
 ```
 
-The compiler will complain with this error message:
+Compiler сообщит следующую ошибку:
 
 ```text
 error[E0184]: the trait `Copy` cannot be implemented for this type; 

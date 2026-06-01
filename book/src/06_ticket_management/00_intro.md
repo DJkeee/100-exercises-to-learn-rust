@@ -1,18 +1,18 @@
-# Intro
+# Введение
 
-In the previous chapter we modelled `Ticket` in a vacuum: we defined its fields and their constraints, we learned
-how to best represent them in Rust, but we didn't consider how `Ticket` fits into a larger system.
-We'll use this chapter to build a simple workflow around `Ticket`, introducing a (rudimentary) management system to
-store and retrieve tickets.
+В предыдущей главе мы моделировали `Ticket` изолированно: определили его fields и их constraints, узнали,
+как лучше всего представить их в Rust, но не рассматривали место `Ticket` в более крупной системе.
+В этой главе мы построим простой workflow вокруг `Ticket`: создадим базовую систему управления для
+хранения и получения тикетов.
 
-The task will give us an opportunity to explore new Rust concepts, such as:
+Задача даст нам возможность изучить новые концепции Rust:
 
-- Stack-allocated arrays
-- `Vec`, a growable array type
-- `Iterator` and `IntoIterator`, for iterating over collections
-- Slices (`&[T]`), to work with parts of a collection
-- Lifetimes, to describe how long references are valid
-- `HashMap` and `BTreeMap`, two key-value data structures
-- `Eq` and `Hash`, to compare keys in a `HashMap`
-- `Ord` and `PartialOrd`, to work with a `BTreeMap`
-- `Index` and `IndexMut`, to access elements in a collection
+- Arrays, размещаемые в stack
+- `Vec`, type расширяемого array
+- `Iterator` и `IntoIterator` для iteration по collections
+- Slices (`&[T]`) для работы с частями collection
+- Lifetimes для описания периода валидности references
+- `HashMap` и `BTreeMap`, две data structures типа key-value
+- `Eq` и `Hash` для сравнения keys в `HashMap`
+- `Ord` и `PartialOrd` для работы с `BTreeMap`
+- `Index` и `IndexMut` для доступа к элементам collection

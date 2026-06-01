@@ -1,38 +1,38 @@
 # Arrays
 
-As soon as we start talking about "ticket management" we need to think about a way to store _multiple_ tickets.
-In turn, this means we need to think about collections. In particular, homogeneous collections:
-we want to store multiple instances of the same type.
+Как только мы начинаем говорить об «управлении тикетами», необходимо задуматься о способе хранения _нескольких_ тикетов.
+А значит, необходимо рассмотреть collections. В частности, однородные collections:
+мы хотим хранить несколько экземпляров одного и того же type.
 
-What does Rust have to offer in this regard?
+Что предлагает Rust для решения этой задачи?
 
 ## Arrays
 
-A first attempt could be to use an **array**.\
-Arrays in Rust are fixed-size collections of elements of the same type.
+Первым решением может быть **array**.\
+Arrays в Rust — это collections фиксированного размера, содержащие элементы одного type.
 
-Here's how you can define an array:
+Определить array можно так:
 
 ```rust
 // Синтаксис типа массива: [ <type> ; <number of elements> ]
 let numbers: [u32; 3] = [1, 2, 3];
 ```
 
-This creates an array of 3 integers, initialized with the values `1`, `2`, and `3`.\
-The type of the array is `[u32; 3]`, which reads as "an array of `u32`s with a length of 3".
+Так создаётся array из 3 целых чисел, инициализированный значениями `1`, `2` и `3`.\
+Type этого array — `[u32; 3]`, что читается как «array из `u32` длиной 3».
 
-If all array elements are the same, you can use a shorter syntax to initialize it:
+Если все элементы array одинаковы, для инициализации можно использовать сокращённый синтаксис:
 
 ```rust
 // [ <value> ; <number of elements> ]
 let numbers: [u32; 3] = [1; 3];
 ```
 
-`[1; 3]` creates an array of three elements, all equal to `1`.
+`[1; 3]` создаёт array из трёх элементов, каждый из которых равен `1`.
 
-### Accessing elements
+### Доступ к элементам
 
-You can access elements of an array using square brackets:
+Получить доступ к элементам array можно с помощью квадратных скобок:
 
 ```rust
 let first = numbers[0];
@@ -40,25 +40,25 @@ let second = numbers[1];
 let third = numbers[2];
 ```
 
-The index must be of type `usize`.\
-Arrays are **zero-indexed**, like everything in Rust. You've seen this before with string slices and field indexing in
-tuples/tuple-like variants.
+Index должен иметь type `usize`.\
+Arrays, как и всё в Rust, используют **zero-based indexing**. Вы уже встречались с этим в string slices и при indexing полей
+tuples и tuple-like variants.
 
-### Out-of-bounds access
+### Доступ за границами
 
-If you try to access an element that's out of bounds, Rust will panic:
+Если попытаться обратиться к элементу за границами array, Rust вызовет panic:
 
 ```rust
 let numbers: [u32; 3] = [1, 2, 3];
 let fourth = numbers[3]; // Здесь возникнет паника
 ```
 
-This is enforced at runtime using **bounds checking**. It comes with a small performance overhead, but it's how
-Rust prevents buffer overflows.\
-In some scenarios the Rust compiler can optimize away bounds checks, especially if iterators are involved—we'll speak
-more about this later on.
+Это проверяется во время выполнения с помощью **bounds checking**. Такая проверка немного снижает производительность, но именно так
+Rust предотвращает buffer overflow.\
+В некоторых случаях Rust compiler может оптимизировать bounds checks, особенно при использовании iterators. Позже мы
+обсудим это подробнее.
 
-If you don't want to panic, you can use the `get` method, which returns an `Option<&T>`:
+Если panic нежелателен, можно использовать метод `get`, который возвращает `Option<&T>`:
 
 ```rust
 let numbers: [u32; 3] = [1, 2, 3];
@@ -68,16 +68,16 @@ assert_eq!(numbers.get(0), Some(&1));
 assert_eq!(numbers.get(3), None);
 ```
 
-### Performance
+### Производительность
 
-Since the size of an array is known at compile-time, the compiler can allocate the array on the stack.
-If you run the following code:
+Поскольку размер array известен во время компиляции, compiler может разместить его в stack.
+Если выполнить следующий код:
 
 ```rust
 let numbers: [u32; 3] = [1, 2, 3];
 ```
 
-You'll get the following memory layout:
+получится следующая схема размещения в памяти:
 
 ```text
         +---+---+---+
@@ -85,6 +85,6 @@ Stack:  | 1 | 2 | 3 |
         +---+---+---+
 ```
 
-In other words, the size of an array is `std::mem::size_of::<T>() * N`, where `T` is the type of the elements and `N` is
-the number of elements.\
-You can access and replace each element in `O(1)` time.
+Иными словами, размер array равен `std::mem::size_of::<T>() * N`, где `T` — type элементов, а `N` —
+количество элементов.\
+Получить доступ к любому элементу и заменить его можно за `O(1)`.

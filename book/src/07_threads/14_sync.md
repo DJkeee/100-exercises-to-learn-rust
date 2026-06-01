@@ -1,28 +1,28 @@
 # `Sync`
 
-Before we wrap up this chapter, let's talk about another key trait in Rust's standard library: `Sync`.
+Прежде чем завершить главу, поговорим ещё об одном ключевом trait в standard library Rust: `Sync`.
 
-`Sync` is an auto trait, just like `Send`.\
-It is automatically implemented by all types that can be safely **shared** between threads.
+`Sync`, как и `Send`, является auto trait.\
+Он автоматически реализуется для всех types, которые можно безопасно **share** между threads.
 
-In other words: `T` is Sync if `&T` is `Send`.
+Иными словами: `T` реализует `Sync`, если `&T` реализует `Send`.
 
 ## `T: Sync` doesn't imply `T: Send`
 
-It's important to note that `T` can be `Sync` without being `Send`.\
-For example: `MutexGuard` is not `Send`, but it is `Sync`.
+Важно отметить, что `T` может реализовывать `Sync`, не реализуя `Send`.\
+Например, `MutexGuard` не реализует `Send`, но реализует `Sync`.
 
-It isn't `Send` because the lock must be released on the same thread that acquired it, therefore we don't
-want `MutexGuard` to be dropped on a different thread.\
-But it is `Sync`, because giving a `&MutexGuard` to another thread has no impact on where the lock is released.
+Он не реализует `Send`, поскольку lock должен быть освобождён в том же thread, который его acquire, а значит,
+мы не хотим, чтобы `MutexGuard` был dropped в другом thread.\
+Но он реализует `Sync`, поскольку передача `&MutexGuard` другому thread не влияет на место освобождения lock.
 
 ## `T: Send` doesn't imply `T: Sync`
 
-The opposite is also true: `T` can be `Send` without being `Sync`.\
-For example: `RefCell<T>` is `Send` (if `T` is `Send`), but it is not `Sync`.
+Верно и обратное: `T` может реализовывать `Send`, не реализуя `Sync`.\
+Например, `RefCell<T>` реализует `Send`, если `T` реализует `Send`, но не реализует `Sync`.
 
-`RefCell<T>` performs runtime borrow checking, but the counters it uses to track borrows are not thread-safe.
-Therefore, having multiple threads holding a `&RefCell` would lead to a data race, with potentially
-multiple threads obtaining mutable references to the same data. Hence `RefCell` is not `Sync`.\
-`Send` is fine, instead, because when we send a `RefCell` to another thread we're not
-leaving behind any references to the data it contains, hence no risk of concurrent mutable access.
+`RefCell<T>` выполняет runtime borrow checking, но counters для отслеживания borrows не являются thread-safe.
+Поэтому наличие `&RefCell` у нескольких threads привело бы к data race: несколько threads могли бы получить
+mutable references на одни и те же data. Вот почему `RefCell` не реализует `Sync`.\
+А `Send` допустим: отправляя `RefCell` другому thread, мы не оставляем references на содержащиеся в нём data,
+поэтому риска concurrent mutable access нет.

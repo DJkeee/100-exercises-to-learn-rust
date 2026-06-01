@@ -1,6 +1,6 @@
 # `From` and `Into`
 
-Let's go back to where our string journey started:
+Вернёмся к началу нашего путешествия по строкам:
 
 ```rust
 let ticket = Ticket::new(
@@ -10,11 +10,11 @@ let ticket = Ticket::new(
 );
 ```
 
-We now know enough to start unpacking what `.into()` is doing here.
+Теперь наших знаний достаточно, чтобы разобраться, что здесь делает `.into()`.
 
-## The problem
+## Проблема
 
-This is the signature of the `new` method:
+Вот signature method `new`:
 
 ```rust
 impl Ticket {
@@ -28,14 +28,14 @@ impl Ticket {
 }
 ```
 
-We've also seen that string literals (such as `"A title"`) are of type `&str`.\
-We have a type mismatch here: a `String` is expected, but we have a `&str`.
-No magical coercion will come to save us this time; we need **to perform a conversion**.
+Мы также выяснили, что string literals (такие как `"A title"`) имеют type `&str`.\
+Здесь возникает type mismatch: ожидается `String`, а у нас есть `&str`.
+На этот раз никакой волшебной coercion не будет: нужно **выполнить conversion**.
 
-## `From` and `Into`
+## `From` и `Into`
 
-The Rust standard library defines two traits for **infallible conversions**: `From` and `Into`,
-in the `std::convert` module.
+Standard library Rust определяет два traits для **infallible conversions**: `From` и `Into`,
+в module `std::convert`.
 
 ```rust
 pub trait From<T>: Sized {
@@ -47,20 +47,20 @@ pub trait Into<T>: Sized {
 }
 ```
 
-These trait definitions showcase a few concepts that we haven't seen before: **supertraits** and **implicit trait bounds**.
-Let's unpack those first.
+В этих определениях traits встречается несколько новых для нас концепций: **supertraits** и **implicit trait bounds**.
+Сначала разберём их.
 
 ### Supertrait / Subtrait
 
-The `From: Sized` syntax implies that `From` is a **subtrait** of `Sized`: any type that
-implements `From` must also implement `Sized`.
-Alternatively, you could say that `Sized` is a **supertrait** of `From`.
+Синтаксис `From: Sized` означает, что `From` — **subtrait** для `Sized`: любой type,
+реализующий `From`, должен также реализовывать `Sized`.
+Иначе говоря, `Sized` — **supertrait** для `From`.
 
 ### Implicit trait bounds
 
-Every time you have a generic type parameter, the compiler implicitly assumes that it's `Sized`.
+При наличии generic type parameter compiler неявно предполагает, что он является `Sized`.
 
-For example:
+Например:
 
 ```rust
 pub struct Foo<T> {
@@ -68,7 +68,7 @@ pub struct Foo<T> {
 }
 ```
 
-is actually equivalent to:
+на самом деле эквивалентно:
 
 ```rust
 pub struct Foo<T: Sized> 
@@ -77,7 +77,7 @@ pub struct Foo<T: Sized>
 }
 ```
 
-In the case of `From<T>`, the trait definition is equivalent to:
+В случае `From<T>` определение trait эквивалентно:
 
 ```rust
 pub trait From<T: Sized>: Sized {
@@ -85,12 +85,12 @@ pub trait From<T: Sized>: Sized {
 }
 ```
 
-In other words, _both_ `T` and the type implementing `From<T>` must be `Sized`, even
-though the former bound is implicit.
+Иными словами, _и_ `T`, _и_ type, реализующий `From<T>`, должны быть `Sized`, хотя
+первый bound задан неявно.
 
 ### Negative trait bounds
 
-You can opt out of the implicit `Sized` bound with a **negative trait bound**:
+От неявного bound `Sized` можно отказаться с помощью **negative trait bound**:
 
 ```rust
 pub struct Foo<T: ?Sized> {
@@ -100,26 +100,26 @@ pub struct Foo<T: ?Sized> {
 }
 ```
 
-This syntax reads as "`T` may or may not be `Sized`", and it allows you to
-bind `T` to a DST (e.g. `Foo<str>`). It is a special case, though: negative trait bounds are exclusive to `Sized`,
-you can't use them with other traits.
+Этот синтаксис читается как «`T` может быть `Sized`, а может и не быть» и позволяет
+связать `T` с DST (например, `Foo<str>`). Однако это особый случай: negative trait bounds применимы только к `Sized`,
+с другими traits их использовать нельзя.
 
-## `&str` to `String`
+## Из `&str` в `String`
 
-In [`std`'s documentation](https://doc.rust-lang.org/std/convert/trait.From.html#implementors)
-you can see which `std` types implement the `From` trait.\
-You'll find that `String` implements `From<&str> for String`. Thus, we can write:
+В [documentation `std`](https://doc.rust-lang.org/std/convert/trait.From.html#implementors)
+можно посмотреть, какие types `std` реализуют trait `From`.\
+Там указано, что `String` реализует `From<&str> for String`. Следовательно, можно написать:
 
 ```rust
 let title = String::from("A title");
 ```
 
-We've been primarily using `.into()`, though.\
-If you check out the [implementors of `Into`](https://doc.rust-lang.org/std/convert/trait.Into.html#implementors)
-you won't find `Into<String> for &str`. What's going on?
+Однако до сих пор мы в основном использовали `.into()`.\
+Если посмотреть [implementors `Into`](https://doc.rust-lang.org/std/convert/trait.Into.html#implementors),
+то `Into<String> for &str` там не найдётся. Что происходит?
 
-`From` and `Into` are **dual traits**.\
-In particular, `Into` is implemented for any type that implements `From` using a **blanket implementation**:
+`From` и `Into` — **dual traits**.\
+В частности, `Into` реализуется для любого type, реализующего `From`, с помощью **blanket implementation**:
 
 ```rust
 impl<T, U> Into<U> for T
@@ -132,17 +132,17 @@ where
 }
 ```
 
-If a type `U` implements `From<T>`, then `Into<U> for T` is automatically implemented. That's why
-we can write `let title = "A title".into();`.
+Если type `U` реализует `From<T>`, то `Into<U> for T` реализуется автоматически. Именно поэтому
+можно написать `let title = "A title".into();`.
 
 ## `.into()`
 
-Every time you see `.into()`, you're witnessing a conversion between types.\
-What's the target type, though?
+Всякий раз, когда встречается `.into()`, происходит conversion между types.\
+Но каков target type?
 
-In most cases, the target type is either:
+В большинстве случаев target type:
 
-- Specified by the signature of a function/method (e.g. `Ticket::new` in our example above)
-- Specified in the variable declaration with a type annotation (e.g. `let title: String = "A title".into();`)
+- Задан signature function или method (например, `Ticket::new` в примере выше)
+- Задан в объявлении variable с помощью type annotation (например, `let title: String = "A title".into();`)
 
-`.into()` will work out of the box as long as the compiler can infer the target type from the context without ambiguity.
+`.into()` будет работать без дополнительной настройки, пока compiler может однозначно вывести target type из контекста.

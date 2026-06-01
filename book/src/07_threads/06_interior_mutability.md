@@ -1,6 +1,6 @@
 # Interior mutability
 
-Let's take a moment to reason about the signature of `Sender`'s `send`:
+Рассмотрим signature method `send` у `Sender`:
 
 ```rust
 impl<T> Sender<T> {
@@ -10,70 +10,70 @@ impl<T> Sender<T> {
 }
 ```
 
-`send` takes `&self` as its argument.\
-But it's clearly causing a mutation: it's adding a new message to the channel.
-What's even more interesting is that `Sender` is cloneable: we can have multiple instances of `Sender`
-trying to modify the channel state **at the same time**, from different threads.
+`send` принимает `&self` как argument.\
+Но он явно выполняет mutation: добавляет новое message в channel.
+Что ещё интереснее, `Sender` является cloneable: у нас может быть несколько instances `Sender`,
+которые пытаются изменить state channel **одновременно** из разных threads.
 
-That's the key property we are using to build this client-server architecture. But why does it work?
-Doesn't it violate Rust's rules about borrowing? How are we performing mutations via an _immutable_ reference?
+Именно это свойство используется для построения client-server architecture. Но почему это работает?
+Разве это не нарушает правила Rust для borrowing? Как выполняются mutations через _immutable_ reference?
 
-## Shared rather than immutable references
+## Shared references, а не immutable references
 
-When we introduced the borrow-checker, we named the two types of references we can have in Rust:
+Когда мы знакомились с borrow checker, то назвали два вида references в Rust:
 
 - immutable references (`&T`)
 - mutable references (`&mut T`)
 
-It would have been more accurate to name them:
+Точнее было бы назвать их:
 
 - shared references (`&T`)
 - exclusive references (`&mut T`)
 
-Immutable/mutable is a mental model that works for the vast majority of cases, and it's a great one to get started
-with Rust. But it's not the whole story, as you've just seen: `&T` doesn't actually guarantee that the data it
-points to is immutable.\
-Don't worry, though: Rust is still keeping its promises.
-It's just that the terms are a bit more nuanced than they might seem at first.
+Модель immutable/mutable подходит для подавляющего большинства случаев и отлично помогает начать работу
+с Rust. Но, как вы только что увидели, она не описывает картину полностью: `&T` на самом деле не гарантирует
+immutable-характер data, на которые указывает.\
+При этом Rust по-прежнему выполняет свои обещания.
+Просто смысл терминов несколько тоньше, чем может показаться сначала.
 
 ## `UnsafeCell`
 
-Whenever a type allows you to mutate data through a shared reference, you're dealing with **interior mutability**.
+Если type позволяет mutate data через shared reference, перед вами **interior mutability**.
 
-By default, the Rust compiler assumes that shared references are immutable. It **optimises your code** based on that assumption.\
-The compiler can reorder operations, cache values, and do all sorts of magic to make your code faster.
+По умолчанию compiler Rust считает shared references immutable и **оптимизирует ваш code** с учётом этого предположения.\
+Compiler может менять порядок operations, cache values и выполнять другие преобразования для ускорения code.
 
-You can tell the compiler "No, this shared reference is actually mutable" by wrapping the data in an `UnsafeCell`.\
-Every time you see a type that allows interior mutability, you can be certain that `UnsafeCell` is involved,
-either directly or indirectly.\
-Using `UnsafeCell`, raw pointers and `unsafe` code, you can mutate data through shared references.
+Можно сообщить compiler: «Нет, этот shared reference на самом деле mutable», обернув data в `UnsafeCell`.\
+Всякий раз, когда встречается type, допускающий interior mutability, можно быть уверенным, что прямо
+или косвенно используется `UnsafeCell`.\
+С помощью `UnsafeCell`, raw pointers и `unsafe` code data можно mutate через shared references.
 
-Let's be clear, though: `UnsafeCell` isn't a magic wand that allows you to ignore the borrow-checker!\
-`unsafe` code is still subject to Rust's rules about borrowing and aliasing.
-It's an (advanced) tool that you can leverage to build **safe abstractions** whose safety can't be directly expressed
-in Rust's type system. Whenever you use the `unsafe` keyword you're telling the compiler:
-"I know what I'm doing, I won't violate your invariants, trust me."
+Важно понимать: `UnsafeCell` не позволяет игнорировать borrow checker!\
+На `unsafe` code по-прежнему распространяются правила Rust для borrowing и aliasing.
+Это продвинутый инструмент для создания **safe abstractions**, безопасность которых невозможно выразить напрямую
+в type system Rust. Используя keyword `unsafe`, вы сообщаете compiler:
+«Я знаю, что делаю, и не нарушу твои invariants, доверься мне».
 
-Every time you call an `unsafe` function, there will be documentation explaining its **safety preconditions**:
-under what circumstances it's safe to execute its `unsafe` block. You can find the ones for `UnsafeCell`
-[in `std`'s documentation](https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html).
+У каждой `unsafe` function есть документация с описанием её **safety preconditions**:
+условий, при которых выполнение её `unsafe` block безопасно. Условия для `UnsafeCell` приведены
+[в документации `std`](https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html).
 
-We won't be using `UnsafeCell` directly in this course, nor will we be writing `unsafe` code.
-But it's important to know that it's there, why it exists and how it relates to the types you use
-every day in Rust.
+В этом курсе мы не будем использовать `UnsafeCell` напрямую и писать `unsafe` code.
+Но важно знать о его существовании, назначении и связи с types, которые вы ежедневно используете
+в Rust.
 
-## Key examples
+## Основные примеры
 
-Let's go through a couple of important `std` types that leverage interior mutability.\
-These are types that you'll encounter somewhat often in Rust code, especially if you peek under the hood of
-some the libraries you use.
+Рассмотрим несколько важных types из `std`, использующих interior mutability.\
+Эти types довольно часто встречаются в Rust code, особенно если заглядывать во внутреннее устройство
+используемых libraries.
 
 ### Reference counting
 
-`Rc` is a reference-counted pointer.\
-It wraps around a value and keeps track of how many references to the value exist.
-When the last reference is dropped, the value is deallocated.\
-The value wrapped in an `Rc` is immutable: you can only get shared references to it.
+`Rc` — reference-counted pointer.\
+Он оборачивает value и отслеживает количество существующих references на него.
+Когда последний reference dropped, value deallocated.\
+Value внутри `Rc` immutable: получить на него можно только shared references.
 
 ```rust
 use std::rc::Rc;
@@ -91,18 +91,18 @@ assert_eq!(Rc::strong_count(&b), 2);
 //   и используют общий счетчик ссылок.
 ```
 
-`Rc` uses `UnsafeCell` internally to allow shared references to increment and decrement the reference count.
+Внутри `Rc` используется `UnsafeCell`, чтобы shared references могли увеличивать и уменьшать reference count.
 
 ### `RefCell`
 
-`RefCell` is one of the most common examples of interior mutability in Rust.
-It allows you to mutate the value wrapped in a `RefCell` even if you only have an
-immutable reference to the `RefCell` itself.
+`RefCell` — один из наиболее распространённых примеров interior mutability в Rust.
+Он позволяет mutate value внутри `RefCell`, даже если у вас есть только
+immutable reference на сам `RefCell`.
 
-This is done via **runtime borrow checking**.
-The `RefCell` keeps track of the number (and type) of references to the value it contains at runtime.
-If you try to borrow the value mutably while it's already borrowed immutably,
-the program will panic, ensuring that Rust's borrowing rules are always enforced.
+Это реализовано через **runtime borrow checking**.
+Во время runtime `RefCell` отслеживает количество и вид references на содержащееся в нём value.
+Если попытаться mutably borrow value, которое уже immutably borrowed,
+программа вызовет panic, обеспечивая соблюдение правил Rust для borrowing.
 
 ```rust
 use std::cell::RefCell;

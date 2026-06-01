@@ -1,38 +1,38 @@
-# Error trait
+# Trait Error
 
 ## Error reporting
 
-In the previous exercise you had to destructure the `TitleError` variant to extract the error message and
-pass it to the `panic!` macro.\
-This is a (rudimentary) example of **error reporting**: transforming an error type into a representation that can be
-shown to a user, a service operator, or a developer.
+В предыдущем упражнении потребовалось выполнить destructuring variant `TitleError`, чтобы извлечь message об error
+и передать его macro `panic!`.\
+Это простой пример **error reporting**: conversion error type в representation, которое можно
+показать пользователю, operatorу сервиса или developer.
 
-It's not practical for each Rust developer to come up with their own error reporting strategy: it'd be a waste of time
-and it wouldn't compose well across projects.
-That's why Rust provides the `std::error::Error` trait.
+Каждому Rust developer непрактично придумывать собственную стратегию error reporting: это отнимает время,
+а объединять такие стратегии в разных проектах неудобно.
+Поэтому Rust предоставляет trait `std::error::Error`.
 
-## The `Error` trait
+## Trait `Error`
 
-There are no constraints on the type of the `Err` variant in a `Result`, but it's a good practice to use a type
-that implements the `Error` trait.
-`Error` is the cornerstone of Rust's error handling story:
+Тип variant `Err` в `Result` ничем не ограничен, но хорошей практикой считается использование type,
+который implements trait `Error`.
+`Error` лежит в основе error handling в Rust:
 
 ```rust
 // Слегка упрощенное определение трейта `Error`
 pub trait Error: Debug + Display {}
 ```
 
-You might recall the `:` syntax from [the `From` trait](../04_traits/09_from.md#supertrait--subtrait)—it's used to specify **supertraits**.
-For `Error`, there are two supertraits: `Debug` and `Display`. If a type wants to implement `Error`, it must also
-implement `Debug` and `Display`.
+Возможно, вы помните syntax `:` по [trait `From`](../04_traits/09_from.md#supertrait--subtrait): он используется для указания **supertraits**.
+У `Error` два supertraits: `Debug` и `Display`. Чтобы type мог implement `Error`, он также должен
+implement `Debug` и `Display`.
 
 ## `Display` and `Debug`
 
-We've already encountered the `Debug` trait in [a previous exercise](../04_traits/04_derive.md)—it's the trait used by
-`assert_eq!` to display the values of the variables it's comparing when the assertion fails.
+Мы уже сталкивались с trait `Debug` [в предыдущем упражнении](../04_traits/04_derive.md): `assert_eq!` использует его,
+чтобы при неудачной assertion вывести value сравниваемых variables.
 
-From a "mechanical" perspective, `Display` and `Debug` are identical—they encode how a type should be converted
-into a string-like representation:
+С «механической» точки зрения `Display` и `Debug` одинаковы: они определяют, как type следует convert
+в string-like representation:
 
 ```rust
 // `Debug`
@@ -46,7 +46,7 @@ pub trait Display {
 }
 ```
 
-The difference is in their _purpose_: `Display` returns a representation that's meant for "end-users",
-while `Debug` provides a low-level representation that's more suitable to developers and service operators.\
-That's why `Debug` can be automatically implemented using the `#[derive(Debug)]` attribute, while `Display`
-**requires** a manual implementation.
+Разница состоит в их _назначении_: `Display` возвращает representation для «конечных пользователей»,
+а `Debug` предоставляет low-level representation, которое больше подходит developers и operatorам сервисов.\
+Поэтому `Debug` можно implement автоматически с помощью attribute `#[derive(Debug)]`, а `Display`
+**требует** manual implementation.

@@ -1,26 +1,26 @@
 # References
 
-What about references, like `&String` or `&mut String`? How are they represented in memory?
+А что насчёт references, например `&String` или `&mut String`? Как они представлены в памяти?
 
-Most references[^fat] in Rust are represented, in memory, as a pointer to a memory location.\
-It follows that their size is the same as the size of a pointer, a `usize`.
+Большинство references[^fat] в Rust представлены в памяти как pointer на определённый участок памяти.\
+Следовательно, их размер совпадает с размером pointer, то есть `usize`.
 
-You can verify this using `std::mem::size_of`:
+В этом можно убедиться с помощью `std::mem::size_of`:
 
 ```rust
 assert_eq!(std::mem::size_of::<&String>(), 8);
 assert_eq!(std::mem::size_of::<&mut String>(), 8);
 ```
 
-A `&String`, in particular, is a pointer to the memory location where the `String`'s metadata is stored.\
-If you run this snippet:
+В частности, `&String` — это pointer на участок памяти, где хранятся metadata значения `String`.\
+Если выполнить этот фрагмент:
 
 ```rust
 let s = String::from("Hey");
 let r = &s;
 ```
 
-you'll get something like this in memory:
+в памяти получится примерно следующее:
 
 ```
            --------------------------------------
@@ -37,14 +37,14 @@ Heap   | H | e | y | ? | ? |
        +---+---+---+---+---+
 ```
 
-It's a pointer to a pointer to the heap-allocated data, if you will.
-The same goes for `&mut String`.
+Можно сказать, что это pointer на pointer на данные, размещённые в heap.
+То же самое относится к `&mut String`.
 
-## Not all pointers point to the heap
+## Не все pointers указывают на heap
 
-The example above should clarify one thing: not all pointers point to the heap.\
-They just point to a memory location, which _may_ be on the heap, but doesn't have to be.
+Пример выше должен прояснить одну вещь: не все pointers указывают на heap.\
+Они просто указывают на участок памяти, который _может_ находиться в heap, но вовсе не обязан.
 
-[^fat]: [Later in the course](../04_traits/06_str_slice.md) we'll talk about **fat pointers**,
-i.e. pointers with additional metadata. As the name implies, they are larger than
-the pointers we discussed in this chapter, also known as **thin pointers**.
+[^fat]: [Позже в этом курсе](../04_traits/06_str_slice.md) мы поговорим о **fat pointers**,
+то есть о pointers с дополнительными metadata. Как следует из названия, они больше,
+чем pointers, рассмотренные в этой главе, которые также называют **thin pointers**.

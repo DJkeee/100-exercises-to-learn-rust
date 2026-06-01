@@ -1,38 +1,38 @@
 # Visibility
 
-When you start breaking down your code into multiple modules, you need to start thinking about **visibility**.
-Visibility determines which regions of your code (or other people's code) can access a given entity,
-be it a struct, a function, a field, etc.
+Когда вы начинаете разбивать код на несколько модулей, необходимо задуматься о **visibility**.
+Visibility определяет, какие части вашего кода (или чужого кода) могут обращаться к определенной сущности:
+структура, функция, поле и так далее.
 
-## Private by default
+## Private по умолчанию
 
-By default, everything in Rust is **private**.\
-A private entity can only be accessed:
+По умолчанию все в Rust является **private**.\
+К private-сущности можно обратиться только:
 
-1. within the same module where it's defined, or
-2. by one of its submodules
+1. из того же модуля, где она определена, или
+2. из одного из его подмодулей
 
-We've used this extensively in the previous exercises:
+Мы активно пользовались этим в предыдущих упражнениях:
 
-- `create_todo_ticket` worked (once you added a `use` statement) because `helpers` is a submodule of the crate root,
-  where `Ticket` is defined. Therefore, `create_todo_ticket` can access `Ticket` without any issues even
-  though `Ticket` is private.
-- All our unit tests are defined in a submodule of the code they're testing, so they can access everything without
-  restrictions.
+- `create_todo_ticket` работала (после добавления `use`), потому что `helpers` является подмодулем crate root,
+  где определен `Ticket`. Поэтому `create_todo_ticket` может без проблем обращаться к `Ticket`, даже
+  несмотря на то, что `Ticket` является private.
+- Все наши unit tests определены в подмодуле тестируемого кода, поэтому могут обращаться ко всему без
+  ограничений.
 
 ## Visibility modifiers
 
-You can modify the default visibility of an entity using a **visibility modifier**.\
-Some common visibility modifiers are:
+Изменить visibility сущности по умолчанию можно с помощью **visibility modifier**.\
+Вот несколько распространенных visibility modifiers:
 
-- `pub`: makes the entity **public**, i.e. accessible from outside the module where it's defined, potentially from
-  other crates.
-- `pub(crate)`: makes the entity public within the same **crate**, but not outside of it.
-- `pub(super)`: makes the entity public within the parent module.
-- `pub(in path::to::module)`: makes the entity public within the specified module.
+- `pub`: делает сущность **public**, то есть доступной извне модуля, где она определена, в том числе потенциально из
+  других crates.
+- `pub(crate)`: делает сущность public внутри того же **crate**, но не за его пределами.
+- `pub(super)`: делает сущность public внутри родительского модуля.
+- `pub(in path::to::module)`: делает сущность public внутри указанного модуля.
 
-You can use these modifiers on modules, structs, functions, fields, etc.
-For example:
+Эти модификаторы можно использовать для модулей, структур, функций, полей и так далее.
+Например:
 
 ```rust
 pub struct Configuration {
@@ -41,5 +41,5 @@ pub struct Configuration {
 }
 ```
 
-`Configuration` is public, but you can only access the `version` field from within the same crate.
-The `active` field, instead, is private and can only be accessed from within the same module or one of its submodules.
+`Configuration` является public, но обратиться к полю `version` можно только из того же crate.
+В свою очередь поле `active` является private, и обратиться к нему можно только из того же модуля или одного из его подмодулей.

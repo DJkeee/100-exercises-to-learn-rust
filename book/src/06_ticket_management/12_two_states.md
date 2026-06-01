@@ -1,7 +1,7 @@
 # Ticket ids
 
-Let's think again about our ticket management system.\
-Our ticket model right now looks like this:
+Вернёмся к нашей системе управления тикетами.\
+Сейчас модель тикета выглядит так:
 
 ```rust
 pub struct Ticket {
@@ -11,14 +11,14 @@ pub struct Ticket {
 }
 ```
 
-One thing is missing here: an **identifier** to uniquely identify a ticket.\
-That identifier should be unique for each ticket. That can be guaranteed by generating it automatically when
-a new ticket is created.
+Здесь не хватает **identifier**, однозначно определяющего тикет.\
+Identifier должен быть уникальным для каждого тикета. Это можно гарантировать, автоматически генерируя его
+при создании нового тикета.
 
-## Refining the model
+## Уточнение модели
 
-Where should the id be stored?\
-We could add a new field to the `Ticket` struct:
+Где следует хранить id?\
+Можно добавить новое поле в struct `Ticket`:
 
 ```rust
 pub struct Ticket {
@@ -29,8 +29,8 @@ pub struct Ticket {
 }
 ```
 
-But we don't know the id before creating the ticket. So it can't be there from the get-go.\
-It'd have to be optional:
+Но до создания тикета id неизвестен. Поэтому он не может присутствовать с самого начала.\
+Он должен быть optional:
 
 ```rust
 pub struct Ticket {
@@ -41,11 +41,11 @@ pub struct Ticket {
 }
 ```
 
-That's also not ideal—we'd have to handle the `None` case every single time we retrieve a ticket from the store,
-even though we know that the id should always be there once the ticket has been created.
+Это тоже неидеально: при каждом получении тикета из store пришлось бы обрабатывать случай `None`,
+хотя мы знаем, что после создания тикета id всегда должен присутствовать.
 
-The best solution is to have two different ticket **states**, represented by two separate types:
-a `TicketDraft` and a `Ticket`:
+Лучшее решение — использовать два разных **states** тикета, представленных отдельными types:
+`TicketDraft` и `Ticket`:
 
 ```rust
 pub struct TicketDraft {
@@ -61,7 +61,7 @@ pub struct Ticket {
 }
 ```
 
-A `TicketDraft` is a ticket that hasn't been created yet. It doesn't have an id, and it doesn't have a status.\
-A `Ticket` is a ticket that has been created. It has an id and a status.\
-Since each field in `TicketDraft` and `Ticket` embeds its own constraints, we don't have to duplicate logic
-across the two types.
+`TicketDraft` — ещё не созданный тикет. У него нет ни id, ни status.\
+`Ticket` — созданный тикет. У него есть id и status.\
+Поскольку каждое field в `TicketDraft` и `Ticket` содержит собственные constraints, дублировать логику
+в двух types не требуется.

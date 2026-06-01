@@ -1,12 +1,11 @@
-# Leaking data
+# Memory leaks
 
-The main concern around passing references to spawned threads is use-after-free bugs:
-accessing data using a pointer to a memory region that's already been freed/de-allocated.\
-If you're working with heap-allocated data, you can avoid the issue by
-telling Rust that you'll never reclaim that memory: you choose to **leak memory**,
-intentionally.
+Главная проблема при передаче references в spawned threads — bugs use-after-free:
+обращение к data через pointer на уже освобождённый memory region.\
+При работе с heap-allocated data проблему можно обойти, сообщив Rust, что эта memory
+никогда не будет освобождена: вы намеренно решаете **leak memory**.
 
-This can be done, for example, using the `Box::leak` method from Rust's standard library:
+Например, это можно сделать с помощью method `Box::leak` из standard library Rust:
 
 ```rust
 // Выделяем `u32` в куче, оборачивая его в `Box`.
@@ -16,10 +15,10 @@ let x = Box::new(41u32);
 let static_ref: &'static mut u32 = Box::leak(x);
 ```
 
-## Data leakage is process-scoped
+## Memory leak ограничена lifetime process
 
-Leaking data is dangerous: if you keep leaking memory, you'll eventually
-run out and crash with an out-of-memory error.
+Memory leak опасна: если продолжать leak memory, в итоге она закончится
+и программа аварийно завершится с error out-of-memory.
 
 ```rust
 // Если оставить этот код работающим на некоторое время,
@@ -32,15 +31,15 @@ fn oom_trigger() {
 }
 ```
 
-At the same time, memory leaked via `leak` method is not truly forgotten.\
-The operating system can map each memory region to the process responsible for it.
-When the process exits, the operating system will reclaim that memory.
+При этом memory, leaked с помощью method `leak`, не забыта окончательно.\
+Operating system может сопоставить каждый memory region с отвечающим за него process.
+При завершении process operating system освободит эту memory.
 
-Keeping this in mind, it can be OK to leak memory when:
+С учётом этого leak memory может быть допустимо, если:
 
-- The amount of memory you need to leak is bounded/known upfront, or
-- Your process is short-lived and you're confident you won't exhaust
-  all the available memory before it exits
+- Объём memory, которую нужно leak, ограничен или заранее известен либо
+- Ваш process недолговечен и вы уверены, что не исчерпаете
+  всю доступную memory до его завершения
 
-"Let the OS deal with it" is a perfectly valid memory management strategy
-if your usecase allows for it.
+«Пусть с этим разберётся OS» — вполне допустимая стратегия memory management,
+если ваш use case это позволяет.

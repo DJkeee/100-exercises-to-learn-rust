@@ -1,55 +1,54 @@
 # Variables
 
-In Rust, you can use the `let` keyword to declare **variables**.\
-For example:
+В Rust для объявления **variables** используется keyword `let`.\
+Например:
 
 ```rust
 let x = 42;
 ```
 
-Above we defined a variable `x` and assigned it the value `42`.
+Выше мы определили variable `x` и присвоили ей значение `42`.
 
 ## Type
 
-Every variable in Rust must have a type. It can either be inferred by the compiler or explicitly specified by the
-developer.
+Каждая variable в Rust должна иметь type. Compiler может вывести его самостоятельно, либо developer может указать его
+явно.
 
-### Explicit type annotation
+### Явная type annotation
 
-You can specify the variable type by adding a colon `:` followed by the type after the variable name. For example:
+Чтобы указать type variable, добавьте после имени variable двоеточие `:`, а затем type. Например:
 
 ```rust
 // let <variable_name>: <type> = <expression>;
 let x: u32 = 42;
 ```
 
-In the example above, we explicitly constrained the type of `x` to be `u32`.
+В примере выше мы явно ограничили type `x` значением `u32`.
 
 ### Type inference
 
-If we don't specify the type of a variable, the compiler will try to infer it based on the context in which the variable
-is used.
+Если type variable не указан, compiler попытается вывести его из контекста использования variable.
 
 ```rust
 let x = 42;
 let y: u32 = x;
 ```
 
-In the example above, we didn't specify the type of `x`.\
-`x` is later assigned to `y`, which is explicitly typed as `u32`. Since Rust doesn't perform automatic type coercion,
-the compiler infers the type of `x` to be `u32`—the same as `y` and the only type that will allow the program to compile
-without errors.
+В примере выше мы не указали type `x`.\
+Позже `x` присваивается `y`, для которой явно указан type `u32`. Поскольку Rust не выполняет автоматический type coercion,
+compiler выводит для `x` type `u32`: такой же, как у `y`, и единственный, при котором программа будет compile
+без ошибок.
 
-### Inference limitations
+### Ограничения inference
 
-The compiler sometimes needs a little help to infer the correct variable type based on its usage.\
-In those cases you'll get a compilation error and the compiler will ask you to provide an explicit type hint to
-disambiguate the situation.
+Иногда compiler требуется небольшая помощь, чтобы вывести правильный type variable из её использования.\
+В таких случаях вы получите compilation error, а compiler попросит добавить явную type hint, чтобы
+устранить неоднозначность.
 
-## Function arguments are variables
+## Function arguments также являются variables
 
-Not all heroes wear capes, not all variables are declared with `let`.\
-Function arguments are variables too!
+Не все герои носят плащи, и не все variables объявляются с помощью `let`.\
+Function arguments тоже являются variables!
 
 ```rust
 fn add_one(x: u32) -> u32 {
@@ -57,30 +56,30 @@ fn add_one(x: u32) -> u32 {
 }
 ```
 
-In the example above, `x` is a variable of type `u32`.\
-The only difference between `x` and a variable declared with `let` is that functions arguments **must** have their type
-explicitly declared. The compiler won't infer it for you.\
-This constraint allows the Rust compiler (and us humans!) to understand the function's signature without having to look
-at its implementation. That's a big boost for compilation speed[^speed]!
+В примере выше `x` является variable типа `u32`.\
+Единственное различие между `x` и variable, объявленной с помощью `let`, заключается в том, что для function arguments type
+**необходимо** указывать явно. Compiler не станет выводить его автоматически.\
+Благодаря этому ограничению compiler Rust (и мы, люди!) может понять signature function, не заглядывая
+в её implementation. Это значительно ускоряет compilation[^speed]!
 
 ## Initialization
 
-You don't have to initialize a variable when you declare it.\
-For example
+Variable не обязательно инициализировать при объявлении.\
+Например,
 
 ```rust
 let x: u32;
 ```
 
-is a valid variable declaration.\
-However, you must initialize the variable before using it. The compiler will throw an error if you don't:
+является корректным объявлением variable.\
+Однако variable необходимо инициализировать перед использованием. Иначе compiler выдаст ошибку:
 
 ```rust
 let x: u32;
 let y = x + 1;
 ```
 
-will throw a compilation error:
+приведёт к compilation error:
 
 ```text
 error[E0381]: used binding `x` isn't initialized
@@ -97,4 +96,4 @@ help: consider assigning a value
   |            +++
 ```
 
-[^speed]: The Rust compiler needs all the help it can get when it comes to compilation speed.
+[^speed]: Когда речь идёт о скорости compilation, compiler Rust нужна любая возможная помощь.

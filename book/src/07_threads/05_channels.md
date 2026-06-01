@@ -1,41 +1,41 @@
 # Channels
 
-All our spawned threads have been fairly short-lived so far.\
-Get some input, run a computation, return the result, shut down.
+До сих пор все наши spawned threads были довольно недолговечными.\
+Получить input data, выполнить computation, вернуть result, завершиться.
 
-For our ticket management system, we want to do something different:
-a client-server architecture.
+Для нашей системы управления заявками нужен другой подход:
+client-server architecture.
 
-We will have **one long-running server thread**, responsible for managing
-our state, the stored tickets.
+У нас будет **один long-running server thread**, отвечающий за управление
+нашим state — сохранёнными заявками.
 
-We will then have **multiple client threads**.\
-Each client will be able to send **commands** and **queries** to
-the stateful thread, in order to change its state (e.g. add a new ticket)
-or retrieve information (e.g. get the status of a ticket).\
-Client threads will run concurrently.
+Также у нас будет **несколько client threads**.\
+Каждый client сможет отправлять **commands** и **queries** в stateful thread,
+чтобы изменять его state (например, добавлять новую заявку) или получать
+информацию (например, status заявки).\
+Client threads будут выполняться concurrently.
 
 ## Communication
 
-So far we've only had very limited parent-child communication:
+До сих пор parent-child communication была сильно ограничена:
 
-- The spawned thread borrowed/consumed data from the parent context
-- The spawned thread returned data to the parent when joined
+- Spawned thread borrowed или потреблял data из parent context
+- Spawned thread возвращал data parent thread при join
 
-This isn't enough for a client-server design.\
-Clients need to be able to send and receive data from the server thread
-_after_ it has been launched.
+Для client-server design этого недостаточно.\
+Clients должны иметь возможность отправлять data server thread и получать их от него
+_после_ его запуска.
 
-We can solve the issue using **channels**.
+Проблему можно решить с помощью **channels**.
 
 ## Channels
 
-Rust's standard library provides **multi-producer, single-consumer** (mpsc) channels
-in its `std::sync::mpsc` module.\
-There are two channel flavours: bounded and unbounded. We'll stick to the unbounded
-version for now, but we'll discuss the pros and cons later on.
+Standard library Rust предоставляет **multi-producer, single-consumer** (mpsc) channels
+в module `std::sync::mpsc`.\
+Есть два варианта channels: bounded и unbounded. Пока используем unbounded-вариант,
+а его достоинства и недостатки обсудим позже.
 
-Channel creation looks like this:
+Создание channel выглядит так:
 
 ```rust
 use std::sync::mpsc::channel;
@@ -43,31 +43,30 @@ use std::sync::mpsc::channel;
 let (sender, receiver) = channel();
 ```
 
-You get a sender and a receiver.\
-You call `send` on the sender to push data into the channel.\
-You call `recv` on the receiver to pull data from the channel.
+Вы получаете sender и receiver.\
+Чтобы поместить data в channel, нужно вызвать `send` у sender.\
+Чтобы извлечь data из channel, нужно вызвать `recv` у receiver.
 
 ### Multiple senders
 
-`Sender` is clonable: we can create multiple senders (e.g. one for
-each client thread) and they will all push data into the same channel.
+`Sender` является clonable: можно создать несколько senders (например, по одному
+для каждого client thread), и все они будут помещать data в один channel.
 
-`Receiver`, instead, is not clonable: there can only be a single receiver
-for a given channel.
+А `Receiver` не является clonable: у конкретного channel может быть только один receiver.
 
-That's what **mpsc** (multi-producer single-consumer) stands for!
+Именно это означает **mpsc** (multi-producer single-consumer)!
 
 ### Message type
 
-Both `Sender` and `Receiver` are generic over a type parameter `T`.\
-That's the type of the _messages_ that can travel on our channel.
+И `Sender`, и `Receiver` являются generic по type parameter `T`.\
+Это type _messages_, передаваемых через наш channel.
 
-It could be a `u64`, a struct, an enum, etc.
+Им может быть `u64`, struct, enum и т. д.
 
 ### Errors
 
-Both `send` and `recv` can fail.\
-`send` returns an error if the receiver has been dropped.\
-`recv` returns an error if all senders have been dropped and the channel is empty.
+И `send`, и `recv` могут завершиться с error.\
+`send` возвращает error, если receiver был dropped.\
+`recv` возвращает error, если все senders были dropped, а channel пуст.
 
-In other words, `send` and `recv` error when the channel is effectively closed.
+Иными словами, `send` и `recv` возвращают error, когда channel фактически закрыт.

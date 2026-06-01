@@ -2,21 +2,21 @@
 
 <div class="warning">
 
-Don't jump ahead!\
-Complete the exercise for the previous section before you start this one.\
-It's located in `exercises/01_intro/00_welcome`, in the [course GitHub's repository](https://github.com/mainmatter/100-exercises-to-learn-rust).\
-Use [`wr`](00_welcome.md#wr-the-workshop-runner) to start the course and verify your solutions.
+Не забегайте вперёд!\
+Прежде чем начать этот раздел, выполните упражнение из предыдущего.\
+Оно находится в `exercises/01_intro/00_welcome`, в [GitHub repository курса](https://github.com/mainmatter/100-exercises-to-learn-rust).\
+Используйте [`wr`](00_welcome.md#wr-the-workshop-runner), чтобы начать курс и проверить свои решения.
 
 </div>
 
-The previous task doesn't even qualify as an exercise, but it already exposed you to quite a bit of Rust **syntax**.
-We won't cover every single detail of Rust's syntax used in the previous exercise.
-Instead, we'll cover _just enough_ to keep going without getting stuck in the details.\
-One step at a time!
+Предыдущее задание даже нельзя назвать полноценным упражнением, но оно уже познакомило вас со многими элементами **syntax** Rust.
+Мы не будем рассматривать каждую деталь syntax Rust, использованную в предыдущем упражнении.
+Вместо этого разберём _ровно столько_, сколько нужно, чтобы двигаться дальше и не увязнуть в деталях.\
+Шаг за шагом!
 
 ## Comments
 
-You can use `//` for single-line comments:
+Для однострочных comments можно использовать `//`:
 
 ```rust
 // Это однострочный комментарий
@@ -25,11 +25,11 @@ You can use `//` for single-line comments:
 
 ## Functions
 
-Functions in Rust are defined using the `fn` keyword, followed by the function's name, its input parameters, and its
+Functions в Rust определяются при помощи keyword `fn`, после которого указываются имя function, её input parameters и
 return type.
-The function's body is enclosed in curly braces `{}`.
+Тело function заключается в фигурные скобки `{}`.
 
-In previous exercise, you saw the `greeting` function:
+В предыдущем упражнении вы видели function `greeting`:
 
 ```rust
 // `fn` <function_name> ( <input params> ) -> <return_type> { <body> }
@@ -39,13 +39,13 @@ fn greeting() -> &'static str {
 }
 ```
 
-`greeting` has no input parameters and returns a reference to a string slice (`&'static str`).
+`greeting` не имеет input parameters и возвращает reference на string slice (`&'static str`).
 
 ### Return type
 
-The return type can be omitted from the signature if the function doesn't return anything (i.e. if it returns `()`,
-Rust's unit type).
-That's what happened with the `test_welcome` function:
+Return type можно опустить в signature, если function ничего не возвращает (то есть возвращает `()`,
+unit type Rust).
+Именно так оформлена function `test_welcome`:
 
 ```rust
 fn test_welcome() {
@@ -53,7 +53,7 @@ fn test_welcome() {
 }
 ```
 
-The above is equivalent to:
+Приведённый выше код эквивалентен следующему:
 
 ```rust
 // Явно указываем единичный возвращаемый тип
@@ -63,9 +63,9 @@ fn test_welcome() -> () {
 }
 ```
 
-### Returning values
+### Возврат значений
 
-The last expression in a function is implicitly returned:
+Последнее expression в function возвращается неявно:
 
 ```rust
 fn greeting() -> &'static str {
@@ -75,7 +75,7 @@ fn greeting() -> &'static str {
 }
 ```
 
-You can also use the `return` keyword to return a value early:
+Для досрочного возврата значения также можно использовать keyword `return`:
 
 ```rust
 fn greeting() -> &'static str {
@@ -84,14 +84,14 @@ fn greeting() -> &'static str {
 }
 ```
 
-It is considered idiomatic to omit the `return` keyword when possible.
+Если возможно, keyword `return` принято опускать: это считается idiomatic подходом.
 
 ### Input parameters
 
-Input parameters are declared inside the parentheses `()` that follow the function's name.\
-Each parameter is declared with its name, followed by a colon `:`, followed by its type.
+Input parameters объявляются внутри круглых скобок `()`, следующих за именем function.\
+Для каждого parameter указывается его имя, затем двоеточие `:`, затем type.
 
-For example, the `greet` function below takes a `name` parameter of type `&str` (a "string slice"):
+Например, приведённая ниже function `greet` принимает parameter `name` типа `&str` (`string slice`):
 
 ```rust
 // Входной параметр
@@ -101,15 +101,14 @@ fn greet(name: &str) -> String {
 }
 ```
 
-If there are multiple input parameters, they must be separated with commas.
+Если input parameters несколько, их необходимо разделять запятыми.
 
 ### Type annotations
 
-Since we've been mentioned "types" a few times, let's state it clearly: Rust is a **statically typed language**.\
-Every single value in Rust has a type and that type must be known to the compiler at compile-time.
+Поскольку мы уже несколько раз упомянули types, сформулируем явно: Rust является **statically typed language**.\
+Каждое значение в Rust имеет type, который должен быть известен compiler на этапе compile-time.
 
-Types are a form of **static analysis**.\
-You can think of a type as a **tag** that the compiler attaches to every value in your program. Depending on the
-tag, the compiler can enforce different rules—e.g. you can't add a string to a number, but you can add two numbers
-together.
-If leveraged correctly, types can prevent whole classes of runtime bugs.
+Types являются одной из форм **static analysis**.\
+Можно считать type **меткой**, которую compiler прикрепляет к каждому значению в программе. В зависимости от этой
+метки compiler может применять разные правила: например, нельзя сложить строку с числом, но можно сложить два числа.
+При правильном использовании types предотвращают целые классы runtime bugs.

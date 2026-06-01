@@ -1,12 +1,12 @@
 # Nullability
 
-Our implementation of the `assigned` method is fairly blunt: panicking for to-do and done tickets is far from ideal.\
-We can do better using **Rust's `Option` type**.
+Наша implementation method `assigned` довольно грубая: `panic` для tickets со status to-do и done далёк от идеала.\
+Можно сделать лучше, используя **type `Option` из Rust**.
 
 ## `Option`
 
-`Option` is a Rust type that represents **nullable values**.\
-It is an enum, defined in Rust's standard library:
+`Option` — это Rust type, представляющий **nullable values**.\
+Это enum, defined в standard library Rust:
 
 ```rust
 enum Option<T> {
@@ -15,33 +15,33 @@ enum Option<T> {
 }
 ```
 
-`Option` encodes the idea that a value might be present (`Some(T)`) or absent (`None`).\
-It also forces you to **explicitly handle both cases**. You'll get a compiler error if you are working with
-a nullable value and you forget to handle the `None` case.\
-This is a significant improvement over "implicit" nullability in other languages, where you can forget to check
-for `null` and thus trigger a runtime error.
+`Option` выражает идею о том, что value может присутствовать (`Some(T)`) или отсутствовать (`None`).\
+Кроме того, он заставляет **явно обработать оба случая**. Если при работе с nullable value забыть
+обработать случай `None`, compiler выдаст error.\
+Это значительное улучшение по сравнению с «неявной» nullability в других языках, где можно забыть check
+`null` и тем самым вызвать runtime error.
 
-## `Option`'s definition
+## Объявление `Option`
 
-`Option`'s definition uses a Rust construct that you haven't seen before: **tuple-like variants**.
+В definition `Option` используется construct Rust, с которым вы ещё не сталкивались: **tuple-like variants**.
 
 ### Tuple-like variants
 
-`Option` has two variants: `Some(T)` and `None`.\
-`Some` is a **tuple-like variant**: it's a variant that holds **unnamed fields**.
+У `Option` есть два variants: `Some(T)` и `None`.\
+`Some` — это **tuple-like variant**, то есть variant с **безымянными fields**.
 
-Tuple-like variants are often used when there is a single field to store, especially when we're looking at a
-"wrapper" type like `Option`.
+Tuple-like variants часто используются, когда необходимо хранить единственное field, особенно если речь идёт
+о typeе-«обёртке» наподобие `Option`.
 
 ### Tuple-like structs
 
-They're not specific to enums—you can define tuple-like structs too:
+Они характерны не только для enums: можно define и tuple-like structs:
 
 ```rust
 struct Point(i32, i32);
 ```
 
-You can then access the two fields of a `Point` instance using their positional index:
+После этого к двум fields instance `Point` можно обращаться по их positional index:
 
 ```rust
 let point = Point(3, 4);
@@ -51,9 +51,9 @@ let y = point.1;
 
 ### Tuples
 
-It's weird to say that something is tuple-like when we haven't seen tuples yet!\
-Tuples are another example of a primitive Rust type.
-They group together a fixed number of values with (potentially different) types:
+Странно говорить, что нечто является tuple-like, если мы ещё не знакомы с tuples!\
+Tuples — ещё один пример primitive type в Rust.
+Они объединяют фиксированное количество values с types, которые могут различаться:
 
 ```rust
 // Два значения одного типа
@@ -62,8 +62,8 @@ let first: (i32, i32) = (3, 4);
 let second: (i32, u32, u8) = (-42, 3, 8);
 ```
 
-The syntax is simple: you list the types of the values between parentheses, separated by commas.
-You can access the fields of a tuple using the dot notation and the field index:
+Syntax проста: types values перечисляются через запятую в круглых скобках.
+К fields tuple можно обращаться с помощью dot notation и index field:
 
 ```rust
 assert_eq!(second.0, -42);
@@ -71,4 +71,4 @@ assert_eq!(second.1, 3);
 assert_eq!(second.2, 8);
 ```
 
-Tuples are a convenient way of grouping values together when you can't be bothered to define a dedicated struct type.
+Tuples позволяют удобно группировать value, когда define отдельный type struct нецелесообразно.

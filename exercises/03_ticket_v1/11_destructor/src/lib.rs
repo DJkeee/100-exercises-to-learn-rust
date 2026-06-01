@@ -2,7 +2,7 @@
 // Мы вернемся к этой концепции в одной из следующих глав после изучения трейтов и
 // внутренней изменяемости.
 fn outro() -> &'static str {
-    "I have a basic understanding of __!"
+    "I have a basic understanding of destructors!"
 }
 
 #[cfg(test)]

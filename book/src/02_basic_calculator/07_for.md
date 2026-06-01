@@ -1,13 +1,13 @@
-# Loops, part 2: `for`
+# Loops, часть 2: `for`
 
-Having to manually increment a counter variable is somewhat tedious. The pattern is also extremely common!\
-To make this easier, Rust provides a more concise way to iterate over a range of values: the `for` loop.
+Увеличивать variable-счётчик вручную несколько утомительно. При этом такой pattern встречается очень часто!\
+Чтобы упростить задачу, Rust предоставляет более краткий способ iteration по диапазону значений: loop `for`.
 
-## The `for` loop
+## Loop `for`
 
-A `for` loop is a way to execute a block of code for each element in an iterator[^iterator].
+Loop `for` позволяет выполнить code block для каждого элемента iterator[^iterator].
 
-Here's the general syntax:
+Вот общий syntax:
 
 ```rust
 for <element> in <iterator> {
@@ -17,9 +17,9 @@ for <element> in <iterator> {
 
 ## Ranges
 
-Rust's standard library provides **range** type that can be used to iterate over a sequence of numbers[^weird-ranges].
+Standard library Rust предоставляет type **range**, с помощью которого можно выполнять iteration по последовательности чисел[^weird-ranges].
 
-For example, if we want to sum the numbers from 1 to 5:
+Например, если нужно просуммировать числа от 1 до 5:
 
 ```rust
 let mut sum = 0;
@@ -28,22 +28,22 @@ for i in 1..=5 {
 }
 ```
 
-Every time the loop runs, `i` will be assigned the next value in the range before executing the block of code.
+Перед каждым выполнением code block variable `i` присваивается следующее значение из range.
 
-There are five kinds of ranges in Rust:
+В Rust существует пять видов ranges:
 
-- `1..5`: A (half-open) range. It includes all numbers from 1 to 4. It doesn't include the last value, 5.
-- `1..=5`: An inclusive range. It includes all numbers from 1 to 5. It includes the last value, 5.
-- `1..`: An open-ended range. It includes all numbers from 1 to infinity (well, until the maximum value of the integer type).
-- `..5`: A range that starts at the minimum value for the integer type and ends at 4. It doesn't include the last value, 5.
-- `..=5`: A range that starts at the minimum value for the integer type and ends at 5. It includes the last value, 5.
+- `1..5`: Half-open range. Включает все числа от 1 до 4. Последнее значение, 5, не включается.
+- `1..=5`: Inclusive range. Включает все числа от 1 до 5. Последнее значение, 5, включается.
+- `1..`: Open-ended range. Включает все числа от 1 до бесконечности (точнее, до максимального значения integer type).
+- `..5`: Range, начинающийся с минимального значения integer type и заканчивающийся на 4. Последнее значение, 5, не включается.
+- `..=5`: Range, начинающийся с минимального значения integer type и заканчивающийся на 5. Последнее значение, 5, включается.
 
-You can use a `for` loop with the first three kinds of ranges, where the starting point
-is explicitly specified. The last two range types are used in other contexts, that we'll cover later.
+Loop `for` можно использовать с первыми тремя видами ranges, где начальная точка
+указана явно. Последние два range types используются в других контекстах, которые мы рассмотрим позже.
 
-The extreme values of a range don't have to be integer literals—they can be variables or expressions too!
+Границы range не обязательно должны быть integer literals: это могут быть variables или expressions!
 
-For example:
+Например:
 
 ```rust
 let end = 5;
@@ -54,11 +54,11 @@ for i in 1..(end + 1) {
 }
 ```
 
-## Further reading
+## Дополнительные материалы
 
-- [`for` loop documentation](https://doc.rust-lang.org/std/keyword.for.html)
+- [Документация loop `for`](https://doc.rust-lang.org/std/keyword.for.html)
 
-[^iterator]: Later in the course we'll give a precise definition of what counts as an "iterator".
-For now, think of it as a sequence of values that you can loop over.
-[^weird-ranges]: You can use ranges with other types too (e.g. characters and IP addresses),
-but integers are definitely the most common case in day-to-day Rust programming.
+[^iterator]: Позже в курсе мы дадим точное определение iterator.
+Пока считайте его последовательностью значений, по которой можно пройти с помощью loop.
+[^weird-ranges]: Ranges можно использовать и с другими types (например, с characters и IP addresses),
+но в повседневной разработке на Rust integers встречаются чаще всего.

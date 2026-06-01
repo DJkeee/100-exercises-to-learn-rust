@@ -1,32 +1,32 @@
 # String slices
 
-Throughout the previous chapters you've seen quite a few **string literals** being used in the code,
-like `"To-Do"` or `"A ticket description"`.
-They were always followed by a call to `.to_string()` or `.into()`. It's time to understand why!
+В предыдущих главах вы часто видели в коде **string literals**,
+например `"To-Do"` или `"A ticket description"`.
+После них всегда вызывался `.to_string()` или `.into()`. Пора разобраться почему!
 
 ## String literals
 
-You define a string literal by enclosing the raw text in double quotes:
+String literal определяется путём заключения исходного текста в двойные кавычки:
 
 ```rust
 let s = "Hello, world!";
 ```
 
-The type of `s` is `&str`, a **reference to a string slice**.
+Type `s` — `&str`, то есть **reference на string slice**.
 
 ## Memory layout
 
-`&str` and `String` are different types—they're not interchangeable.\
-Let's recall the memory layout of a `String` from our
-[previous exploration](../03_ticket_v1/09_heap.md).
-If we run:
+`&str` и `String` — разные types, они не взаимозаменяемы.\
+Вспомним memory layout `String` из нашего
+[предыдущего разбора](../03_ticket_v1/09_heap.md).
+Если выполнить:
 
 ```rust
 let mut s = String::with_capacity(5);
 s.push_str("Hello");
 ```
 
-we'll get this scenario in memory:
+в memory получится следующая картина:
 
 ```text
       +---------+--------+----------+
@@ -41,8 +41,8 @@ Heap:  | H | e | l | l | o |
        +---+---+---+---+---+
 ```
 
-If you remember, we've [also examined](../03_ticket_v1/10_references_in_memory.md)
-how a `&String` is laid out in memory:
+Как вы помните, мы [также разбирали](../03_ticket_v1/10_references_in_memory.md),
+как `&String` размещается в memory:
 
 ```text
      --------------------------------------
@@ -59,15 +59,15 @@ how a `&String` is laid out in memory:
    +---+---+---+---+---+
 ```
 
-`&String` points to the memory location where the `String`'s metadata is stored.\
-If we follow the pointer, we get to the heap-allocated data. In particular, we get to the first byte of the string, `H`.
+`&String` указывает на область memory, где хранятся metadata `String`.\
+Если проследовать по pointer, мы попадём к данным, выделенным в heap. В частности, к первому byte строки — `H`.
 
-What if we wanted a type that represents a **substring** of `s`? E.g. `ello` in `Hello`?
+Что, если нам нужен type, представляющий **substring** `s`? Например, `ello` в `Hello`?
 
 ## String slices
 
-A `&str` is a **view** into a string, a **reference** to a sequence of UTF-8 bytes stored elsewhere.
-You can, for example, create a `&str` from a `String` like this:
+`&str` — это **view** строки, **reference** на последовательность UTF-8 bytes, хранящуюся в другом месте.
+Например, создать `&str` из `String` можно так:
 
 ```rust
 let mut s = String::with_capacity(5);
@@ -77,7 +77,7 @@ s.push_str("Hello");
 let slice: &str = &s[1..];
 ```
 
-In memory, it'd look like this:
+В memory это будет выглядеть так:
 
 ```text
                     s                              slice
@@ -96,22 +96,22 @@ Heap:    | H | e | l | l | o |                  |
                +--------------------------------+
 ```
 
-`slice` stores two pieces of information on the stack:
+`slice` хранит в stack две части информации:
 
-- A pointer to the first byte of the slice.
-- The length of the slice.
+- Pointer на первый byte slice.
+- Длину slice.
 
-`slice` doesn't own the data, it just points to it: it's a **reference** to the `String`'s heap-allocated data.\
-When `slice` is dropped, the heap-allocated data won't be deallocated, because it's still owned by `s`.
-That's why `slice` doesn't have a `capacity` field: it doesn't own the data, so it doesn't need to know how much
-space it was allocated for it; it only cares about the data it references.
+`slice` не владеет данными, а лишь указывает на них: это **reference** на данные `String`, выделенные в heap.\
+Когда `slice` будет dropped, данные в heap не будут освобождены, поскольку ими по-прежнему владеет `s`.
+Именно поэтому у `slice` нет field `capacity`: он не владеет данными, а значит, ему не нужно знать, сколько
+memory для них было выделено; важны лишь данные, на которые он ссылается.
 
-## `&str` vs `&String`
+## `&str` и `&String`
 
-As a rule of thumb, use `&str` rather than `&String` whenever you need a reference to textual data.\
-`&str` is more flexible and generally considered more idiomatic in Rust code.
+Как правило, когда нужна reference на текстовые данные, используйте `&str`, а не `&String`.\
+`&str` более гибок и обычно считается более idiomatic в коде Rust.
 
-If a method returns a `&String`, you're promising that there is heap-allocated UTF-8 text somewhere that
-**matches exactly** the one you're returning a reference to.\
-If a method returns a `&str`, instead, you have a lot more freedom: you're just saying that _somewhere_ there's a
-bunch of text data and that a subset of it matches what you need, therefore you're returning a reference to it.
+Если method возвращает `&String`, вы обещаете, что где-то существует выделенный в heap UTF-8 текст, который
+**в точности совпадает** с тем, на который возвращается reference.\
+Если же method возвращает `&str`, свободы гораздо больше: вы лишь утверждаете, что _где-то_ есть
+текстовые данные, часть которых соответствует нужному содержимому, и возвращаете reference на эту часть.

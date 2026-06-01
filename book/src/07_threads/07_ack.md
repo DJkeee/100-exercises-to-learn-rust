@@ -1,16 +1,16 @@
 # Two-way communication
 
-In our current client-server implementation, communication flows in one direction: from the client to the server.\
-The client has no way of knowing if the server received the message, executed it successfully, or failed.
-That's not ideal.
+В текущей client-server implementation communication направлена в одну сторону: от client к server.\
+Client не может узнать, получил ли server message, успешно ли обработал его или столкнулся с error.
+Это не лучший вариант.
 
-To solve this issue, we can introduce a two-way communication system.
+Для решения проблемы можно добавить систему two-way communication.
 
 ## Response channel
 
-We need a way for the server to send a response back to the client.\
-There are various ways to do this, but the simplest option is to include a `Sender` channel in
-the message that the client sends to the server. After processing the message, the server can use
-this channel to send a response back to the client.
+Нужен способ отправить response от server обратно client.\
+Есть разные решения, но самое простое — включить channel `Sender` в message,
+которое client отправляет server. После обработки message server сможет использовать
+этот channel для отправки response обратно client.
 
-This is a fairly common pattern in Rust applications built on top of message-passing primitives.
+Это довольно распространённый pattern в приложениях Rust, построенных на primitives message passing.

@@ -1,13 +1,13 @@
 # `impl Trait`
 
-`TicketStore::to_dos` returns a `Vec<&Ticket>`.\
-That signature introduces a new heap allocation every time `to_dos` is called, which may be unnecessary depending
-on what the caller needs to do with the result.
-It'd be better if `to_dos` returned an iterator instead of a `Vec`, thus empowering the caller to decide whether to
-collect the results into a `Vec` or just iterate over them.
+`TicketStore::to_dos` возвращает `Vec<&Ticket>`.\
+При каждом вызове `to_dos` эта signature приводит к новому allocation в heap, который может оказаться лишним в зависимости
+от того, что caller будет делать с результатом.
+Было бы лучше, если бы `to_dos` возвращал iterator вместо `Vec`. Тогда caller сможет самостоятельно решить,
+собирать результаты в `Vec` или просто выполнить iteration по ним.
 
-That's tricky though!
-What's the return type of `to_dos`, as implemented below?
+Однако здесь есть сложность!
+Какой возвращаемый type у `to_dos` в приведённой ниже implementation?
 
 ```rust
 impl TicketStore {
@@ -17,27 +17,27 @@ impl TicketStore {
 }
 ```
 
-## Unnameable types
+## Types без имени
 
-The `filter` method returns an instance of `std::iter::Filter`, which has the following definition:
+Метод `filter` возвращает экземпляр `std::iter::Filter`, определённый следующим образом:
 
 ```rust
 pub struct Filter<I, P> { /* fields omitted */ }
 ```
 
-where `I` is the type of the iterator being filtered on and `P` is the predicate used to filter the elements.\
-We know that `I` is `std::slice::Iter<'_, Ticket>` in this case, but what about `P`?\
-`P` is a closure, an **anonymous function**. As the name suggests, closures don't have a name,
-so we can't write them down in our code.
+где `I` — тип фильтруемого iterator, а `P` — predicate, используемый для фильтрации элементов.\
+Мы знаем, что в данном случае `I` — это `std::slice::Iter<'_, Ticket>`, но что представляет собой `P`?\
+`P` — closure, **anonymous function**. Как следует из названия, у closures нет имён,
+поэтому мы не можем записать их в коде.
 
-Rust has a solution for this: **impl Trait**.
+В Rust для этого есть решение: **impl Trait**.
 
 ## `impl Trait`
 
-`impl Trait` is a feature that allows you to return a type without specifying its name.
-You just declare what trait(s) the type implements, and Rust figures out the rest.
+`impl Trait` — feature, позволяющая возвращать type, не указывая его имя.
+Достаточно объявить, какие trait или traits реализует type, а остальное определит Rust.
 
-In this case, we want to return an iterator of references to `Ticket`s:
+В данном случае требуется вернуть iterator references на `Ticket`:
 
 ```rust
 impl TicketStore {
@@ -47,23 +47,23 @@ impl TicketStore {
 }
 ```
 
-That's it!
+Вот и всё!
 
 ## Generic?
 
-`impl Trait` in return position is **not** a generic parameter.
+`impl Trait` в return position — **не** generic parameter.
 
-Generics are placeholders for types that are filled in by the caller of the function.
-A function with a generic parameter is **polymorphic**: it can be called with different types, and the compiler will generate
-a different implementation for each type.
+Generics — это placeholders для типов, которые заполняет caller функции.
+Функция с generic parameter является **polymorphic**: её можно вызвать с разными типами, и compiler сгенерирует
+отдельную implementation для каждого типа.
 
-That's not the case with `impl Trait`.
-The return type of a function with `impl Trait` is **fixed** at compile time, and the compiler will generate
-a single implementation for it.
-This is why `impl Trait` is also called **opaque return type**: the caller doesn't know the exact type of the return value,
-only that it implements the specified trait(s). But the compiler knows the exact type, there is no polymorphism involved.
+С `impl Trait` всё иначе.
+Возвращаемый тип функции с `impl Trait` **фиксируется** во время компиляции, и compiler генерирует
+для него одну implementation.
+Поэтому `impl Trait` также называют **opaque return type**: caller не знает точный тип возвращаемого значения,
+ему известно лишь то, что тип реализует указанные trait или traits. Но compiler знает точный тип: никакого polymorphism здесь нет.
 
 ## RPIT
 
-If you read RFCs or deep-dives about Rust, you might come across the acronym **RPIT**.\
-It stands for **"Return Position Impl Trait"** and refers to the use of `impl Trait` in return position.
+В RFC и подробных материалах о Rust вам может встретиться аббревиатура **RPIT**.\
+Она расшифровывается как **"Return Position Impl Trait"** и обозначает использование `impl Trait` в return position.

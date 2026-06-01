@@ -1,8 +1,8 @@
-# A dedicated `Client` type
+# Отдельный type `Client`
 
-All the interactions from the client side have been fairly low-level: you have to
-manually create a response channel, build the command, send it to the server, and
-then call `recv` on the response channel to get the response.
+До сих пор взаимодействие на стороне client было довольно низкоуровневым: требовалось
+вручную создать response channel, сформировать command, отправить его server,
+а затем вызвать `recv` у response channel, чтобы получить response.
 
-This is a lot of boilerplate code that could be abstracted away, and that's
-exactly what we're going to do in this exercise.
+Здесь много boilerplate code, который можно скрыть за abstraction.
+Именно этим мы займёмся в упражнении.

@@ -1,11 +1,11 @@
 # Mutable indexing
 
-`Index` allows read-only access. It doesn't let you mutate the value you
-retrieved.
+`Index` предоставляет доступ только для чтения. Он не позволяет изменять
+полученное значение.
 
 ## `IndexMut`
 
-If you want to allow mutability, you need to implement the `IndexMut` trait.
+Чтобы разрешить mutability, необходимо реализовать trait `IndexMut`.
 
 ```rust
 // Слегка упрощено
@@ -16,5 +16,5 @@ pub trait IndexMut<Idx>: Index<Idx>
 }
 ```
 
-`IndexMut` can only be implemented if the type already implements `Index`,
-since it unlocks an _additional_ capability.
+`IndexMut` можно реализовать только для type, уже реализующего `Index`,
+поскольку он открывает _дополнительную_ возможность.

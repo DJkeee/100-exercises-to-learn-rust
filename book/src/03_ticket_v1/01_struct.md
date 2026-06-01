@@ -1,20 +1,20 @@
 # Structs
 
-We need to keep track of three pieces of information for each ticket:
+Для каждого ticket нам нужно хранить три элемента данных:
 
-- A title
-- A description
-- A status
+- title
+- description
+- status
 
-We can start by using a [`String`](https://doc.rust-lang.org/std/string/struct.String.html)
-to represent them. `String` is the type defined in Rust's standard library to represent
-[UTF-8 encoded](https://en.wikipedia.org/wiki/UTF-8) text.
+Для начала представим их с помощью [`String`](https://doc.rust-lang.org/std/string/struct.String.html).
+`String` — это type из standard library Rust, предназначенный для представления текста в
+[кодировке UTF-8](https://en.wikipedia.org/wiki/UTF-8).
 
-But how do we **combine** these three pieces of information into a single entity?
+Но как **объединить** эти три элемента данных в единую сущность?
 
-## Defining a `struct`
+## Определение `struct`
 
-A `struct` defines a **new Rust type**.
+`struct` определяет **новый type Rust**.
 
 ```rust
 struct Ticket {
@@ -24,14 +24,14 @@ struct Ticket {
 }
 ```
 
-A struct is quite similar to what you would call a class or an object in other programming languages.
+Конструкция struct во многом похожа на то, что в других языках программирования называют class или object.
 
-## Defining fields
+## Определение fields
 
-The new type is built by combining other types as **fields**.\
-Each field must have a name and a type, separated by a colon, `:`. If there are multiple fields, they are separated by a comma, `,`.
+Новый type создаётся объединением других types в **fields**.\
+У каждого field должны быть имя и type, разделённые двоеточием `:`. Если fields несколько, они разделяются запятыми `,`.
 
-Fields don't have to be of the same type, as you can see in the `Configuration` struct below:
+Fields не обязаны иметь одинаковый type, как видно из struct `Configuration` ниже:
 
 ```rust
 struct Configuration {
@@ -40,9 +40,9 @@ struct Configuration {
 }
 ```
 
-## Instantiation
+## Создание instance
 
-You can create an instance of a struct by specifying the values for each field:
+Можно создать instance struct, указав значения каждого field:
 
 ```rust
 // Синтаксис: <StructName> { <field_name>: <value>, ... }
@@ -53,9 +53,9 @@ let ticket = Ticket {
 };
 ```
 
-## Accessing fields
+## Доступ к fields
 
-You can access the fields of a struct using the `.` operator:
+Получить доступ к fields struct можно с помощью оператора `.`:
 
 ```rust
 // Доступ к полю
@@ -64,8 +64,8 @@ let x = ticket.description;
 
 ## Methods
 
-We can attach behaviour to our structs by defining **methods**.\
-Using the `Ticket` struct as an example:
+Мы можем добавить поведение structs, определив **methods**.\
+Рассмотрим это на примере struct `Ticket`:
 
 ```rust
 impl Ticket {
@@ -82,27 +82,27 @@ impl Ticket {
 // }
 ```
 
-Methods are pretty similar to functions, with two key differences:
+Methods очень похожи на functions, но есть два ключевых отличия:
 
-1. methods must be defined inside an **`impl` block**
-2. methods may use `self` as their first parameter.
-   `self` is a keyword and represents the instance of the struct the method is being called on.
+1. methods должны быть определены внутри **блока `impl`**
+2. methods могут принимать `self` в качестве первого parameter.
+   `self` — это keyword, обозначающий instance struct, для которого вызывается method.
 
 ### `self`
 
-If a method takes `self` as its first parameter, it can be called using the **method call syntax**:
+Если method принимает `self` в качестве первого parameter, его можно вызвать с помощью **method call syntax**:
 
 ```rust
 // Синтаксис вызова метода: <instance>.<method_name>(<parameters>)
 let is_open = ticket.is_open();
 ```
 
-This is the same calling syntax you used to perform saturating arithmetic operations on `u32` values
-in [the previous chapter](../02_basic_calculator/09_saturating.md).
+Именно этот syntax вызова вы использовали для выполнения saturating arithmetic операций со значениями `u32`
+в [предыдущей главе](../02_basic_calculator/09_saturating.md).
 
 ### Static methods
 
-If a method doesn't take `self` as its first parameter, it's a **static method**.
+Если method не принимает `self` в качестве первого parameter, это **static method**.
 
 ```rust
 struct Configuration {
@@ -118,16 +118,16 @@ impl Configuration {
 }
 ```
 
-The only way to call a static method is by using the **function call syntax**:
+Static method можно вызвать только с помощью **function call syntax**:
 
 ```rust
 // Синтаксис вызова функции: <StructName>::<method_name>(<parameters>)
 let default_config = Configuration::default();
 ```
 
-### Equivalence
+### Эквивалентность
 
-You can use the function call syntax even for methods that take `self` as their first parameter:
+Function call syntax можно использовать даже для methods, которые принимают `self` в качестве первого parameter:
 
 ```rust
 // Синтаксис вызова функции:
@@ -135,5 +135,5 @@ You can use the function call syntax even for methods that take `self` as their 
 let is_open = Ticket::is_open(ticket);
 ```
 
-The function call syntax makes it quite clear that `ticket` is being used as `self`, the first parameter of the method,
-but it's definitely more verbose. Prefer the method call syntax when possible.
+Function call syntax ясно показывает, что `ticket` используется как `self`, то есть первый parameter method,
+но такая запись заметно многословнее. По возможности предпочитайте method call syntax.

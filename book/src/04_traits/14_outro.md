@@ -1,27 +1,26 @@
-# Wrapping up
+# Подведение итогов
 
-We've covered quite a few different traits in this chapter—and we've only scratched the surface!
-It may feel like you have a lot to remember, but don't worry: you'll bump into these traits
-so often when writing Rust code that they'll soon become second nature.
+В этой главе мы рассмотрели немало различных traits, но лишь слегка коснулись темы!
+Может показаться, что запомнить нужно слишком многое, однако не переживайте: при написании кода Rust эти traits
+будут встречаться так часто, что вскоре станут привычными.
 
-## Closing thoughts
+## Заключительные мысли
 
-Traits are powerful, but don't overuse them.\
-A few guidelines to keep in mind:
+Traits дают широкие возможности, но злоупотреблять ими не стоит.\
+Запомните несколько рекомендаций:
 
-- Don't make a function generic if it is always invoked with a single type. It introduces indirection in your
-  codebase, making it harder to understand and maintain.
-- Don't create a trait if you only have one implementation. It's a sign that the trait is not needed.
-- Implement standard traits for your types (`Debug`, `PartialEq`, etc.) whenever it makes sense.
-  It will make your types more idiomatic and easier to work with, unlocking a lot of functionality provided
-  by the standard library and ecosystem crates.
-- Implement traits from third-party crates if you need the functionality they unlock within their ecosystem.
-- Beware of making code generic solely to use mocks in your tests. The maintainability cost of this approach
-  can be high, and it's often better to use a different testing strategy. Check out the
-  [testing masterclass](https://github.com/mainmatter/rust-advanced-testing-workshop)
-  for details on high-fidelity testing.
+- Не делайте function generic, если она всегда вызывается с одним type. Это добавляет indirection в
+  codebase, усложняя понимание и сопровождение.
+- Не создавайте trait, если у вас только одна implementation. Это признак того, что trait не нужен.
+- Реализуйте standard traits для своих types (`Debug`, `PartialEq` и т. д.), когда это имеет смысл.
+  Это сделает types более idiomatic и удобными в работе, открыв множество возможностей, предоставляемых
+  standard library и ecosystem crates.
+- Реализуйте traits из сторонних crates, если вам нужна functionality, которую они открывают в своей ecosystem.
+- Не делайте код generic только ради использования mocks в тестах. Стоимость сопровождения такого подхода
+  может оказаться высокой, и зачастую лучше выбрать другую стратегию тестирования. Подробнее о
+  high-fidelity testing рассказывается в [testing masterclass](https://github.com/mainmatter/rust-advanced-testing-workshop).
 
-## Testing your knowledge
+## Проверка знаний
 
-Before moving on, let's go through one last exercise to consolidate what we've learned.
-You'll have minimal guidance this time—just the exercise description and the tests to guide you.
+Прежде чем двигаться дальше, выполним последнее упражнение, чтобы закрепить изученное.
+На этот раз подсказок будет минимум: ориентируйтесь только на описание упражнения и тесты.

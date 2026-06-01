@@ -1,15 +1,15 @@
-# Loops, part 1: `while`
+# Loops, часть 1: `while`
 
-Your implementation of `factorial` has been forced to use recursion.\
-This may feel natural to you, especially if you're coming from a functional programming background.
-Or it may feel strange, if you're used to more imperative languages like C or Python.
+В implementation `factorial` вам пришлось использовать recursion.\
+Это может казаться естественным, особенно если вы знакомы с functional programming.
+Или непривычным, если вы привыкли к более imperative языкам, таким как C или Python.
 
-Let's see how you can implement the same functionality using a **loop** instead.
+Посмотрим, как реализовать ту же функциональность с помощью **loop**.
 
-## The `while` loop
+## Loop `while`
 
-A `while` loop is a way to execute a block of code as long as a **condition** is true.\
-Here's the general syntax:
+Loop `while` позволяет выполнять code block, пока **условие** истинно.\
+Вот общий syntax:
 
 ```rust
 while <condition> {
@@ -17,7 +17,7 @@ while <condition> {
 }
 ```
 
-For example, we might want to sum the numbers from 1 to 5:
+Например, можно просуммировать числа от 1 до 5:
 
 ```rust
 let sum = 0;
@@ -30,11 +30,11 @@ while i <= 5 {
 }
 ```
 
-This will keep adding 1 to `i` and `i` to `sum` until `i` is no longer less than or equal to 5.
+Программа будет прибавлять 1 к `i`, а `i` — к `sum`, пока `i` не станет больше 5.
 
-## The `mut` keyword
+## Keyword `mut`
 
-The example above won't compile as is. You'll get an error like:
+Приведённый выше пример в текущем виде не будет compile. Вы получите такую ошибку:
 
 ```text
 error[E0384]: cannot assign twice to immutable variable `sum`
@@ -62,10 +62,10 @@ error[E0384]: cannot assign twice to immutable variable `i`
   |         ^^^^^^ cannot assign twice to immutable variable
 ```
 
-This is because variables in Rust are **immutable** by default.\
-You can't change their value once it has been assigned.
+Причина в том, что variables в Rust по умолчанию **immutable**.\
+После присваивания их значение нельзя изменить.
 
-If you want to allow modifications, you have to declare the variable as **mutable** using the `mut` keyword:
+Чтобы разрешить изменения, variable нужно объявить как **mutable** с помощью keyword `mut`:
 
 ```rust
 // Теперь `sum` и `i` изменяемы!
@@ -78,8 +78,8 @@ while i <= 5 {
 }
 ```
 
-This will compile and run without errors.
+Теперь code будет compile и выполнится без ошибок.
 
-## Further reading
+## Дополнительные материалы
 
-- [`while` loop documentation](https://doc.rust-lang.org/std/keyword.while.html)
+- [Документация loop `while`](https://doc.rust-lang.org/std/keyword.while.html)

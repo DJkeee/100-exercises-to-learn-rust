@@ -1,7 +1,7 @@
 # Vectors
 
-Arrays' strength is also their weakness: their size must be known upfront, at compile-time.
-If you try to create an array with a size that's only known at runtime, you'll get a compilation error:
+Сильная сторона arrays одновременно является и их слабостью: размер должен быть известен заранее, во время компиляции.
+Если попытаться создать array, размер которого становится известен только во время выполнения, возникнет ошибка компиляции:
 
 ```rust
 let n = 10;
@@ -17,19 +17,19 @@ error[E0435]: attempt to use a non-constant value in a constant
   |                    ^ non-constant value
 ```
 
-Arrays wouldn't work for our ticket management system—we don't know how many tickets we'll need to store at compile-time.
-This is where `Vec` comes in.
+Arrays не подойдут для нашей системы управления тикетами: во время компиляции мы не знаем, сколько тикетов потребуется хранить.
+Здесь нам пригодится `Vec`.
 
 ## `Vec`
 
-`Vec` is a growable array type, provided by the standard library.\
-You can create an empty array using the `Vec::new` function:
+`Vec` — type расширяемого array из standard library.\
+Создать пустой array можно с помощью функции `Vec::new`:
 
 ```rust
 let mut numbers: Vec<u32> = Vec::new();
 ```
 
-You would then push elements into the vector using the `push` method:
+Затем элементы можно добавлять в vector с помощью метода `push`:
 
 ```rust
 numbers.push(1);
@@ -37,16 +37,16 @@ numbers.push(2);
 numbers.push(3);
 ```
 
-New values are added to the end of the vector.\
-You can also create an initialized vector using the `vec!` macro, if you know the values at creation time:
+Новые значения добавляются в конец vector.\
+Если значения известны в момент создания, можно также создать инициализированный vector с помощью macro `vec!`:
 
 ```rust
 let numbers = vec![1, 2, 3];
 ```
 
-## Accessing elements
+## Доступ к элементам
 
-The syntax for accessing elements is the same as with arrays:
+Синтаксис доступа к элементам такой же, как у arrays:
 
 ```rust
 let numbers = vec![1, 2, 3];
@@ -55,8 +55,8 @@ let second = numbers[1];
 let third = numbers[2];
 ```
 
-The index must be of type `usize`.\
-You can also use the `get` method, which returns an `Option<&T>`:
+Index должен иметь type `usize`.\
+Можно также использовать метод `get`, который возвращает `Option<&T>`:
 
 ```rust
 let numbers = vec![1, 2, 3];
@@ -66,14 +66,14 @@ assert_eq!(numbers.get(0), Some(&1));
 assert_eq!(numbers.get(3), None);
 ```
 
-Access is bounds-checked, just like element access with arrays. It has O(1) complexity.
+Как и при доступе к элементам arrays, здесь выполняется bounds checking. Сложность операции — O(1).
 
-## Memory layout
+## Размещение в памяти
 
-`Vec` is a heap-allocated data structure.\
-When you create a `Vec`, it allocates memory on the heap to store the elements.
+`Vec` — data structure, размещаемая в heap.\
+При создании `Vec` память для хранения элементов выделяется в heap.
 
-If you run the following code:
+Если выполнить следующий код:
 
 ```rust
 let mut numbers = Vec::with_capacity(3);
@@ -81,7 +81,7 @@ numbers.push(1);
 numbers.push(2);
 ```
 
-you'll get the following memory layout:
+получится следующая схема размещения в памяти:
 
 ```text
       +---------+--------+----------+
@@ -96,14 +96,14 @@ Heap:  | 1 | 2 | ? |
        +---+---+---+
 ```
 
-`Vec` keeps track of three things:
+`Vec` отслеживает три значения:
 
-- The **pointer** to the heap region you reserved.
-- The **length** of the vector, i.e. how many elements are in the vector.
-- The **capacity** of the vector, i.e. the number of elements that can fit in the space reserved on the heap.
+- **pointer** на зарезервированную область heap.
+- **length** vector, то есть количество элементов в нём.
+- **capacity** vector, то есть количество элементов, которые могут поместиться в зарезервированной области heap.
 
-This layout should look familiar: it's exactly the same as `String`!\
-That's not a coincidence: `String` is defined as a vector of bytes, `Vec<u8>`, under the hood:
+Эта схема должна показаться знакомой: она в точности совпадает со схемой `String`!\
+Это не случайность: внутри `String` определён как vector bytes, `Vec<u8>`:
 
 ```rust
 pub struct String {

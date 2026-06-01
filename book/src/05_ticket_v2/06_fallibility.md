@@ -1,6 +1,6 @@
 # Fallibility
 
-Let's revisit the `Ticket::new` function from the previous exercise:
+Вернёмся к function `Ticket::new` из предыдущего упражнения:
 
 ```rust
 impl Ticket {
@@ -31,14 +31,14 @@ impl Ticket {
 }
 ```
 
-As soon as one of the checks fails, the function panics.
-This is not ideal, as it doesn't give the caller a chance to **handle the error**.
+Как только одна из checks завершается неудачей, function вызывает `panic`.
+Это неидеально, поскольку вызывающая сторона не получает возможности **обработать error**.
 
-It's time to introduce the `Result` type, Rust's primary mechanism for error handling.
+Пришло время познакомиться с type `Result`, основным механизмом error handling в Rust.
 
-## The `Result` type
+## Type `Result`
 
-The `Result` type is an enum defined in the standard library:
+Type `Result` — это enum, defined в standard library:
 
 ```rust
 enum Result<T, E> {
@@ -47,31 +47,31 @@ enum Result<T, E> {
 }
 ```
 
-It has two variants:
+У него есть два variants:
 
-- `Ok(T)`: represents a successful operation. It holds `T`, the output of the operation.
-- `Err(E)`: represents a failed operation. It holds `E`, the error that occurred.
+- `Ok(T)` представляет успешную operation. Он содержит `T` — результат operation.
+- `Err(E)` представляет неудачную operation. Он содержит `E` — возникший error.
 
-Both `Ok` and `Err` are generic, allowing you to specify your own types for the success and error cases.
+И `Ok`, и `Err` являются generic, поэтому для случаев успеха и error можно указывать собственные types.
 
-## No exceptions
+## Без exceptions
 
-Recoverable errors in Rust are **represented as values**.\
-They're just an instance of a type, being passed around and manipulated like any other value.
-This is a significant difference from other languages, such as Python or C#, where **exceptions** are used to signal errors.
+Recoverable errors в Rust **представляются values**.\
+Это обычные instances type: они передаются и обрабатываются так же, как любые другие value.
+В этом состоит значительное отличие от других языков, например Python или C#, где для messages об errors используются **exceptions**.
 
-Exceptions create a separate control flow path that can be hard to reason about.\
-You don't know, just by looking at a function's signature, if it can throw an exception or not.
-You don't know, just by looking at a function's signature, **which** exception types it can throw.\
-You must either read the function's documentation or look at its implementation to find out.
+Exceptions создают отдельный control flow path, который бывает сложно анализировать.\
+По одной лишь signature function нельзя определить, может ли она выбросить exception.
+По одной лишь signature function также нельзя определить, **какие именно** types exceptions она может выбросить.\
+Чтобы выяснить это, необходимо прочитать documentation function или изучить её implementation.
 
-Exception handling logic has very poor locality: the code that throws the exception is far removed from the code
-that catches it, and there's no direct link between the two.
+Logic обработки exceptions обладает очень плохой locality: code, выбрасывающий exception, находится далеко от codeа,
+который его перехватывает, и между ними нет прямой связи.
 
-## Fallibility is encoded in the type system
+## Fallibility codeируется в type system
 
-Rust, with `Result`, forces you to **encode fallibility in the function's signature**.\
-If a function can fail (and you want the caller to have a shot at handling the error), it must return a `Result`.
+Благодаря `Result` Rust заставляет **codeировать fallibility в signature function**.\
+Если function может завершиться неудачей и вызывающей стороне необходимо дать возможность обработать error, она должна возвращать `Result`.
 
 ```rust
 // Уже по сигнатуре видно, что эта функция может завершиться
@@ -82,7 +82,7 @@ fn parse_int(s: &str) -> Result<i32, ParseIntError> {
 }
 ```
 
-That's the big advantage of `Result`: it makes fallibility explicit.
+В этом и состоит главное преимущество `Result`: fallibility становится явной.
 
-Keep in mind, though, that panics exist. They aren't tracked by the type system, just like exceptions in other languages.
-But they're meant for **unrecoverable errors** and should be used sparingly.
+Однако следует помнить о существовании panics. Они не отслеживаются type system, как и exceptions в других языках.
+Но panics предназначены для **unrecoverable errors**, и использовать их следует редко.

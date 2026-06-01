@@ -1,54 +1,53 @@
-# Design review
+# Обзор design
 
-Let's take a moment to review the journey we've been through.
+Подведём итоги пройденного пути.
 
-## Lockless with channel serialization
+## Lockless-подход с serialization через channel
 
-Our first implementation of a multithreaded ticket store used:
+Первая implementation multithreaded-хранилища заявок использовала:
 
-- a single long-lived thread (server), to hold the shared state
-- multiple clients sending requests to it via channels from their own threads.
+- один long-lived thread (server), хранящий shared state
+- несколько clients, отправляющих ему requests через channels из собственных threads.
 
-No locking of the state was necessary, since the server was the only one modifying the state. That's because
-the "inbox" channel naturally **serialized** incoming requests: the server would process them one by one.\
-We've already discussed the limitations of this approach when it comes to patching behaviour, but we didn't
-discuss the performance implications of the original design: the server could only process one request at a time,
-including reads.
+Locking state не требовался, поскольку state изменял только server. Это возможно благодаря тому, что
+«входящий» channel естественным образом **serialized** поступающие requests: server обрабатывал их по очереди.\
+Мы уже обсудили ограничения такого подхода применительно к patching behavior, но не рассмотрели влияние исходного
+design на performance: server мог обрабатывать только один request за раз, включая read requests.
 
 ## Fine-grained locking
 
-We then moved to a more sophisticated design, where each ticket was protected by its own lock and
-clients could independently decide if they wanted to read or atomically modify a ticket, acquiring the appropriate lock.
+Затем мы перешли к более сложному design: каждая заявка защищена собственным lock,
+а clients независимо решают, читать или atomically изменять заявку, выполняя acquire соответствующего lock.
 
-This design allows for better parallelism (i.e. multiple clients can read tickets at the same time), but it is
-still fundamentally **serial**: the server processes commands one by one. In particular, it hands out locks to clients
-one by one.
+Этот design обеспечивает лучший parallelism, то есть несколько clients могут одновременно читать заявки, но в основе
+по-прежнему остаётся **serial**-подход: server обрабатывает commands по очереди. В частности, он выдаёт locks clients
+один за другим.
 
-Could we remove the channels entirely and allow clients to directly access the `TicketStore`, relying exclusively on
-locks to synchronize access?
+Можно ли полностью убрать channels и разрешить clients напрямую обращаться к `TicketStore`, используя только
+locks для synchronization доступа?
 
 ## Removing channels
 
-We have two problems to solve:
+Нужно решить две проблемы:
 
-- Sharing `TicketStore` across threads
-- Synchronizing access to the store
+- Sharing `TicketStore` между threads
+- Synchronization доступа к хранилищу
 
-### Sharing `TicketStore` across threads
+### Sharing `TicketStore` между threads
 
-We want all threads to refer to the same state, otherwise we don't really have a multithreaded system—we're just
-running multiple single-threaded systems in parallel.\
-We've already encountered this problem when we tried to share a lock across threads: we can use an `Arc`.
+Все threads должны обращаться к одному state, иначе у нас не будет настоящей multithreaded-системы:
+мы просто запустим несколько single-threaded-систем параллельно.\
+Мы уже сталкивались с этой проблемой при попытке share lock между threads: можно использовать `Arc`.
 
-### Synchronizing access to the store
+### Synchronization доступа к хранилищу
 
-There is one interaction that's still lockless thanks to the serialization provided by the channels: inserting
-(or removing) a ticket from the store.\
-If we remove the channels, we need to introduce (another) lock to synchronize access to the `TicketStore` itself.
+Благодаря serialization, обеспечиваемой channels, одна operation всё ещё остаётся lockless: insertion заявки
+в хранилище или её removal.\
+Если убрать channels, понадобится добавить ещё один lock для synchronization доступа к самому `TicketStore`.
 
-If we use a `Mutex`, then it makes no sense to use an additional `RwLock` for each ticket: the `Mutex` will
-already serialize access to the entire store, so we wouldn't be able to read tickets in parallel anyway.\
-If we use a `RwLock`, instead, we can read tickets in parallel. We just need to pause all reads while inserting
-or removing a ticket.
+При использовании `Mutex` нет смысла добавлять `RwLock` для каждой заявки: `Mutex` и так будет serialize доступ
+ко всему хранилищу, поэтому параллельно читать заявки всё равно не получится.\
+А при использовании `RwLock` заявки можно читать параллельно. Нужно лишь приостанавливать все read operations
+на время insertion или removal заявки.
 
-Let's go down this path and see where it leads us.
+Пойдём этим путём и посмотрим, к чему он приведёт.

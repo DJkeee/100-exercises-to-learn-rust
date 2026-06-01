@@ -1,27 +1,26 @@
 # Threads
 
-Before we start writing multithreaded code, let's take a step back and talk about what threads are
-and why we might want to use them.
+Прежде чем писать multithreaded code, сделаем шаг назад и поговорим о том, что такое threads
+и зачем они могут понадобиться.
 
-## What is a thread?
+## Что такое thread?
 
-A **thread** is an execution context managed by the underlying operating system.\
-Each thread has its own stack and instruction pointer.
+**Thread** — это execution context, которым управляет operating system.\
+У каждого thread есть собственные stack и instruction pointer.
 
-A single **process** can manage multiple threads.
-These threads share the same memory space, which means they can access the same data.
+Один **process** может управлять несколькими threads.
+Эти threads используют общее memory space, то есть могут обращаться к одним и тем же data.
 
-Threads are a **logical** construct. In the end, you can only run one set of instructions
-at a time on a CPU core, the **physical** execution unit.\
-Since there can be many more threads than there are CPU cores, the operating system's
-**scheduler** is in charge of deciding which thread to run at any given time,
-partitioning CPU time among them to maximize throughput and responsiveness.
+Threads — **логическая** конструкция. В конечном счёте на одном CPU core, **физической**
+единице выполнения, одновременно может выполняться только один набор инструкций.\
+Поскольку threads может быть намного больше, чем CPU cores, **scheduler** operating system
+решает, какой thread выполнять в каждый момент времени, распределяя между ними CPU time
+для максимальной throughput и responsiveness.
 
 ## `main`
 
-When a Rust program starts, it runs on a single thread, the **main thread**.\
-This thread is created by the operating system and is responsible for running the `main`
-function.
+При запуске программа Rust выполняется в единственном thread — **main thread**.\
+Этот thread создаётся operating system и отвечает за выполнение function `main`.
 
 ```rust
 use std::thread;
@@ -37,14 +36,14 @@ fn main() {
 
 ## `std::thread`
 
-Rust's standard library provides a module, `std::thread`, that allows you to create
-and manage threads.
+Standard library Rust предоставляет module `std::thread`, позволяющий создавать
+threads и управлять ими.
 
 ### `spawn`
 
-You can use `std::thread::spawn` to create new threads and execute code on them.
+С помощью `std::thread::spawn` можно создавать новые threads и выполнять в них code.
 
-For example:
+Например:
 
 ```rust
 use std::thread;
@@ -65,14 +64,14 @@ fn main() {
 }
 ```
 
-If you execute this program on the [Rust playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=afedf7062298ca8f5a248bc551062eaa)
-you'll see that the main thread and the spawned thread run concurrently.\
-Each thread makes progress independently of the other.
+Если выполнить эту программу в [Rust playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=afedf7062298ca8f5a248bc551062eaa),
+вы увидите, что main thread и spawned thread выполняются concurrently.\
+Каждый thread продвигается независимо от другого.
 
-### Process termination
+### Завершение process
 
-When the main thread finishes, the overall process will exit.\
-A spawned thread will continue running until it finishes or the main thread finishes.
+Когда main thread завершается, завершается и весь process.\
+Spawned thread продолжает выполняться, пока не завершится сам или пока не завершится main thread.
 
 ```rust
 use std::thread;
@@ -90,13 +89,13 @@ fn main() {
 }
 ```
 
-In the example above, you can expect to see the message "Hello from a thread!" printed roughly five times.\
-Then the main thread will finish (when the `sleep` call returns), and the spawned thread will be terminated
-since the overall process exits.
+В примере выше сообщение "Hello from a thread!" будет выведено примерно пять раз.\
+Затем main thread завершится (когда вернётся вызов `sleep`), а spawned thread будет остановлен,
+поскольку завершится весь process.
 
 ### `join`
 
-You can also wait for a spawned thread to finish by calling the `join` method on the `JoinHandle` that `spawn` returns.
+Также можно дождаться завершения spawned thread, вызвав method `join` у `JoinHandle`, возвращённого `spawn`.
 
 ```rust
 use std::thread;
@@ -109,7 +108,7 @@ fn main() {
 }
 ```
 
-In this example, the main thread will wait for the spawned thread to finish before exiting.\
-This introduces a form of **synchronization** between the two threads: you're guaranteed to see the message
-"Hello from a thread!" printed before the program exits, because the main thread won't exit
-until the spawned thread has finished.
+В этом примере main thread дождётся завершения spawned thread и только после этого завершится сам.\
+Так между двумя threads появляется форма **synchronization**: сообщение
+"Hello from a thread!" гарантированно будет выведено до завершения программы, потому что main thread
+не завершится, пока не закончит работу spawned thread.

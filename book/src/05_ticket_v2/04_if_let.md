@@ -1,6 +1,6 @@
-# Concise branching
+# Краткое branching
 
-Your solution to the previous exercise probably looks like this:
+Ваше решение предыдущего упражнения, вероятно, выглядит так:
 
 ```rust
 impl Ticket {
@@ -18,17 +18,17 @@ impl Ticket {
 }
 ```
 
-You only care about the `Status::InProgress` variant.
-Do you really need to match on all the other variants?
+Вас интересует только variant `Status::InProgress`.
+Действительно ли необходимо match все остальные variants?
 
-New constructs to the rescue!
+На помощь приходят новые constructs!
 
 ## `if let`
 
-The `if let` construct allows you to match on a single variant of an enum,
-without having to handle all the other variants.
+Construct `if let` позволяет match единственный variant enum,
+не обрабатывая все остальные variants.
 
-Here's how you can use `if let` to simplify the `assigned_to` method:
+Вот как с помощью `if let` можно упростить method `assigned_to`:
 
 ```rust
 impl Ticket {
@@ -46,8 +46,8 @@ impl Ticket {
 
 ## `let/else`
 
-If the `else` branch is meant to return early (a panic counts as returning early!),
-you can use the `let/else` construct:
+Если branch `else` предназначен для early return (`panic` тоже считается early return!),
+можно использовать construct `let/else`:
 
 ```rust
 impl Ticket {
@@ -62,12 +62,12 @@ impl Ticket {
 }
 ```
 
-It allows you to assign the destructured variable without incurring
-any "right drift", i.e. the variable is assigned at the same indentation level
-as the code that precedes it.
+Он позволяет присвоить destructured variable без какого-либо «смещения вправо»:
+variable присваивается на том же уровне indentation,
+что и предшествующий ей code.
 
 ## Style
 
-Both `if let` and `let/else` are idiomatic Rust constructs.\
-Use them as you see fit to improve the readability of your code,
-but don't overdo it: `match` is always there when you need it.
+И `if let`, и `let/else` — idiomatic constructs Rust.\
+Используйте их там, где считаете уместным для улучшения читаемости codeа,
+но не злоупотребляйте: при необходимости всегда можно использовать `match`.

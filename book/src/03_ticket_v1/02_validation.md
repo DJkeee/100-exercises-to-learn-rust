@@ -1,6 +1,6 @@
 # Validation
 
-Let's go back to our ticket definition:
+Вернёмся к определению нашего ticket:
 
 ```rust
 struct Ticket {
@@ -10,12 +10,12 @@ struct Ticket {
 }
 ```
 
-We are using "raw" types for the fields of our `Ticket` struct.
-This means that users can create a ticket with an empty title, a suuuuuuuper long description or
-a nonsensical status (e.g. "Funny").\
-We can do better than that!
+Для fields struct `Ticket` мы используем «сырые» types.
+Это значит, что пользователи могут создать ticket с пустым title, оооооооочень длинным description или
+бессмысленным status (например, "Funny").\
+Можно сделать лучше!
 
-## Further reading
+## Дополнительные материалы
 
-- Check out [`String`'s documentation](https://doc.rust-lang.org/std/string/struct.String.html)
-  for a thorough overview of the methods it provides. You'll need it for the exercise!
+- Изучите [документацию `String`](https://doc.rust-lang.org/std/string/struct.String.html):
+  там подробно описаны предоставляемые им methods. Она понадобится вам для выполнения упражнения!

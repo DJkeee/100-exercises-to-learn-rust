@@ -13,7 +13,7 @@ mod tests {
 
     #[test]
     fn string_size() {
-        assert_eq!(size_of::<String>(), todo!());
+        assert_eq!(size_of::<String>(), 24);
     }
 
     #[test]
@@ -23,6 +23,6 @@ mod tests {
         // но в общем случае размещение структур в памяти — более сложная тема.
         // Если вам интересно, дополнительную информацию можно найти в разделе "Type layout"
         // справочника The Rust Reference: https://doc.rust-lang.org/reference/type-layout.html.
-        assert_eq!(size_of::<Ticket>(), todo!());
+        assert_eq!(size_of::<Ticket>(), 72);
     }
 }

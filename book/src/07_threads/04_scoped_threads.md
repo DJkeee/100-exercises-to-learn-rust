@@ -1,8 +1,8 @@
 # Scoped threads
 
-All the lifetime issues we discussed so far have a common source:
-the spawned thread can outlive its parent.\
-We can sidestep this issue by using **scoped threads**.
+У всех рассмотренных до сих пор проблем с lifetime общий источник:
+spawned thread может outlive свой parent thread.\
+Эту проблему можно обойти с помощью **scoped threads**.
 
 ```rust
 let v = vec![1, 2, 3];
@@ -22,21 +22,21 @@ std::thread::scope(|scope| {
 println!("Here's v: {v:?}");
 ```
 
-Let's unpack what's happening.
+Разберём происходящее.
 
 ## `scope`
 
-The `std::thread::scope` function creates a new **scope**.\
-`std::thread::scope` takes a closure as input, with a single argument: a `Scope` instance.
+Function `std::thread::scope` создаёт новый **scope**.\
+`std::thread::scope` принимает closure с единственным argument — instance `Scope`.
 
 ## Scoped spawns
 
-`Scope` exposes a `spawn` method.\
-Unlike `std::thread::spawn`, all threads spawned using a `Scope` will be
-**automatically joined** when the scope ends.
+`Scope` предоставляет method `spawn`.\
+В отличие от `std::thread::spawn`, все threads, spawned с помощью `Scope`,
+будут **автоматически joined** при завершении scope.
 
-If we were to "translate" the previous example to `std::thread::spawn`,
-it'd look like this:
+Если «переписать» предыдущий пример с использованием `std::thread::spawn`,
+он будет выглядеть так:
 
 ```rust
 let v = vec![1, 2, 3];
@@ -57,17 +57,17 @@ handle2.join().unwrap();
 println!("Here's v: {v:?}");
 ```
 
-## Borrowing from the environment
+## Borrowing из окружения
 
-The translated example wouldn't compile, though: the compiler would complain
-that `&v` can't be used from our spawned threads since its lifetime isn't
-`'static`.
+Однако переписанный пример не будет compile: compiler сообщит,
+что `&v` нельзя использовать из наших spawned threads, поскольку его lifetime
+не является `'static`.
 
-That's not an issue with `std::thread::scope`—you can **safely borrow from the environment**.
+С `std::thread::scope` такой проблемы нет: можно **безопасно borrow из окружения**.
 
-In our example, `v` is created before the spawning points.
-It will only be dropped _after_ `scope` returns. At the same time,
-all threads spawned inside `scope` are guaranteed to finish _before_ `scope` returns,
-therefore there is no risk of having dangling references.
+В нашем примере `v` создаётся до spawning points.
+Он будет dropped только _после_ возврата из `scope`. При этом все threads,
+spawned внутри `scope`, гарантированно завершатся _до_ возврата из `scope`,
+поэтому риск появления dangling references отсутствует.
 
-The compiler won't complain!
+Compiler не будет возражать!

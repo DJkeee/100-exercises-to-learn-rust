@@ -1,48 +1,48 @@
-# Libraries and binaries
+# Libraries и binaries
 
-It took a bit of code to implement the `Error` trait for `TicketNewError`, didn't it?\
-A manual `Display` implementation, plus an `Error` impl block.
+Чтобы implement trait `Error` для `TicketNewError`, потребовалось немало codeа, не так ли?\
+Manual implementation `Display` плюс `impl` block для `Error`.
 
-We can remove some of the boilerplate by using [`thiserror`](https://docs.rs/thiserror/latest/thiserror/),
-a Rust crate that provides a **procedural macro** to simplify the creation of custom error types.\
-But we're getting ahead of ourselves: `thiserror` is a third-party crate, it'd be our first dependency!
+Часть boilerplate можно устранить с помощью [`thiserror`](https://docs.rs/thiserror/latest/thiserror/):
+этот crate Rust предоставляет **procedural macro**, упрощающий создание custom error types.\
+Но мы забегаем вперёд: `thiserror` — third-party crate, и он станет нашей первой dependency!
 
-Let's take a step back to talk about Rust's packaging system before we dive into dependencies.
+Прежде чем углубляться в dependencies, сделаем шаг назад и обсудим packaging system Rust.
 
-## What is a package?
+## Что такое package?
 
-A Rust package is defined by the `[package]` section in a `Cargo.toml` file, also known as its **manifest**.
-Within `[package]` you can set the package's metadata, such as its name and version.
+Package Rust defined в section `[package]` файла `Cargo.toml`, также известного как **manifest**.
+В `[package]` можно указать metadata package, например его имя и version.
 
-Go check the `Cargo.toml` file in the directory of this section's exercise!
+Посмотрите файл `Cargo.toml` в директории упражнения для этого раздела!
 
-## What is a crate?
+## Что такое crate?
 
-Inside a package, you can have one or more **crates**, also known as **targets**.\
-The two most common crate types are **binary crates** and **library crates**.
+В package может находиться один или несколько **crates**, также известных как **targets**.\
+Два наиболее распространённых crate types — **binary crates** и **library crates**.
 
 ### Binaries
 
-A binary is a program that can be compiled to an **executable file**.\
-It must include a function named `main`—the program's entry point. `main` is invoked when the program is executed.
+Binary — это программа, которую можно compile в **executable file**.\
+Она должна содержать function `main` — entry point программы. При запуске программы вызывается `main`.
 
 ### Libraries
 
-Libraries, on the other hand, are not executable on their own. You can't _run_ a library,
-but you can _import its code_ from another package that depends on it.\
-A library groups together code (i.e. functions, types, etc.) that can be leveraged by other packages as a **dependency**.
+Libraries, напротив, не являются executable сами по себе. Library нельзя _запустить_,
+но её code можно _импортировать_ из другого package, который от неё зависит.\
+Library объединяет code, например function и types, который другие packages могут использовать как **dependency**.
 
-All the exercises you've solved so far have been structured as libraries, with a test suite attached to them.
+Все выполненные до сих пор упражнения были организованы как libraries с прикреплённым test suite.
 
 ### Conventions
 
-There are some conventions around Rust packages that you need to keep in mind:
+Следует помнить о нескольких conventions, связанных с packages Rust:
 
-- The package's source code is usually located in the `src` directory.
-- If there's a `src/lib.rs` file, `cargo` will infer that the package contains a library crate.
-- If there's a `src/main.rs` file, `cargo` will infer that the package contains a binary crate.
+- Source code package обычно находится в директории `src`.
+- При наличии файла `src/lib.rs` инструмент `cargo` определит, что package содержит library crate.
+- При наличии файла `src/main.rs` инструмент `cargo` определит, что package содержит binary crate.
 
-You can override these defaults by explicitly declaring your targets in the `Cargo.toml` file—see
-[`cargo`'s documentation](https://doc.rust-lang.org/cargo/reference/cargo-targets.html#cargo-targets) for more details.
+Эти defaults можно переопределить, явно defining targets в файле `Cargo.toml`. Подробнее см.
+в [documentation `cargo`](https://doc.rust-lang.org/cargo/reference/cargo-targets.html#cargo-targets).
 
-Keep in mind that while a package can contain multiple crates, it can only contain one library crate.
+Помните: хотя package может содержать несколько crates, library crate в нём может быть только один.

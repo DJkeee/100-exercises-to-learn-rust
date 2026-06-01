@@ -1,11 +1,11 @@
 # Async Rust
 
-Threads are not the only way to write concurrent programs in Rust.\
-In this chapter we'll explore another approach: **asynchronous programming**.
+Threads — не единственный способ писать concurrent-программы на Rust.\
+В этой главе мы рассмотрим другой подход: **asynchronous programming**.
 
-In particular, you'll get an introduction to:
+В частности, вы познакомитесь с:
 
-- The `async`/`.await` keywords, to write asynchronous code effortlessly
-- The `Future` trait, to represent computations that may not be complete yet
-- `tokio`, the most popular runtime for running asynchronous code
-- The cooperative nature of Rust asynchronous model, and how this affects your code
+- keywords `async`/`.await`, позволяющими без лишних усилий писать asynchronous code
+- trait `Future`, представляющим вычисления, которые могут быть ещё не завершены
+- `tokio`, самым популярным runtime для выполнения asynchronous code
+- cooperative-природой asynchronous model Rust и её влиянием на ваш код

@@ -1,8 +1,8 @@
 mod ticket {
-    struct Ticket {
-        title: String,
-        description: String,
-        status: String,
+    pub struct Ticket {
+        pub title: String,
+        pub description: String,
+        pub status: String,
     }
 
     impl Ticket {
@@ -42,8 +42,8 @@ mod tests {
     // Но будьте осторожны! Эта функция не должна компилироваться после того, как вы измените
     // видимость, чтобы инструкция use компилировалась!
     // Убедившись, что она действительно не компилируется, закомментируйте ее.
-    fn should_not_be_possible() {
-        let ticket = Ticket::new("A title".into(), "A description".into(), "To-Do".into());
+    //fn should_not_be_possible() {
+      //  let ticket = Ticket::new("A title".into(), "A description".into(), "To-Do".into());
 
         // При попытке запустить это упражнение вы должны увидеть следующую ошибку:
         //

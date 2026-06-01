@@ -1,16 +1,16 @@
 # Operator overloading
 
-Now that we have a basic understanding of what traits are, let's circle back to **operator overloading**.
-Operator overloading is the ability to define custom behavior for operators like `+`, `-`, `*`, `/`, `==`, `!=`, etc.
+Теперь, когда у нас есть базовое понимание traits, вернёмся к **operator overloading**.
+Operator overloading — это возможность определять пользовательское behavior для operators вроде `+`, `-`, `*`, `/`, `==`, `!=` и т. д.
 
-## Operators are traits
+## Operators — это traits
 
-In Rust, operators are traits.\
-For each operator, there is a corresponding trait that defines the behavior of that operator.
-By implementing that trait for your type, you **unlock** the usage of the corresponding operators.
+В Rust operators являются traits.\
+Каждому operator соответствует trait, определяющий его behavior.
+Реализовав этот trait для своего type, вы **открываете** возможность использовать соответствующие operators.
 
-For example, the [`PartialEq` trait](https://doc.rust-lang.org/std/cmp/trait.PartialEq.html) defines the behavior of
-the `==` and `!=` operators:
+Например, [trait `PartialEq`](https://doc.rust-lang.org/std/cmp/trait.PartialEq.html) определяет behavior
+operators `==` и `!=`:
 
 ```rust
 // Определение трейта `PartialEq` из стандартной библиотеки Rust
@@ -27,10 +27,10 @@ pub trait PartialEq {
 }
 ```
 
-When you write `x == y` the compiler will look for an implementation of the `PartialEq` trait for the types of `x` and `y`
-and replace `x == y` with `x.eq(y)`. It's syntactic sugar!
+Когда вы пишете `x == y`, compiler ищет implementation trait `PartialEq` для types `x` и `y`
+и заменяет `x == y` на `x.eq(y)`. Это syntactic sugar!
 
-This is the correspondence for the main operators:
+Основным operators соответствуют следующие traits:
 
 | Operator                 | Trait                                                                   |
 | ------------------------ | ----------------------------------------------------------------------- |
@@ -42,15 +42,15 @@ This is the correspondence for the main operators:
 | `==` and `!=`            | [`PartialEq`](https://doc.rust-lang.org/std/cmp/trait.PartialEq.html)   |
 | `<`, `>`, `<=`, and `>=` | [`PartialOrd`](https://doc.rust-lang.org/std/cmp/trait.PartialOrd.html) |
 
-Arithmetic operators live in the [`std::ops`](https://doc.rust-lang.org/std/ops/index.html) module,
-while comparison ones live in the [`std::cmp`](https://doc.rust-lang.org/std/cmp/index.html) module.
+Arithmetic operators находятся в module [`std::ops`](https://doc.rust-lang.org/std/ops/index.html),
+а comparison operators — в module [`std::cmp`](https://doc.rust-lang.org/std/cmp/index.html).
 
 ## Default implementations
 
-The comment on `PartialEq::ne` states that "`ne` is a provided method".\
-It means that `PartialEq` provides a **default implementation** for `ne` in the trait definition—the `{ ... }` elided
-block in the definition snippet.\
-If we expand the elided block, it looks like this:
+В comment к `PartialEq::ne` сказано, что «`ne` is a provided method».\
+Это означает, что `PartialEq` предоставляет **default implementation** для `ne` в определении trait — пропущенный block
+`{ ... }` во фрагменте определения.\
+Если раскрыть пропущенный block, получится следующее:
 
 ```rust
 pub trait PartialEq {
@@ -62,9 +62,9 @@ pub trait PartialEq {
 }
 ```
 
-It's what you expect: `ne` is the negation of `eq`.\
-Since a default implementation is provided, you can skip implementing `ne` when you implement `PartialEq` for your type.
-It's enough to implement `eq`:
+Именно этого и следовало ожидать: `ne` является отрицанием `eq`.\
+Поскольку предоставлена default implementation, при создании implementation `PartialEq` для своего type можно не реализовывать `ne`.
+Достаточно реализовать `eq`:
 
 ```rust
 struct WrappingU8 {
@@ -80,8 +80,8 @@ impl PartialEq for WrappingU8 {
 }
 ```
 
-You are not forced to use the default implementation though.
-You can choose to override it when you implement the trait:
+Однако использовать default implementation необязательно.
+При создании implementation trait её можно override:
 
 ```rust
 struct MyType;

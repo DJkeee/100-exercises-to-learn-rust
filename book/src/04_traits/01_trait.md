@@ -1,6 +1,6 @@
 # Traits
 
-Let's look again at our `Ticket` type:
+Ещё раз взглянем на наш type `Ticket`:
 
 ```rust
 pub struct Ticket {
@@ -10,13 +10,13 @@ pub struct Ticket {
 }
 ```
 
-All our tests, so far, have been making assertions using `Ticket`'s fields.
+До сих пор во всех тестах assertions выполнялись с использованием fields `Ticket`.
 
 ```rust
 assert_eq!(ticket.title(), "A new title");
 ```
 
-What if we wanted to compare two `Ticket` instances directly?
+Что, если мы захотим сравнить два instances `Ticket` напрямую?
 
 ```rust
 let ticket1 = Ticket::new(/* ... */);
@@ -24,7 +24,7 @@ let ticket2 = Ticket::new(/* ... */);
 ticket1 == ticket2
 ```
 
-The compiler will stop us:
+Compiler нам этого не позволит:
 
 ```text
 error[E0369]: binary operation `==` cannot be applied to type `Ticket`
@@ -38,20 +38,20 @@ error[E0369]: binary operation `==` cannot be applied to type `Ticket`
 note: an implementation of `PartialEq` might be missing for `Ticket`
 ```
 
-`Ticket` is a new type. Out of the box, there is **no behavior attached to it**.\
-Rust doesn't magically infer how to compare two `Ticket` instances just because they contain `String`s.
+`Ticket` — новый type. Изначально с ним **не связано никакого behavior**.\
+Rust не определяет магическим образом, как сравнивать два instances `Ticket`, только потому, что они содержат `String`.
 
-The Rust compiler is nudging us in the right direction though: it's suggesting that we might be missing an implementation
-of `PartialEq`. `PartialEq` is a **trait**!
+Однако compiler Rust подсказывает правильное направление: возможно, нам не хватает implementation
+`PartialEq`. `PartialEq` — это **trait**!
 
-## What are traits?
+## Что такое traits?
 
-Traits are Rust's way of defining **interfaces**.\
-A trait defines a set of methods that a type must implement to satisfy the trait's contract.
+Traits — это способ определения **interfaces** в Rust.\
+Trait задаёт набор methods, которые type должен реализовать, чтобы выполнить contract trait.
 
-### Defining a trait
+### Определение trait
 
-The syntax for a trait definition goes like this:
+Синтаксис определения trait выглядит так:
 
 ```rust
 trait <TraitName> {
@@ -59,7 +59,7 @@ trait <TraitName> {
 }
 ```
 
-We might, for example, define a trait named `MaybeZero` that requires its implementors to define an `is_zero` method:
+Например, можно определить trait с именем `MaybeZero`, который требует, чтобы его implementors определили method `is_zero`:
 
 ```rust
 trait MaybeZero {
@@ -67,10 +67,10 @@ trait MaybeZero {
 }
 ```
 
-### Implementing a trait
+### Implementation trait
 
-To implement a trait for a type we use the `impl` keyword, just like we do for regular[^inherent] methods,
-but the syntax is a bit different:
+Чтобы реализовать trait для type, мы используем keyword `impl`, как и для обычных[^inherent] methods,
+но синтаксис немного отличается:
 
 ```rust
 impl <TraitName> for <TypeName> {
@@ -80,7 +80,7 @@ impl <TraitName> for <TypeName> {
 }
 ```
 
-For example, to implement the `MaybeZero` trait for a custom number type, `WrappingU32`:
+Например, реализуем trait `MaybeZero` для пользовательского числового type `WrappingU32`:
 
 ```rust
 pub struct WrappingU32 {
@@ -94,34 +94,34 @@ impl MaybeZero for WrappingU32 {
 }
 ```
 
-### Invoking a trait method
+### Вызов method trait
 
-To invoke a trait method, we use the `.` operator, just like we do with regular methods:
+Для вызова method trait используется operator `.`, как и для обычных methods:
 
 ```rust
 let x = WrappingU32 { inner: 5 };
 assert!(!x.is_zero());
 ```
 
-To invoke a trait method, two things must be true:
+Чтобы вызвать method trait, должны выполняться два условия:
 
-- The type must implement the trait.
-- The trait must be in scope.
+- Type должен реализовывать trait.
+- Trait должен находиться в scope.
 
-To satisfy the latter, you may have to add a `use` statement for the trait:
+Для выполнения второго условия может потребоваться добавить statement `use` для trait:
 
 ```rust
 use crate::MaybeZero;
 ```
 
-This is not necessary if:
+Это не требуется, если:
 
-- The trait is defined in the same module where the invocation occurs.
-- The trait is defined in the standard library's **prelude**.
-  The prelude is a set of traits and types that are automatically imported into every Rust program.
-  It's as if `use std::prelude::*;` was added at the beginning of every Rust module.
+- Trait определён в том же module, где происходит вызов.
+- Trait определён в **prelude** standard library.
+  Prelude — это набор traits и types, автоматически импортируемых в каждую программу Rust.
+  Как будто в начало каждого module Rust добавили `use std::prelude::*;`.
 
-You can find the list of traits and types in the prelude in the
-[Rust documentation](https://doc.rust-lang.org/std/prelude/index.html).
+Список traits и types из prelude можно найти в
+[документации Rust](https://doc.rust-lang.org/std/prelude/index.html).
 
-[^inherent]: A method defined directly on a type, without using a trait, is also known as an **inherent method**.
+[^inherent]: Method, определённый непосредственно для type без использования trait, также называется **inherent method**.

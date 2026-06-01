@@ -1,20 +1,20 @@
 # Traits
 
-In the previous chapter we covered the basics of Rust's type and ownership system.\
-It's time to dig deeper: we'll explore **traits**, Rust's take on interfaces.
+В предыдущей главе мы рассмотрели основы type system и ownership в Rust.\
+Пора погрузиться глубже: мы изучим **traits** — подход Rust к interfaces.
 
-Once you learn about traits, you'll start seeing their fingerprints all over the place.\
-In fact, you've already seen traits in action throughout the previous chapter, e.g. `.into()` invocations as well
-as operators like `==` and `+`.
+Когда вы познакомитесь с traits, то начнёте замечать их повсюду.\
+На самом деле вы уже видели traits в действии на протяжении предыдущей главы: например, вызовы `.into()`,
+а также operators вроде `==` и `+`.
 
-On top of traits as a concept, we'll also cover some of the key traits that are defined in Rust's standard library:
+Помимо самой концепции traits, мы рассмотрим несколько ключевых traits, определённых в standard library Rust:
 
-- Operator traits (e.g. `Add`, `Sub`, `PartialEq`, etc.)
-- `From` and `Into`, for infallible conversions
-- `Clone` and `Copy`, for copying values
-- `Deref` and deref coercion
-- `Sized`, to mark types with a known size
-- `Drop`, for custom cleanup logic
+- Operator traits (например, `Add`, `Sub`, `PartialEq` и т. д.)
+- `From` и `Into` для infallible conversions
+- `Clone` и `Copy` для копирования values
+- `Deref` и deref coercion
+- `Sized` для маркировки types с известным размером
+- `Drop` для пользовательской логики очистки
 
-Since we'll be talking about conversions, we'll seize the opportunity to plug some of the "knowledge gaps"
-from the previous chapter—e.g. what is `"A title"`, exactly? Time to learn more about slices too!
+Раз уж речь пойдёт о conversions, воспользуемся возможностью заполнить некоторые пробелы в знаниях
+из предыдущей главы. Например, что именно представляет собой `"A title"`? Пора узнать больше и о slices!

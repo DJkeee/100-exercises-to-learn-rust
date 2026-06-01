@@ -1,21 +1,21 @@
 # Ordering
 
-By moving from a `Vec` to a `HashMap` we have improved the performance of our ticket management system,
-and simplified our code in the process.\
-It's not all roses, though. When iterating over a `Vec`-backed store, we could be sure that the tickets
-would be returned in the order they were added.\
-That's not the case with a `HashMap`: you can iterate over the tickets, but the order is random.
+Перейдя с `Vec` на `HashMap`, мы повысили производительность системы управления тикетами
+и заодно упростили код.\
+Однако есть и недостаток. При iteration по store на основе `Vec` можно было быть уверенными, что тикеты
+будут возвращены в порядке добавления.\
+С `HashMap` это не так: iteration по тикетам возможна, но порядок будет случайным.
 
-We can recover a consistent ordering by switching from a `HashMap` to a `BTreeMap`.
+Вернуть стабильный ordering можно, перейдя с `HashMap` на `BTreeMap`.
 
 ## `BTreeMap`
 
-A `BTreeMap` guarantees that entries are sorted by their keys.\
-This is useful when you need to iterate over the entries in a specific order, or if you need to
-perform range queries (e.g. "give me all tickets with an id between 10 and 20").
+`BTreeMap` гарантирует сортировку entries по keys.\
+Это полезно, когда требуется выполнить iteration по entries в определённом порядке или
+range queries, например «получить все тикеты с id от 10 до 20».
 
-Just like `HashMap`, you won't find trait bounds on the definition of `BTreeMap`.
-But you'll find trait bounds on its methods. Let's look at `insert`:
+Как и в случае `HashMap`, в определении `BTreeMap` нет trait bounds.
+Однако они есть у его методов. Рассмотрим `insert`:
 
 ```rust
 // `K` и `V` обозначают типы ключа и значения соответственно,
@@ -30,14 +30,14 @@ impl<K, V> BTreeMap<K, V> {
 }
 ```
 
-`Hash` is no longer required. Instead, the key type must implement the `Ord` trait.
+`Hash` больше не требуется. Вместо него type key должен реализовывать trait `Ord`.
 
 ## `Ord`
 
-The `Ord` trait is used to compare values.\
-While `PartialEq` is used to compare for equality, `Ord` is used to compare for ordering.
+Trait `Ord` используется для сравнения значений.\
+Если `PartialEq` используется для сравнения на равенство, то `Ord` — для сравнения по ordering.
 
-It's defined in `std::cmp`:
+Он определён в `std::cmp`:
 
 ```rust
 pub trait Ord: Eq + PartialOrd {
@@ -45,14 +45,14 @@ pub trait Ord: Eq + PartialOrd {
 }
 ```
 
-The `cmp` method returns an `Ordering` enum, which can be one
-of `Less`, `Equal`, or `Greater`.\
-`Ord` requires that two other traits are implemented: `Eq` and `PartialOrd`.
+Метод `cmp` возвращает enum `Ordering`, который может принимать одно
+из значений: `Less`, `Equal` или `Greater`.\
+`Ord` требует реализации двух других traits: `Eq` и `PartialOrd`.
 
 ## `PartialOrd`
 
-`PartialOrd` is a weaker version of `Ord`, just like `PartialEq` is a weaker version of `Eq`.
-You can see why by looking at its definition:
+`PartialOrd` — более слабая версия `Ord`, как и `PartialEq` — более слабая версия `Eq`.
+Это видно из его определения:
 
 ```rust
 pub trait PartialOrd: PartialEq {
@@ -60,14 +60,14 @@ pub trait PartialOrd: PartialEq {
 }
 ```
 
-`PartialOrd::partial_cmp` returns an `Option`—it is not guaranteed that two values can
-be compared.\
-For example, `f32` doesn't implement `Ord` because `NaN` values are not comparable,
-the same reason why `f32` doesn't implement `Eq`.
+`PartialOrd::partial_cmp` возвращает `Option`: возможность сравнить два значения
+не гарантируется.\
+Например, `f32` не реализует `Ord`, поскольку значения `NaN` нельзя сравнивать.
+По той же причине `f32` не реализует `Eq`.
 
-## Implementing `Ord` and `PartialOrd`
+## Реализация `Ord` и `PartialOrd`
 
-Both `Ord` and `PartialOrd` can be derived for your types:
+Для собственных типов можно выполнить derive как `Ord`, так и `PartialOrd`:
 
 ```rust
 // Также нужно добавить `Eq` и `PartialEq`,
@@ -76,7 +76,7 @@ Both `Ord` and `PartialOrd` can be derived for your types:
 struct TicketId(u64);
 ```
 
-If you choose (or need) to implement them manually, be careful:
+Если вы решили или вынуждены реализовать их вручную, будьте внимательны:
 
-- `Ord` and `PartialOrd` must be consistent with `Eq` and `PartialEq`.
-- `Ord` and `PartialOrd` must be consistent with each other.
+- `Ord` и `PartialOrd` должны быть согласованы с `Eq` и `PartialEq`.
+- `Ord` и `PartialOrd` должны быть согласованы друг с другом.

@@ -1,20 +1,20 @@
 # Trait bounds
 
-We've seen two use cases for traits so far:
+До сих пор мы рассмотрели два варианта использования traits:
 
-- Unlocking "built-in" behaviour (e.g. operator overloading)
-- Adding new behaviour to existing types (i.e. extension traits)
+- Открытие «встроенного» behavior (например, operator overloading)
+- Добавление нового behavior к существующим types (то есть extension traits)
 
-There's a third use case: **generic programming**.
+Есть и третий вариант: **generic programming**.
 
-## The problem
+## Проблема
 
-All our functions and methods, so far, have been working with **concrete types**.\
-Code that operates on concrete types is usually straightforward to write and understand. But it's also
-limited in its reusability.\
-Let's imagine, for example, that we want to write a function that returns `true` if an integer is even.
-Working with concrete types, we'd have to write a separate function for each integer type we want to
-support:
+До сих пор все наши functions и methods работали с **concrete types**.\
+Код, работающий с concrete types, обычно легко писать и понимать. Но возможности его
+повторного использования ограничены.\
+Представим, например, что мы хотим написать function, возвращающую `true`, если целое число чётное.
+При работе с concrete types пришлось бы написать отдельную function для каждого целочисленного type, который мы хотим
+поддерживать:
 
 ```rust
 fn is_even_i32(n: i32) -> bool {
@@ -28,7 +28,7 @@ fn is_even_i64(n: i64) -> bool {
 // И так далее.
 ```
 
-Alternatively, we could write a single extension trait and then different implementations for each integer type:
+В качестве альтернативы можно написать один extension trait, а затем создать разные implementations для каждого целочисленного type:
 
 ```rust
 trait IsEven {
@@ -50,12 +50,12 @@ impl IsEven for i64 {
 // И так далее.
 ```
 
-The duplication remains.
+Дублирование никуда не исчезло.
 
 ## Generic programming
 
-We can do better using **generics**.\
-Generics allow us to write code that works with a **type parameter** instead of a concrete type:
+С помощью **generics** можно добиться большего.\
+Generics позволяют писать код, работающий с **type parameter** вместо concrete type:
 
 ```rust
 fn print_if_even<T>(n: T)
@@ -68,20 +68,20 @@ where
 }
 ```
 
-`print_if_even` is a **generic function**.\
-It isn't tied to a specific input type. Instead, it works with any type `T` that:
+`print_if_even` — это **generic function**.\
+Она не привязана к конкретному input type. Вместо этого она работает с любым type `T`, который:
 
-- Implements the `IsEven` trait.
-- Implements the `Debug` trait.
+- Реализует trait `IsEven`.
+- Реализует trait `Debug`.
 
-This contract is expressed with a **trait bound**: `T: IsEven + Debug`.\
-The `+` symbol is used to require that `T` implements multiple traits. `T: IsEven + Debug` is equivalent to
-"where `T` implements `IsEven` **and** `Debug`".
+Этот contract выражается через **trait bound**: `T: IsEven + Debug`.\
+Символ `+` используется, чтобы потребовать от `T` implementation нескольких traits. `T: IsEven + Debug` эквивалентно
+формулировке «где `T` реализует `IsEven` **и** `Debug`».
 
 ## Trait bounds
 
-What purpose do trait bounds serve in `print_if_even`?\
-To find out, let's try to remove them:
+Для чего нужны trait bounds в `print_if_even`?\
+Чтобы выяснить это, попробуем их удалить:
 
 ```rust
 fn print_if_even<T>(n: T) {
@@ -91,7 +91,7 @@ fn print_if_even<T>(n: T) {
 }
 ```
 
-This code won't compile:
+Этот код не скомпилируется:
 
 ```text
 error[E0599]: no method named `is_even` found for type parameter `T` 
@@ -118,15 +118,14 @@ help: consider restricting type parameter `T`
   |                   +++++++++++++++++
 ```
 
-Without trait bounds, the compiler doesn't know what `T` **can do**.\
-It doesn't know that `T` has an `is_even` method, and it doesn't know how to format `T` for printing.
-From the compiler point of view, a bare `T` has no behaviour at all.\
-Trait bounds restrict the set of types that can be used by ensuring that the behaviour required by the function
-body is present.
+Без trait bounds compiler не знает, что `T` **умеет делать**.\
+Он не знает, что у `T` есть method `is_even`, и не знает, как форматировать `T` для вывода.
+С точки зрения compiler у обычного `T` вообще нет никакого behavior.\
+Trait bounds ограничивают набор доступных types, гарантируя наличие behavior, необходимого телу function.
 
-## Syntax: inlining trait bounds
+## Синтаксис: inline trait bounds
 
-All the examples above used a **`where` clause** to specify trait bounds:
+Во всех примерах выше для указания trait bounds использовалась **`where` clause**:
 
 ```rust
 fn print_if_even<T>(n: T)
@@ -139,7 +138,7 @@ where
 }
 ```
 
-If the trait bounds are simple, you can **inline** them directly next to the type parameter:
+Если trait bounds просты, их можно разместить **inline** непосредственно рядом с type parameter:
 
 ```rust
 fn print_if_even<T: IsEven + Debug>(n: T) {
@@ -149,11 +148,11 @@ fn print_if_even<T: IsEven + Debug>(n: T) {
 }
 ```
 
-## Syntax: meaningful names
+## Синтаксис: осмысленные имена
 
-In the examples above, we used `T` as the type parameter name. This is a common convention when a function has
-only one type parameter.\
-Nothing stops you from using a more meaningful name, though:
+В примерах выше мы использовали `T` в качестве имени type parameter. Это распространённое соглашение для functions
+с единственным type parameter.\
+Однако ничто не мешает выбрать более осмысленное имя:
 
 ```rust
 fn print_if_even<Number: IsEven + Debug>(n: Number) {
@@ -161,16 +160,16 @@ fn print_if_even<Number: IsEven + Debug>(n: Number) {
 }
 ```
 
-It is actually **desirable** to use meaningful names when there are multiple type parameters at play or when the name
-`T` doesn't convey enough information about the type's role in the function.
-Maximize clarity and readability when naming type parameters, just as you would with variables or function parameters.
-Follow Rust's conventions, though: use [upper camel case for type parameter names](https://rust-lang.github.io/api-guidelines/naming.html#casing-conforms-to-rfc-430-c-case).
+Использовать осмысленные имена даже **желательно**, если задействовано несколько type parameters или имя
+`T` недостаточно ясно передаёт роль type в function.
+Выбирая имена type parameters, стремитесь к ясности и читаемости так же, как при именовании variables или function parameters.
+При этом соблюдайте соглашения Rust: используйте [upper camel case для имён type parameters](https://rust-lang.github.io/api-guidelines/naming.html#casing-conforms-to-rfc-430-c-case).
 
-## The function signature is king
+## Function signature важнее всего
 
-You may wonder why we need trait bounds at all. Can't the compiler infer the required traits from the function's body?\
-It could, but it won't.\
-The rationale is the same as for [explicit type annotations on function parameters](../02_basic_calculator/02_variables.md#function-arguments-are-variables):
-each function signature is a contract between the caller and the callee, and the terms must be explicitly stated.
-This allows for better error messages, better documentation, less unintentional breakages across versions,
-and faster compilation times.
+Возможно, вы задаётесь вопросом, зачем вообще нужны trait bounds. Разве compiler не может вывести необходимые traits из тела function?\
+Может, но делать этого не будет.\
+Причина та же, что и для [явных type annotations у function parameters](../02_basic_calculator/02_variables.md#function-arguments-are-variables):
+каждая function signature — это contract между caller и callee, условия которого должны быть указаны явно.
+Так compiler формирует более понятные сообщения об ошибках, documentation становится лучше, снижается риск непреднамеренных поломок между версиями,
+а compilation занимает меньше времени.

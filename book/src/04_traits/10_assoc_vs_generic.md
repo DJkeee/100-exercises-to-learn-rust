@@ -1,6 +1,6 @@
-# Generics and associated types
+# Generics и associated types
 
-Let's re-examine the definition for two of the traits we studied so far, `From` and `Deref`:
+Ещё раз рассмотрим определения двух изученных traits: `From` и `Deref`:
 
 ```rust
 pub trait From<T> {
@@ -14,28 +14,28 @@ pub trait Deref {
 }
 ```
 
-They both feature type parameters.\
-In the case of `From`, it's a generic parameter, `T`.\
-In the case of `Deref`, it's an associated type, `Target`.
+В обоих присутствуют type parameters.\
+В случае `From` это generic parameter `T`.\
+В случае `Deref` это associated type `Target`.
 
-What's the difference? Why use one over the other?
+В чём разница? Когда следует использовать один вариант, а когда другой?
 
-## At most one implementation
+## Не более одной implementation
 
-Due to how deref coercion works, there can only be one "target" type for a given type. E.g. `String` can
-only deref to `str`.
-It's about avoiding ambiguity: if you could implement `Deref` multiple times for a type,
-which `Target` type should the compiler choose when you call a `&self` method?
+Из-за устройства deref coercion у заданного type может быть только один target type. Например, `String` может
+выполнять deref только в `str`.
+Это позволяет избежать неоднозначности: если бы `Deref` можно было реализовать для type несколько раз,
+какой type `Target` должен был бы выбрать compiler при вызове method с `&self`?
 
-That's why `Deref` uses an associated type, `Target`.\
-An associated type is uniquely determined **by the trait implementation**.
-Since you can't implement `Deref` more than once, you'll only be able to specify one `Target` for a given type
-and there won't be any ambiguity.
+Именно поэтому `Deref` использует associated type `Target`.\
+Associated type однозначно определяется **implementation trait**.
+Поскольку реализовать `Deref` более одного раза нельзя, для заданного type можно указать только один `Target`,
+и неоднозначности не возникнет.
 
 ## Generic traits
 
-On the other hand, you can implement `From` multiple times for a type, **as long as the input type `T` is different**.
-For example, you can implement `From` for `WrappingU32` using both `u32` and `u16` as input types:
+С другой стороны, `From` можно реализовать для type несколько раз, **если input type `T` различается**.
+Например, можно реализовать `From` для `WrappingU32`, используя в качестве input types и `u32`, и `u16`:
 
 ```rust
 impl From<u32> for WrappingU32 {
@@ -51,12 +51,12 @@ impl From<u16> for WrappingU32 {
 }
 ```
 
-This works because `From<u16>` and `From<u32>` are considered **different traits**.\
-There is no ambiguity: the compiler can determine which implementation to use based on type of the value being converted.
+Это работает, потому что `From<u16>` и `From<u32>` считаются **разными traits**.\
+Неоднозначности нет: compiler может определить нужную implementation по type преобразуемого value.
 
-## Case study: `Add`
+## Пример: `Add`
 
-As a closing example, consider the `Add` trait from the standard library:
+В заключение рассмотрим trait `Add` из standard library:
 
 ```rust
 pub trait Add<RHS = Self> {
@@ -66,15 +66,15 @@ pub trait Add<RHS = Self> {
 }
 ```
 
-It uses both mechanisms:
+В нём используются оба механизма:
 
-- it has a generic parameter, `RHS` (right-hand side), which defaults to `Self`
-- it has an associated type, `Output`, the type of the result of the addition
+- generic parameter `RHS` (right-hand side), value которого по умолчанию является `Self`
+- associated type `Output` — type результата сложения
 
 ### `RHS`
 
-`RHS` is a generic parameter to allow for different types to be added together.\
-For example, you'll find these two implementations in the standard library:
+`RHS` — generic parameter, позволяющий складывать разные types.\
+Например, в standard library можно найти две следующие implementations:
 
 ```rust
 impl Add<u32> for u32 {
@@ -99,21 +99,20 @@ impl Add<&u32> for u32 {
 }
 ```
 
-This allows the following code to compile:
+Благодаря этому компилируется следующий код:
 
 ```rust
 let x = 5u32 + &5u32 + 6u32;
 ```
 
-because `u32` implements `Add<&u32>` _as well as_ `Add<u32>`.
+поскольку `u32` реализует как `Add<&u32>`, _так и_ `Add<u32>`.
 
 ### `Output`
 
-`Output` represents the type of the result of the addition.
+`Output` представляет type результата сложения.
 
-Why do we need `Output` in the first place? Can't we just use `Self` as output, the type implementing `Add`?
-We could, but it would limit the flexibility of the trait. In the standard library, for example, you'll find
-this implementation:
+Зачем вообще нужен `Output`? Разве нельзя использовать в качестве output `Self`, то есть type, реализующий `Add`?
+Можно, но это ограничит гибкость trait. Например, в standard library есть такая implementation:
 
 ```rust
 impl Add<&u32> for &u32 {
@@ -125,22 +124,22 @@ impl Add<&u32> for &u32 {
 }
 ```
 
-The type they're implementing the trait for is `&u32`, but the result of the addition is `u32`.\
-It would be impossible[^flexible] to provide this implementation if `add` had to return `Self`, i.e. `&u32` in this case.
-`Output` lets `std` decouple the implementor from the return type, thus supporting this case.
+Trait реализуется для type `&u32`, но результат сложения имеет type `u32`.\
+Такая implementation была бы невозможна[^flexible], если бы `add` должен был возвращать `Self`, то есть в данном случае `&u32`.
+`Output` позволяет `std` отделить implementor от return type и тем самым поддержать этот вариант.
 
-On the other hand, `Output` can't be a generic parameter. The output type of the operation **must** be uniquely determined
-once the types of the operands are known. That's why it's an associated type: for a given combination of implementor
-and generic parameters, there is only one `Output` type.
+С другой стороны, `Output` не может быть generic parameter. Когда types operands известны, output type операции
+**должен** определяться однозначно. Поэтому он является associated type: для заданного сочетания implementor
+и generic parameters существует только один type `Output`.
 
-## Conclusion
+## Итог
 
-To recap:
+Подведём итог:
 
-- Use an **associated type** when the type must be uniquely determined for a given trait implementation.
-- Use a **generic parameter** when you want to allow multiple implementations of the trait for the same type,
-  with different input types.
+- Используйте **associated type**, когда type должен однозначно определяться для заданной implementation trait.
+- Используйте **generic parameter**, когда нужно разрешить несколько implementations trait для одного type
+  с разными input types.
 
-[^flexible]: Flexibility is rarely free: the trait definition is more complex due to `Output`, and implementors have to reason about
-what they want to return. The trade-off is only justified if that flexibility is actually needed. Keep that in mind
-when designing your own traits.
+[^flexible]: Гибкость редко даётся бесплатно: из-за `Output` определение trait становится сложнее, а implementors приходится решать,
+что именно возвращать. Такой компромисс оправдан лишь тогда, когда гибкость действительно нужна. Помните об этом,
+проектируя собственные traits.

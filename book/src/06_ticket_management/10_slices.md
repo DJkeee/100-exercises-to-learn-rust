@@ -1,6 +1,6 @@
 # Slices
 
-Let's go back to the memory layout of a `Vec`:
+Вернёмся к схеме размещения `Vec` в памяти:
 
 ```rust
 let mut numbers = Vec::with_capacity(3);
@@ -21,15 +21,15 @@ Heap:  | 1 | 2 | ? |
        +---+---+---+
 ```
 
-We already remarked how `String` is just a `Vec<u8>` in disguise.\
-The similarity should prompt you to ask: "What's the equivalent of `&str` for `Vec`?"
+Мы уже отмечали, что `String` — это всего лишь замаскированный `Vec<u8>`.\
+Сходство подсказывает вопрос: «Что является аналогом `&str` для `Vec`?»
 
 ## `&[T]`
 
-`[T]` is a **slice** of a contiguous sequence of elements of type `T`.\
-It's most commonly used in its borrowed form, `&[T]`.
+`[T]` — это **slice** непрерывной последовательности элементов типа `T`.\
+Чаще всего он используется в borrowed форме: `&[T]`.
 
-There are various ways to create a slice reference from a `Vec`:
+Создать slice reference из `Vec` можно несколькими способами:
 
 ```rust
 let numbers = vec![1, 2, 3];
@@ -41,8 +41,8 @@ let slice: &[i32] = numbers.as_slice();
 let slice: &[i32] = &numbers[1..];
 ```
 
-`Vec` implements the `Deref` trait using `[T]` as the target type, so you can use slice methods on a `Vec` directly
-thanks to deref coercion:
+`Vec` реализует trait `Deref`, используя `[T]` в качестве target type, поэтому благодаря deref coercion
+методы slice можно вызывать непосредственно для `Vec`:
 
 ```rust
 let numbers = vec![1, 2, 3];
@@ -52,24 +52,24 @@ let numbers = vec![1, 2, 3];
 let sum: i32 = numbers.iter().sum();
 ```
 
-### Memory layout
+### Размещение в памяти
 
-A `&[T]` is a **fat pointer**, just like `&str`.\
-It consists of a pointer to the first element of the slice and the length of the slice.
+`&[T]`, как и `&str`, представляет собой **fat pointer**.\
+Он состоит из pointer на первый элемент slice и длины slice.
 
-If you have a `Vec` with three elements:
+Пусть имеется `Vec` с тремя элементами:
 
 ```rust
 let numbers = vec![1, 2, 3];
 ```
 
-and then create a slice reference:
+а затем создаётся slice reference:
 
 ```rust
 let slice: &[i32] = &numbers[1..];
 ```
 
-you'll get this memory layout:
+В результате получится следующая схема размещения в памяти:
 
 ```text
                   numbers                          slice
@@ -90,17 +90,17 @@ Heap:    | 1 | 2 | 3 | ? |                      |
 
 ### `&Vec<T>` vs `&[T]`
 
-When you need to pass an immutable reference to a `Vec` to a function, prefer `&[T]` over `&Vec<T>`.\
-This allows the function to accept any kind of slice, not necessarily one backed by a `Vec`.
+Когда требуется передать в функцию immutable reference на `Vec`, предпочитайте `&[T]` вместо `&Vec<T>`.\
+Так функция сможет принимать slice любого вида, не обязательно основанный на `Vec`.
 
-For example, you can then pass a subset of the elements in a `Vec`.
-But it goes further than that—you could also pass a **slice of an array**:
+Например, можно передать подмножество элементов `Vec`.
+Более того, можно также передать **slice array**:
 
 ```rust
 let array = [1, 2, 3];
 let slice: &[i32] = &array;
 ```
 
-Array slices and `Vec` slices are the same type: they're fat pointers to a contiguous sequence of elements.
-In the case of arrays, the pointer points to the stack rather than the heap, but that doesn't matter
-when it comes to using the slice.
+Slices arrays и slices `Vec` имеют один и тот же тип: это fat pointers на непрерывную последовательность элементов.
+В случае arrays pointer указывает на stack, а не на heap, но при
+использовании slice это не имеет значения.

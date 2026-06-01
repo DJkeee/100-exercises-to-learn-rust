@@ -1,7 +1,7 @@
 # `match`
 
-You may be wondering—what can you actually **do** with an enum?\
-The most common operation is to **match** on it.
+Возможно, вы задаётесь вопросом: что вообще можно **делать** с enum?\
+Наиболее распространённая operation — применить к нему **match**.
 
 ```rust
 enum Status {
@@ -22,16 +22,16 @@ impl Status {
 }
 ```
 
-A `match` statement that lets you compare a Rust value against a series of **patterns**.\
-You can think of it as a type-level `if`. If `status` is a `Done` variant, execute the first block;
-if it's a `InProgress` or `ToDo` variant, execute the second block.
+Statement `match` позволяет match value Rust с последовательностью **patterns**.\
+Его можно представить как `if` на уровне types. Если `status` — это variant `Done`, выполняется первый block;
+если variant `InProgress` или `ToDo` — второй.
 
 ## Exhaustiveness
 
-There's one key detail here: `match` is **exhaustive**. You must handle all enum variants.\
-If you forget to handle a variant, Rust will stop you **at compile-time** with an error.
+Здесь есть одна важная деталь: `match` является **exhaustive**. Необходимо обработать все enum variants.\
+Если забыть обработать какой-либо variant, Rust выдаст error **at compile-time**.
 
-E.g. if we forget to handle the `ToDo` variant:
+Например, если забыть обработать variant `ToDo`:
 
 ```rust
 match self {
@@ -40,7 +40,7 @@ match self {
 }
 ```
 
-the compiler will complain:
+compiler сообщит об error:
 
 ```text
 error[E0004]: non-exhaustive patterns: `ToDo` not covered
@@ -50,15 +50,15 @@ error[E0004]: non-exhaustive patterns: `ToDo` not covered
   |     ^^^^^^^^^^^^ pattern `ToDo` not covered
 ```
 
-This is a big deal!\
-Codebases evolve over time—you might add a new status down the line, e.g. `Blocked`. The Rust compiler
-will emit an error for every single `match` statement that's missing logic for the new variant.
-That's why Rust developers often sing the praises of "compiler-driven refactoring"—the compiler tells you
-what to do next, you just have to fix what it reports.
+Это очень важно!\
+Codebase со временем развивается: в дальнейшем вы можете добавить новый status, например `Blocked`. Compiler Rust
+выдаст error для каждого statement `match`, в котором отсутствует logic для нового variant.
+Именно поэтому Rust developers часто хвалят «compiler-driven refactoring»: compiler подсказывает,
+что делать дальше, а вам остаётся исправить то, о чём он сообщает.
 
 ## Catch-all
 
-If you don't care about one or more variants, you can use the `_` pattern as a catch-all:
+Если один или несколько variants вас не интересуют, можно использовать pattern `_` в качестве catch-all:
 
 ```rust
 match status {
@@ -67,12 +67,12 @@ match status {
 }
 ```
 
-The `_` pattern matches anything that wasn't matched by the previous patterns.
+Pattern `_` соответствует всему, что не подошло под предыдущие patterns.
 
 <div class="warning">
-By using this catch-all pattern, you _won't_ get the benefits of compiler-driven refactoring.
-If you add a new enum variant, the compiler _won't_ tell you that you're not handling it.
+При использовании этого catch-all pattern вы _не получите_ преимуществ compiler-driven refactoring.
+Если добавить новый enum variant, compiler _не сообщит_, что вы его не обрабатываете.
 
-If you're keen on correctness, avoid using catch-alls. Leverage the compiler to re-examine all matching sites and determine how new enum variants should be handled.
+Если для вас важна корректность, избегайте catch-all patterns. Используйте compiler, чтобы заново check все места matching и определить, как следует обрабатывать новые enum variants.
 
 </div>

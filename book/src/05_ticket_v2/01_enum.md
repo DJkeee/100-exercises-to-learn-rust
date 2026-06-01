@@ -1,9 +1,9 @@
 # Enumerations
 
-Based on the validation logic you wrote [in a previous chapter](../03_ticket_v1/02_validation.md),
-there are only a few valid statuses for a ticket: `To-Do`, `InProgress` and `Done`.\
-This is not obvious if we look at the `status` field in the `Ticket` struct or at the type of the `status`
-parameter in the `new` method:
+Согласно validation logic, которую вы написали [в предыдущей главе](../03_ticket_v1/02_validation.md),
+у ticket может быть лишь несколько допустимых statuses: `To-Do`, `InProgress` и `Done`.\
+Это неочевидно, если посмотреть на field `status` в `Ticket` struct или на type parameter `status`
+в method `new`:
 
 ```rust
 #[derive(Debug, PartialEq)]
@@ -24,17 +24,17 @@ impl Ticket {
 }
 ```
 
-In both cases we're using `String` to represent the `status` field.
-`String` is a very general type—it doesn't immediately convey the information that the `status` field
-has a limited set of possible values. Even worse, the caller of `Ticket::new` will only find out **at runtime**
-if the status they provided is valid or not.
+В обоих случаях для representation field `status` используется `String`.
+`String` — очень общий type: по нему не сразу понятно, что field `status`
+может содержать лишь ограниченный набор values. Хуже того, вызывающая сторона `Ticket::new` узнает,
+допустим ли переданный status, только **at runtime**.
 
-We can do better than that with **enumerations**.
+Исправить это можно с помощью **enumerations**.
 
 ## `enum`
 
-An enumeration is a type that can have a fixed set of values, called **variants**.\
-In Rust, you define an enumeration using the `enum` keyword:
+Enumeration — это type с фиксированным набором values, которые называются **variants**.\
+В Rust enumeration defined с помощью keyword `enum`:
 
 ```rust
 enum Status {
@@ -44,4 +44,4 @@ enum Status {
 }
 ```
 
-`enum`, just like `struct`, defines **a new Rust type**.
+`enum`, как и `struct`, объявляет **новый Rust type**.

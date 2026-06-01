@@ -1,20 +1,20 @@
 # Indexing
 
-`TicketStore::get` returns an `Option<&Ticket>` for a given `TicketId`.\
-We've seen before how to access elements of arrays and vectors using Rust's
-indexing syntax:
+`TicketStore::get` возвращает `Option<&Ticket>` для заданного `TicketId`.\
+Ранее мы уже видели, как обращаться к элементам arrays и vectors с помощью
+синтаксиса indexing в Rust:
 
 ```rust
 let v = vec![0, 1, 2];
 assert_eq!(v[0], 0);
 ```
 
-How can we provide the same experience for `TicketStore`?\
-You guessed right: we need to implement a trait, `Index`!
+Как предоставить аналогичную возможность для `TicketStore`?\
+Как вы уже догадались, нужно реализовать trait `Index`!
 
 ## `Index`
 
-The `Index` trait is defined in Rust's standard library:
+Trait `Index` определён в standard library Rust:
 
 ```rust
 // Слегка упрощено
@@ -27,11 +27,11 @@ pub trait Index<Idx>
 }
 ```
 
-It has:
+У него есть:
 
-- One generic parameter, `Idx`, to represent the index type
-- One associated type, `Output`, to represent the type we retrieved using the index
+- Один generic parameter `Idx`, представляющий type index
+- Один associated type `Output`, представляющий type, получаемый с помощью index
 
-Notice how the `index` method doesn't return an `Option`. The assumption is that
-`index` will panic if you try to access an element that's not there, as it happens
-for array and vec indexing.
+Обратите внимание: метод `index` не возвращает `Option`. Предполагается, что
+`index` вызовет panic при попытке обратиться к отсутствующему элементу, как и при
+indexing array или vec.

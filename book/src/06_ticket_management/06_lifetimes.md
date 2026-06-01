@@ -1,9 +1,9 @@
 # Lifetimes
 
-Let's try to complete the previous exercise by adding an implementation of `IntoIterator` for `&TicketStore`, for
-maximum convenience in `for` loops.
+Попробуем завершить предыдущее упражнение, добавив implementation `IntoIterator` для `&TicketStore`, чтобы
+сделать циклы `for` максимально удобными.
 
-Let's start by filling in the most "obvious" parts of the implementation:
+Начнём с заполнения наиболее «очевидных» частей implementation:
 
 ```rust
 impl IntoIterator for &TicketStore {
@@ -16,29 +16,29 @@ impl IntoIterator for &TicketStore {
 }
 ```
 
-What should `type IntoIter` be set to?\
-Intuitively, it should be the type returned by `self.tickets.iter()`, i.e. the type returned by `Vec::iter()`.\
-If you check the standard library documentation, you'll find that `Vec::iter()` returns an `std::slice::Iter`.
-The definition of `Iter` is:
+Какое значение следует присвоить `type IntoIter`?\
+Интуитивно это должен быть тип, возвращаемый `self.tickets.iter()`, то есть тип, который возвращает `Vec::iter()`.\
+Из документации standard library можно узнать, что `Vec::iter()` возвращает `std::slice::Iter`.
+Определение `Iter` выглядит так:
 
 ```rust
 pub struct Iter<'a, T> { /* fields omitted */ }
 ```
 
-`'a` is a **lifetime parameter**.
+`'a` — это **lifetime parameter**.
 
 ## Lifetime parameters
 
-Lifetimes are **labels** used by the Rust compiler to keep track of how long a reference (either mutable or
-immutable) is valid.\
-The lifetime of a reference is constrained by the scope of the value it refers to. Rust always makes sure, at compile-time,
-that references are not used after the value they refer to has been dropped, to avoid dangling pointers and use-after-free bugs.
+Lifetimes — это **labels**, с помощью которых Rust compiler отслеживает, как долго reference, mutable или
+immutable, остаётся валидной.\
+Lifetime reference ограничен scope значения, на которое она указывает. Во время компиляции Rust всегда проверяет,
+что references не используются после drop значения, на которое они указывают, предотвращая dangling pointers и ошибки use-after-free.
 
-This should sound familiar: we've already seen these concepts in action when we discussed ownership and borrowing.
-Lifetimes are just a way to **name** how long a specific reference is valid.
+Это должно быть знакомо: мы уже видели эти концепции в действии, когда обсуждали ownership и borrowing.
+Lifetimes — всего лишь способ **дать имя** периоду валидности конкретной reference.
 
-Naming becomes important when you have multiple references and you need to clarify how they **relate to each other**.
-Let's look at the signature of `Vec::iter()`:
+Имена приобретают значение, когда references несколько и нужно уточнить, как они **связаны друг с другом**.
+Рассмотрим signature `Vec::iter()`:
 
 ```rust
 impl <T> Vec<T> {
@@ -49,18 +49,18 @@ impl <T> Vec<T> {
 }
 ```
 
-`Vec::iter()` is generic over a lifetime parameter, named `'a`.\
-`'a` is used to **tie together** the lifetime of the `Vec` and the lifetime of the `Iter` returned by `iter()`.
-In plain English: the `Iter` returned by `iter()` cannot outlive the `Vec` reference (`&self`) it was created from.
+`Vec::iter()` является generic по lifetime parameter с именем `'a`.\
+`'a` **связывает** lifetime `Vec` с lifetime `Iter`, возвращаемого методом `iter()`.
+Проще говоря, `Iter`, возвращённый методом `iter()`, не может пережить reference на `Vec` (`&self`), из которой он был создан.
 
-This is important because `Vec::iter`, as we discussed, returns an iterator over **references** to the `Vec`'s elements.
-If the `Vec` is dropped, the references returned by the iterator would be invalid. Rust must make sure this doesn't happen,
-and lifetimes are the tool it uses to enforce this rule.
+Это важно, поскольку, как мы уже обсуждали, `Vec::iter` возвращает iterator по **references** на элементы `Vec`.
+После drop `Vec` references, возвращённые iterator, станут невалидными. Rust должен предотвратить такую ситуацию,
+и для этого используются lifetimes.
 
 ## Lifetime elision
 
-Rust has a set of rules, called **lifetime elision rules**, that allow you to omit explicit lifetime annotations in many cases.
-For example, `Vec::iter`'s definition looks like this in `std`'s source code:
+В Rust существует набор правил, называемых **lifetime elision rules**. Во многих случаях они позволяют опустить явные lifetime annotations.
+Например, в исходном коде `std` определение `Vec::iter` выглядит так:
 
 ```rust
 impl <T> Vec<T> {
@@ -70,12 +70,12 @@ impl <T> Vec<T> {
 }
 ```
 
-No explicit lifetime parameter is present in the signature of `Vec::iter()`.
-Elision rules imply that the lifetime of the `Iter` returned by `iter()` is tied to the lifetime of the `&self` reference.
-You can think of `'_` as a **placeholder** for the lifetime of the `&self` reference.
+В signature `Vec::iter()` нет явного lifetime parameter.
+Elision rules подразумевают, что lifetime `Iter`, возвращённого методом `iter()`, связан с lifetime reference `&self`.
+`'_` можно воспринимать как **placeholder** для lifetime reference `&self`.
 
-See the [References](#references) section for a link to the official documentation on lifetime elision.\
-In most cases, you can rely on the compiler telling you when you need to add explicit lifetime annotations.
+Ссылка на официальную документацию по lifetime elision приведена в разделе [References](#references).\
+В большинстве случаев можно положиться на compiler: он сообщит, когда нужно добавить явные lifetime annotations.
 
 ## References
 

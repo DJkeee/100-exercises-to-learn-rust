@@ -1,15 +1,15 @@
-# Modelling A Ticket, pt. 2
+# Моделирование Ticket, ч. 2
 
-The `Ticket` struct we worked on in the previous chapters is a good start,
-but it still screams "I'm a beginner Rustacean!".
+`Ticket` struct, с которой мы работали в предыдущих главах, стала хорошим началом,
+но она всё ещё буквально кричит: «Я начинающий Rustacean!».
 
-We'll use this chapter to refine our Rust domain modelling skills.
-We'll need to introduce a few more concepts along the way:
+В этой главе мы улучшим навыки domain modelling в Rust.
+По ходу дела нам потребуется познакомиться ещё с несколькими concepts:
 
-- `enum`s, one of Rust's most powerful features for data modeling
-- The `Option` type, to model nullable values
-- The `Result` type, to model recoverable errors
-- The `Debug` and `Display` traits, for printing
-- The `Error` trait, to mark error types
-- The `TryFrom` and `TryInto` traits, for fallible conversions
-- Rust's package system, explaining what's a library, what's a binary, how to use third-party crates
+- `enum` — одна из самых мощных возможностей Rust для data modelling
+- Тип `Option` для моделирования nullable values
+- Type `Result` для моделирования recoverable errors
+- Traits `Debug` и `Display` для вывода
+- Trait `Error` для обоvalue error types
+- Traits `TryFrom` и `TryInto` для fallible conversions
+- Package system Rust: что такое library, что такое binary и как использовать third-party crates

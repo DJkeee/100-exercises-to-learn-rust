@@ -1,21 +1,21 @@
 # Memory layout
 
-We've looked at ownership and references from an operational point of view—what you can and can't do with them.
-Now it's a good time to take a look under the hood: let's talk about **memory**.
+Мы рассмотрели ownership и references с практической точки зрения: что с ними можно и чего нельзя делать.
+Теперь самое время заглянуть под капот и поговорить о **memory**.
 
-## Stack and heap
+## Stack и heap
 
-When discussing memory, you'll often hear people talk about the **stack** and the **heap**.\
-These are two different memory regions used by programs to store data.
+При обсуждении памяти часто упоминают **stack** и **heap**.\
+Это две разные области memory, которые программы используют для хранения данных.
 
-Let's start with the stack.
+Начнём со stack.
 
 ## Stack
 
-The **stack** is a **LIFO** (Last In, First Out) data structure.\
-When you call a function, a new **stack frame** is added on top of the stack. That stack frame stores
-the function's arguments, local variables and a few "bookkeeping" values.\
-When the function returns, the stack frame is popped off the stack[^stack-overflow].
+**Stack** — это структура данных типа **LIFO** (Last In, First Out).\
+Когда вы вызываете функцию, поверх stack добавляется новый **stack frame**. В этом stack frame хранятся
+arguments function, local variables и несколько служебных values.\
+Когда функция возвращает результат, stack frame снимается со stack[^stack-overflow].
 
 ```text
 +-----------------+
@@ -39,24 +39,24 @@ When the function returns, the stack frame is popped off the stack[^stack-overfl
 +-----------------+
 ```
 
-From an operational point of view, stack allocation/de-allocation is **very fast**.\
-We are always pushing and popping data from the top of the stack, so we don't need to search for free memory.
-We also don't have to worry about fragmentation: the stack is a single contiguous block of memory.
+С практической точки зрения stack allocation/de-allocation выполняется **очень быстро**.\
+Мы всегда добавляем данные на вершину stack и снимаем их оттуда, поэтому искать свободную memory не требуется.
+О fragmentation тоже беспокоиться не нужно: stack представляет собой единый непрерывный блок memory.
 
 ### Rust
 
-Rust will often allocate data on the stack.\
-You have a `u32` input argument in a function? Those 32 bits will be on the stack.\
-You define a local variable of type `i64`? Those 64 bits will be on the stack.\
-It all works quite nicely because the size of those integers is known at compile time, therefore
-the compiled program knows how much space it needs to reserve on the stack for them.
+Rust часто размещает данные на stack.\
+У function есть input argument типа `u32`? Эти 32 бита будут находиться на stack.\
+Вы объявили local variable типа `i64`? Эти 64 бита будут находиться на stack.\
+Всё работает удобно, потому что размер этих целых чисел известен во время compile-time, а значит,
+скомпилированная программа знает, сколько места нужно зарезервировать для них на stack.
 
 ### `std::mem::size_of`
 
-You can verify how much space a type would take on the stack
-using the [`std::mem::size_of`](https://doc.rust-lang.org/std/mem/fn.size_of.html) function.
+Узнать, сколько места тип займёт на stack, можно
+с помощью функции [`std::mem::size_of`](https://doc.rust-lang.org/std/mem/fn.size_of.html).
 
-For a `u8`, for example:
+Например, для `u8`:
 
 ```rust
 // Позже мы объясним этот необычный синтаксис (`::<u8>`).
@@ -64,9 +64,9 @@ For a `u8`, for example:
 assert_eq!(std::mem::size_of::<u8>(), 1);
 ```
 
-1 makes sense, because a `u8` is 8 bits long, or 1 byte.
+Результат 1 вполне логичен, потому что длина `u8` составляет 8 бит, или 1 байт.
 
-[^stack-overflow]: If you have nested function calls, each function pushes its data onto the stack when it's called but
-it doesn't pop it off until the innermost function returns.
-If you have too many nested function calls, you can run out of stack space—the stack is not infinite!
-That's called a [**stack overflow**](https://en.wikipedia.org/wiki/Stack_overflow).
+[^stack-overflow]: При вложенных вызовах функций каждая функция при вызове добавляет свои данные на stack, но
+не снимает их до тех пор, пока самая внутренняя функция не вернёт результат.
+Если вложенных function calls слишком много, место на stack может закончиться: stack не бесконечен!
+Это называется [**stack overflow**](https://en.wikipedia.org/wiki/Stack_overflow).

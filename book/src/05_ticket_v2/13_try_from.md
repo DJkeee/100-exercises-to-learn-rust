@@ -1,15 +1,15 @@
-# `TryFrom` and `TryInto`
+# `TryFrom` и `TryInto`
 
-In the previous chapter we looked at the [`From` and `Into` traits](../04_traits/09_from.md),
-Rust's idiomatic interfaces for **infallible** type conversions.\
-But what if the conversion is not guaranteed to succeed?
+В предыдущей главе мы рассмотрели [traits `From` и `Into`](../04_traits/09_from.md) —
+idiomatic interfaces Rust для **infallible** conversions types.\
+Но что делать, если успех conversion не гарантирован?
 
-We now know enough about errors to discuss the **fallible** counterparts of `From` and `Into`:
-`TryFrom` and `TryInto`.
+Теперь мы знаем достаточно об errors, чтобы обсудить **fallible** аналоги `From` и `Into`:
+`TryFrom` и `TryInto`.
 
 ## `TryFrom` and `TryInto`
 
-Both `TryFrom` and `TryInto` are defined in the `std::convert` module, just like `From` and `Into`.
+И `TryFrom`, и `TryInto`, как и `From` и `Into`, defined в module `std::convert`.
 
 ```rust
 pub trait TryFrom<T>: Sized {
@@ -23,18 +23,18 @@ pub trait TryInto<T>: Sized {
 }
 ```
 
-The main difference between `From`/`Into` and `TryFrom`/`TryInto` is that the latter return a `Result` type.\
-This allows the conversion to fail, returning an error instead of panicking.
+Главное отличие `From`/`Into` от `TryFrom`/`TryInto` состоит в том, что последние возвращают type `Result`.\
+Благодаря этому conversion может завершиться неудачей, вернув error вместо вызова `panic`.
 
 ## `Self::Error`
 
-Both `TryFrom` and `TryInto` have an associated `Error` type.
-This allows each implementation to specify its own error type, ideally the most appropriate for the conversion
-being attempted.
+У `TryFrom` и `TryInto` есть associated type `Error`.
+Это позволяет каждой implementation указывать собственный error type, в идеале наиболее подходящий
+для выполняемого conversion.
 
-`Self::Error` is a way to refer to the `Error` associated type defined in the trait itself.
+`Self::Error` — способ обратиться к associated type `Error`, defined в самом trait.
 
 ## Duality
 
-Just like `From` and `Into`, `TryFrom` and `TryInto` are dual traits.\
-If you implement `TryFrom` for a type, you get `TryInto` for free.
+Как и `From` с `Into`, `TryFrom` и `TryInto` являются dual traits.\
+Если implement `TryFrom` для type, `TryInto` будет доступен автоматически.
